@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 1645563209
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b94b0e065ffa47f45fff809d95a95ed2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a98348999420ce9a36b92fe2d6aff9fa
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+Assets:
+- Assets/Bus/bus_mod.prefab
+- Assets/Bus/bus_mod.fbx
+- Assets/Bus/bus_mod.tga
+- Assets/Bus/bus_mod.mat
+Dependencies: []

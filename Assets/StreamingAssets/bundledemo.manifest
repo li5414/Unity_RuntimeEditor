@@ -1,0 +1,60 @@
+ManifestFileVersion: 0
+CRC: 4207536234
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 35cd5538a9a17f73919067ebbf503162
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 6f24a6e5403c70d854d18b65c01b05d7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 952abdc1f8989ba4d8f29ed5c1958e4b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 17704c156e256dc419f9b73503f08b37, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a961995cedcfac146a43008994f76948, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 184
+  Script: {instanceID: 0}
+- Class: 185
+  Script: {instanceID: 0}
+- Class: 186
+  Script: {instanceID: 0}
+Assets:
+- Assets/Battlehub/RTSaveLoad/ResourceMaps/ResourceMap_bundledemo__caa62033-d69f-4025-b86c-e2b8b947b224.prefab
+- Assets/Battlehub/RTEditor/Demo/BundledObject/monk.fbx
+- Assets/Battlehub/RTEditor/Demo/BundledObject/NewSurfaceShader.shader
+- Assets/Battlehub/RTEditor/Demo/BundledObject/monkey.prefab
+- Assets/Battlehub/RTEditor/Demo/BundledObject/Materials/White.mat
+- Assets/Battlehub/RTEditor/Demo/BundledObject/Cube.prefab
+- Assets/Battlehub/RTSaveLoad/ShaderInfo/Resources/rt_shader_Standard_9663682894.txt
+- Assets/Battlehub/RTEditor/Demo/BundledObject/Materials/Body.mat
+- Assets/Battlehub/Effects/GlowingOrb/Materials/Smoke30Frames_0.png
+- Assets/Battlehub/RTEditor/Demo/BundledObject/Texture 1.png
+- Assets/Battlehub/RTEditor/Demo/BundledObject/Materials/Eyes.mat
+- Assets/Battlehub/RTSaveLoad/ShaderInfo/Resources/rt_shader_Battlehub__RTEditor__Demo__NewSurfaceShader_9663682893.txt
+- Assets/Battlehub/RTEditor/Demo/BundledObject/PBR/Crocodile_Skin.sbsar
+Dependencies: []

@@ -1,0 +1,765 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A611FDAD-A050-52A5-4B3B-59FD27E26062}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityVersion>2017.3.0f2</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_3_0;UNITY_2017_3;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_3_0;UNITY_2017_3;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEditor">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WebModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.WebModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StyleSheetsModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticlesLegacyModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ParticlesLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.Unity.Settings">
+      <HintPath>Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Networking">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TestRunner">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Timeline">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TreeEditor">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIAutomation">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UIAutomation">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UIAutomation/Editor/UnityEditor.UIAutomation.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.GoogleAudioSpatializer">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/Editor/UnityEditor.GoogleAudioSpatializer.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GoogleAudioSpatializer">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.HoloLens">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Editor/UnityEditor.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.SpatialTracking">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/Editor/UnityEditor.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.VR">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.AppleTV.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/AppleTVSupport/UnityEditor.AppleTV.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WSA.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.WSA.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.OSXStandalone.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Facebook.Extensions">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/Facebook/UnityEditor.Facebook.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/2015/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>Assets/Battlehub/Deps/protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Advertisements">
+      <HintPath>C:/Users/vad/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.0/Editor/UnityEditor.Advertisements.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>C:/Users/vad/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.analytics@0.0.19/UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Analytics">
+      <HintPath>C:/Users/vad/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.analytics@0.0.19/Editor/UnityEditor.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Purchasing">
+      <HintPath>C:/Users/vad/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.purchasing@0.0.19/Editor/UnityEditor.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>E:\Program Files\Unity_2017_3_0_f2\Editor\Data\PlaybackEngines\AppleTVSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>E:/Program Files/Unity_2017_3_0_f2/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Battlehub\Cubeman\Scripts\CubemanCharacter.cs" />
+    <Compile Include="Assets\Battlehub\Cubeman\Scripts\CubemanUserControl.cs" />
+    <Compile Include="Assets\Battlehub\ObjectToTexture\Scripts\ObjectToTexture.cs" />
+    <Compile Include="Assets\Battlehub\ObjectToTexture\Scripts\TakeSnapshot.cs" />
+    <Compile Include="Assets\Battlehub\RootPath.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\DragDrop.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\ExposeToEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\Game.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\GameCamera.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\GLCamera.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\GLRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\HierarchyItem.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\InputController.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\LockAxes.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\MouseOrbit.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\Reflection.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeEditorApplication.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeEditorWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeGraphics.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeSelection.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeTools.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeUndo.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\RuntimeUndoComponent.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\SpriteGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTCommon\Scripts\SpriteGizmoManager.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Dialogs\SaveSceneDialog.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Dialogs\SelectColorDialog.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Dialogs\SelectObjectDialog.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ColliderEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\BoxColliderComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\CapsuleColliderComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\FixedJointComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\HingeJointComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\LightComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\MaterialDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\MeshColliderComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\MeshFilterComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\MeshRendererComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\RigidbodyComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\SkinnedMeshRendererComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\SphereColliderComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\SpringJointComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\StandardMaterialComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentDescriptors\TransformComponentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\ComponentEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\EditorsMap.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\EditorsMapAuto.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\EditorsMapStorage.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\GameObjectEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\MaterialEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\ArrayEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\BoolEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\BoundsEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\ColorEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\CustomTypeEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\DragField.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\EnumEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\Expander.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\FloatEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\FloatValidator.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\FourFloatEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\IListEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\IntEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\ListEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\ObjectEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\PropertyEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\QuaternionEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\RangeEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\SliderOverride.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\StringEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\Vector2Editor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\Vector3Editor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\PropertyEditors\Vector4Editor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\Editors\TransformEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\HierarchyWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\InspectorWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\ProjectResourcesWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\ProjectTreeWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\ProjectWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\ResourcePreview.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\RuntimeEditor.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\ToolsPanel.cs" />
+    <Compile Include="Assets\Battlehub\RTEditor\Scripts\ViewportFitter.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\AudioReverbZoneGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\AudioSourceGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\BaseGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\BoxColliderGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\BoxGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\CapsuleColliderGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\CapsuleGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\ConeGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\DirectionalLightGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\LightGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\PointLightGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\RuntimeGizmos.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\SkinnedMeshRendererGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\SphereColliderGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\SphereGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTGizmos\Scripts\SpotlightGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\CubemenGame.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\EditorCharacter.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\EditorDemo.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\EditorHint.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\GameCharacter.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\GameFerry.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\GameFerryBehavior.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\GameFerryButton.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\GameGoal.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\InstantiatePrefab.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Demo\Scripts\RTHandlesDemoSmoothFollow.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\BaseHandle.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\BoxSelection.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\Grid.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\PositionHandle.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\RotationHandle.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\RuntimeHandles.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\RuntimeSceneView.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\RuntimeSelectionComponent.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\RuntimeToolsComponent.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\ScaleHandle.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\SceneGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\SelectionGizmo.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentAnimationCurve.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentBurst.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentColorBySpeedModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentColorOverLifetimeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentCustomDataModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentEmitParams.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentExternalForcesModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentForceOverLifetimeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentGradient.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentInheritVelocityModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentKeyframe.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentLightsModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentLimitVelocityOverLifetimeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentMainModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentMinMaxCurve.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentMinMaxGradient.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentNoiseModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentParticle.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentRotationBySpeedModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentRotationOverLifetimeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentShapeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentSizeBySpeedModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentSizeOverLifetimeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentSubEmittersModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentTextureSheetAnimationModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentTrailModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\ParticleSystem\PersistentVelocityOverLifetimeModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAnchoredJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAnimation.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAnimationClip.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAnimator.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAnimatorOverrideController.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAreaEffector2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAspectRatioFitter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAssetBundle.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAssetBundleManifest.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioBehaviour.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioChorusFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioClip.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioDistortionFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioEchoFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioHighPassFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioListener.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioLowPassFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioMixer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioMixerGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioMixerSnapshot.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioReverbFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioReverbZone.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAudioSource.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAvatar.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentAvatarMask.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBaseInput.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBaseInputModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBaseMeshEffect.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBaseRaycaster.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBehaviour.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBillboardAsset.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBillboardRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBoxCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBoxCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentBuoyancyEffector2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCamera.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCanvas.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCanvasGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCanvasRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCanvasScaler.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCapsuleCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCapsuleCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCharacterController.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCharacterJoint.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCircleCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentComponent.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCompositeCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentComputeShader.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentConfigurableJoint.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentConstantForce.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentConstantForce2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentContentSizeFitter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCubemap.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentCubemapArray.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentData.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentDetailPrototype.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentDistanceJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentEdgeCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentEffector2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentEventSystem.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentEventTrigger.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentFixedJoint.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentFixedJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentFlare.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentFlareLayer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentFont.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentFrictionJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGameObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGraphic.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGraphicRaycaster.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGraphicsSettings.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGridLayoutGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUIElement.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUILayer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUISkin.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUIStyle.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUIStyleState.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUIText.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentGUITexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentHingeJoint.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentHingeJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentHorizontalLayoutGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentHorizontalOrVerticalLayoutGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentImage.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentJoint.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLayoutElement.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLayoutGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLensFlare.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLight.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLightmapSettings.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLightProbeGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLightProbeProxyVolume.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLightProbes.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLineRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentLODGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMask.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMeshCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMeshFilter.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMeshRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMonoBehaviour.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMotion.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentMovieTexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentNavMeshAgent.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentNavMeshData.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentNavMeshObstacle.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentNetworkMatch.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentNetworkView.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentOcclusionArea.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentOcclusionPortal.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentOffMeshLink.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentOutline.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentParticleSystemRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPhysicMaterial.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPhysics2DRaycaster.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPhysicsMaterial2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPhysicsRaycaster.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPhysicsUpdateBehaviour2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPlatformEffector2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPlayerConnection.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPointEffector2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPointerInputModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPolygonCollider2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentPositionAsUV1.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentProceduralTexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentProjector.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentQualitySettings.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRawImage.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRectMask2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRectTransform.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentReflectionProbe.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRelativeJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRenderPipelineAsset.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRenderSettings.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRenderTexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRigidbody.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRigidbody2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentRuntimeAnimatorController.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentScriptableObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentShader.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentShaderVariantCollection.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentShadow.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSkinnedMeshRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSkybox.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSliderJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSortingGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSparseTexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSphereCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSplatPrototype.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSpringJoint.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSpringJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSprite.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSpriteRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentStandaloneInputModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentStateMachineBehaviour.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentSurfaceEffector2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTargetJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTerrain.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTerrainCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTerrainData.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentText.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTextAsset.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTextMesh.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTexture2DArray.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTexture3D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentToggle.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentToggleGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTrailRenderer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTree.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentTreePrototype.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentUIBehaviour.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentVerticalLayoutGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentVideoClip.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentVideoPlayer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentWebCamTexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentWheelCollider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentWheelJoint2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentWindZone.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\PersistentWorldAnchor.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\PersistentObjects\SerializationSurrogates.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Demo\AddResourcesTest.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\AssetBundlesCreator.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\BundleResourceMap.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\NotImplemented\SaveLoadConfig.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\NotImplemented\SaveLoadConfigAuto.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentData.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentDescriptor.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\ParticleSystem\PersistentCollisionModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\ParticleSystem\PersistentEmissionModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\ParticleSystem\PersistentParticleSystem.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\ParticleSystem\PersistentTriggerModule.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentCloth.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentMaterial.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentMesh.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentProceduralMaterial.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentScript.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentTexture.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentTexture2D.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\PersistentTransform.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentButton.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentDropdown.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentInputField.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentMaskableGraphic.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentNavigation.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentOptionData.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentScrollbar.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentScrollRect.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentSelectable.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentSlider.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentObjects\UI\PersistentSpriteState.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\PersistentScene.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\ProjectManager.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\ResourceGroup.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\ResourceMap.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\ResourceMapGen.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\RuntimeSceneManager.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\RuntimeShaderInfoGen.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\RuntimeShaderUtil.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\Serializier.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\TypeModelCreator.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\AssetBundleLoader.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\Dependencies.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\ExtraSceneData.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\FolderTemplate.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\IProjectManager.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\IRuntimeShaderUtil.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\ISerializer.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\Job.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\PersistentIgnore.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\Project.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\ProjectItem.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\Storage.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentMonoBehavior.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentObjects\Generator\PersistentObjectMapping.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ExternalDragItem.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ListBoxDemo.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\Rotation.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\TreeViewDemo.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\VirtualizingExternalDragItem.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\VirtualizingTreeViewDemo.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\Breadcrumb.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\ItemContainer.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\ItemDropMarker.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\ItemsControl.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\LayoutElementResizer.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\ListBox.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\ListBoxItem.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\PopupWindow.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\ProgressBar.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\RectTransformChangeListener.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\TreeView.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\TreeViewDropMarker.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\TreeViewExpander.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\TreeViewItem.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingItemContainer.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingItemDropMarker.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingItemsControl.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingListBox.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingListBoxItem.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingScrollRect.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingTreeView.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingTreeViewDropMarker.cs" />
+    <Compile Include="Assets\Battlehub\UIControls\Scripts\VirtualizingTreeView\VirtualizingTreeViewItem.cs" />
+    <Compile Include="Assets\Battlehub\Utils\BtnRepeat.cs" />
+    <Compile Include="Assets\Battlehub\Utils\CursorHelper.cs" />
+    <Compile Include="Assets\Battlehub\Utils\EditorStopwatch.cs" />
+    <Compile Include="Assets\Battlehub\Utils\EnumFlagsAttribute.cs" />
+    <Compile Include="Assets\Battlehub\Utils\ExposePropertyAttribute.cs" />
+    <Compile Include="Assets\Battlehub\Utils\GameObjectExtensions.cs" />
+    <Compile Include="Assets\Battlehub\Utils\PsAutoDestroy.cs" />
+    <Compile Include="Assets\Battlehub\Utils\ReadonlyAttribute.cs" />
+    <Compile Include="Assets\Battlehub\Utils\Run.cs" />
+    <Compile Include="Assets\Battlehub\Utils\Strong.cs" />
+    <Compile Include="Assets\Battlehub\Utils\TextureExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Battlehub\RTCommon\Shaders\Resources\Billboard.shader" />
+    <None Include="Assets\Battlehub\RTEditor\Demo\BundledObject\NewSurfaceShader.shader" />
+    <None Include="Assets\Battlehub\RTGizmos\Shaders\Resources\Handles.shader" />
+    <None Include="Assets\Battlehub\RTHandles\Fonts\FontLicense!.txt" />
+    <None Include="Assets\Battlehub\RTHandles\Shaders\Resources\Grid.shader" />
+    <None Include="Assets\Battlehub\RTHandles\Shaders\Resources\Shape.shader" />
+    <None Include="Assets\Battlehub\RTHandles\Shaders\Resources\VertexColor.shader" />
+    <None Include="Assets\Battlehub\RTHandles\Shaders\Resources\VertexColorBillboard.shader" />
+    <None Include="Assets\Battlehub\RTHandles\Shaders\Resources\VertexColorClip.shader" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Battlehub__RTCommon__Billboard_8589934908.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Battlehub__RTEditor__Demo__NewSurfaceShader_9663682893.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Particles__Additive (Soft)_8589934904.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Particles__Additive_8589941242.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Particles__Alpha Blended_8589934906.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Skybox__6 Sided_8589934912.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Standard_8589934902.txt" />
+    <None Include="Assets\Battlehub\RTSaveLoad\ShaderInfo\Resources\rt_shader_Standard_9663682894.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+</Project>
