@@ -12,7 +12,7 @@ namespace Battlehub.RTSaveLoad2
 {
     public class PersistentObjectMapperWindow : EditorWindow
     {
-    
+
         [MenuItem("Tools/Runtime SaveLoad2/Persistent Objects Mapper")]
         public static void ShowMenuItem()
         {
@@ -72,7 +72,7 @@ namespace Battlehub.RTSaveLoad2
         {
             get { return m_selectedCount == 0; }
         }
-   
+
         private int m_selectedCount;
         private bool[] m_isUOTypeSelected;
         private bool[] m_isUOTypeExpanded;
@@ -93,11 +93,11 @@ namespace Battlehub.RTSaveLoad2
             List<string> assemblyNames = new List<string> { "All" };
             List<Assembly> assemblies = new List<Assembly>() { null };
 
-            for(int i = 0; i < m_assemblies.Length; ++i)
+            for (int i = 0; i < m_assemblies.Length; ++i)
             {
                 Assembly assembly = m_assemblies[i];
                 Type[] uoTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(UnityObject))).ToArray();
-                if(uoTypes.Length > 0)
+                if (uoTypes.Length > 0)
                 {
                     assemblies.Add(assembly);
                     assemblyNames.Add(assembly.GetName().Name);
@@ -130,10 +130,9 @@ namespace Battlehub.RTSaveLoad2
 
             m_assemblies = assemblies.ToArray();
             m_assemblyNames = assemblyNames.ToArray();
-            
 
-            //m_map = Resources.Load<EditorsMapStorage>(EditorsMapStorage.EditorsMapPrefabName);
-            //EditorsMap.LoadMap();
+            LoadMappings();
+
         }
 
         private void OnGUI()
@@ -163,11 +162,11 @@ namespace Battlehub.RTSaveLoad2
 
             EditorGUI.BeginChangeCheck();
 
-            if(IsAllSelected)
+            if (IsAllSelected)
             {
                 GUILayout.Toggle(true, "Select All");
             }
-            else if(IsNoneSelected)
+            else if (IsNoneSelected)
             {
                 GUILayout.Toggle(false, "Select All");
             }
@@ -175,12 +174,12 @@ namespace Battlehub.RTSaveLoad2
             {
                 GUILayout.Toggle(false, "Select All", "ToggleMixed");
             }
-            
-            if(EditorGUI.EndChangeCheck())
+
+            if (EditorGUI.EndChangeCheck())
             {
                 if (IsAllSelected)
                 {
-                    for(int i = 0; i < m_isUOTypeSelected.Length; ++i)
+                    for (int i = 0; i < m_isUOTypeSelected.Length; ++i)
                     {
                         m_isUOTypeSelected[i] = false;
                         ExpandOrCollapseType(i);
@@ -217,7 +216,7 @@ namespace Battlehub.RTSaveLoad2
 
             EditorGUI.BeginChangeCheck();
             GUILayout.Button("Create Persistent Objects");
-            if(EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck())
             {
                 SaveMappings();
             }
@@ -225,12 +224,33 @@ namespace Battlehub.RTSaveLoad2
             EditorGUILayout.EndHorizontal();
         }
 
+        private void LoadMappings()
+        {
+            GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ObjectMappingsStoragePath, typeof(GameObject));
+            if (storageGO != null)
+            {
+                PersistentObjectMapping[] mappings = storageGO.GetComponentsInChildren<PersistentObjectMapping>(true);
+                for (int i = 0; i < mappings.Length; ++i)
+                {
+                    PersistentObjectMapping objectMapping = mappings[i];
+                    Type type = Type.GetType(objectMapping.MappedNamespace + "." + objectMapping.MappedTypeName, false, true);
+                    int typeIndex;
+                    if (type != null && m_typeToIndex.TryGetValue(type, out typeIndex))
+                    {
+                        PersistentPropertyMapping[] pMappings = objectMapping.PropertyMappings;
+
+
+                    }
+                }
+            }
+        }
+
         private void SaveMappings()
         {
             GameObject storageGO = new GameObject();
-            for(int typeIndex = 0; typeIndex < m_propertyMappings.GetLength(0); ++typeIndex)
+            for (int typeIndex = 0; typeIndex < m_propertyMappings.GetLength(0); ++typeIndex)
             {
-                if(!m_isUOTypeSelected[typeIndex])
+                if (!m_isUOTypeSelected[typeIndex])
                 {
                     continue;
                 }
@@ -242,9 +262,9 @@ namespace Battlehub.RTSaveLoad2
                 PersistentObjectMapping objectMapping = typeStorageGO.AddComponent<PersistentObjectMapping>();
 
                 List<PersistentPropertyMapping> selectedPropertyMappings = new List<PersistentPropertyMapping>();
-                for(int i = 0; i < propertyMappings.Length; ++i)
+                for (int i = 0; i < propertyMappings.Length; ++i)
                 {
-                    if(!m_isPropertyMappingsEnabled[typeIndex][i])
+                    if (!m_isPropertyMappingsEnabled[typeIndex][i])
                     {
                         continue;
                     }
@@ -266,7 +286,7 @@ namespace Battlehub.RTSaveLoad2
         private int GetAncestorsCount(Type type)
         {
             int count = 0;
-            while(type.BaseType != typeof(UnityObject))
+            while (type.BaseType != typeof(UnityObject))
             {
                 count++;
                 type = type.BaseType;
@@ -287,7 +307,7 @@ namespace Battlehub.RTSaveLoad2
                 EditorGUI.BeginChangeCheck();
                 m_isUOTypeSelected[typeIndex] = EditorGUILayout.Toggle(m_isUOTypeSelected[typeIndex], GUILayout.Width(indent * 15));
                 isSelectionChanged = EditorGUI.EndChangeCheck();
-               
+
                 EditorGUI.BeginChangeCheck();
                 if (indent == 1)
                 {
@@ -372,68 +392,133 @@ namespace Battlehub.RTSaveLoad2
             }
             else
             {
-                CollapseType(typeIndex);
+                //CollapseType(typeIndex);
             }
         }
 
-        private void CollapseType(int typeIndex)
-        {
-            m_propertyMappings[typeIndex] = null;
-            m_isPropertyMappingsEnabled[typeIndex] = null;
-            m_propertyMappingNames[typeIndex] = null;
-            m_propertyMappingsSelection[typeIndex] = null;
-        }
+        //private void CollapseType(int typeIndex)
+        //{
+        //    m_propertyMappings[typeIndex] = null;
+        //    m_isPropertyMappingsEnabled[typeIndex] = null;
+        //    m_propertyMappingNames[typeIndex] = null;
+        //    m_propertyMappingsSelection[typeIndex] = null;
+        //}
 
         private void ExpandType(int typeIndex)
         {
             Type type = m_uoTypes[typeIndex];
+            Dictionary<string, PersistentPropertyMapping> existingFieldMappings =
+                m_propertyMappings[typeIndex] != null ?
+                m_propertyMappings[typeIndex].Where(p => !p.IsProperty).ToDictionary(p => p.MappedType + " " + p.MappedName) :
+                new Dictionary<string, PersistentPropertyMapping>();
+
+            Dictionary<string, PersistentPropertyMapping> existingPropertyMappings =
+                m_propertyMappings[typeIndex] != null ?
+                m_propertyMappings[typeIndex].Where(p => p.IsProperty).ToDictionary(p => p.MappedType + " " + p.MappedName) :
+                new Dictionary<string, PersistentPropertyMapping>();
+
             List<PersistentPropertyMapping> pMappings = new List<PersistentPropertyMapping>();
             List<bool> pMappingsEnabled = new List<bool>();
             FieldInfo[] fields = type.GetFields();
             for (int f = 0; f < fields.Length; ++f)
             {
                 FieldInfo fInfo = fields[f];
-                PersistentPropertyMapping pMapping = new PersistentPropertyMapping();
-                pMapping.PersistentName = fInfo.Name;
-                pMapping.PersistentType = fInfo.FieldType.FullName;
-                pMapping.MappedName = fInfo.Name;
-                pMapping.MappedType = fInfo.FieldType.FullName;
-                pMapping.IsProperty = false;
-                pMapping.IsMappedProperty = false;
 
-                pMapping.UseBuiltInCodeSnippet = false;
-                pMapping.BuiltInCodeSnippet = null;
+                string key = fInfo.FieldType.FullName + " " + fInfo.Name;
+
+                PersistentPropertyMapping pMapping;
+                if (existingFieldMappings.TryGetValue(key, out pMapping))
+                {
+                    pMappingsEnabled.Add(true);
+
+                    existingFieldMappings.Remove(key);
+                }
+                else
+                {
+                    pMapping = new PersistentPropertyMapping();
+                    pMapping.PersistentName = fInfo.Name;
+                    pMapping.PersistentType = fInfo.FieldType.FullName;
+                    pMapping.MappedName = fInfo.Name;
+                    pMapping.MappedType = fInfo.FieldType.FullName;
+                    pMapping.IsProperty = false;
+
+                    pMapping.UseBuiltInCodeSnippet = false;
+                    pMapping.BuiltInCodeSnippet = null;
+
+                    pMappingsEnabled.Add(false);
+                }
 
                 pMappings.Add(pMapping);
-                pMappingsEnabled.Add(false);
+            }
+
+            {
+                PersistentPropertyMapping[] deprecatedMappings = existingFieldMappings.Values.ToArray();
+                existingFieldMappings.Clear();
+                for (int i = 0; i < deprecatedMappings.Length; ++i)
+                {
+                    PersistentPropertyMapping deprecatedMapping = deprecatedMappings[i];
+                    deprecatedMapping.MappedName = null;
+                    deprecatedMapping.MappedType = null;
+                    pMappings.Add(deprecatedMapping);
+                }
             }
 
             PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null).ToArray();
             for (int p = 0; p < properties.Length; ++p)
             {
                 PropertyInfo pInfo = properties[p];
-                PersistentPropertyMapping pMapping = new PersistentPropertyMapping();
-                pMapping.PersistentName = pInfo.Name;       //property name of mapping
-                pMapping.PersistentType = pInfo.PropertyType.FullName;
-                pMapping.MappedName = pInfo.Name; //property name of unity type
-                pMapping.MappedType = pInfo.PropertyType.FullName;
-                pMapping.IsProperty = true;
-                pMapping.IsMappedProperty = true;
 
-                pMapping.UseBuiltInCodeSnippet = false;
-                pMapping.BuiltInCodeSnippet = null;
+                string key = pInfo.PropertyType.FullName + " " + pInfo.Name;
+
+                PersistentPropertyMapping pMapping;
+                if (existingPropertyMappings.TryGetValue(key, out pMapping))
+                {
+                    pMappingsEnabled.Add(true);
+
+                    existingPropertyMappings.Remove(key);
+                }
+                else
+                {
+                    pMapping = new PersistentPropertyMapping();
+                    pMapping.PersistentName = pInfo.Name;       //property name of mapping
+                    pMapping.PersistentType = pInfo.PropertyType.FullName;
+                    pMapping.MappedName = pInfo.Name; //property name of unity type
+                    pMapping.MappedType = pInfo.PropertyType.FullName;
+                    pMapping.IsProperty = true;
+
+                    pMapping.UseBuiltInCodeSnippet = false;
+                    pMapping.BuiltInCodeSnippet = null;
+
+                    pMappingsEnabled.Add(false);
+                }
 
                 pMappings.Add(pMapping);
-                pMappingsEnabled.Add(true);
+            }
+
+            {
+                PersistentPropertyMapping[] deprecatedMappings = existingPropertyMappings.Values.ToArray();
+                existingFieldMappings.Clear();
+                for (int i = 0; i < deprecatedMappings.Length; ++i)
+                {
+                    PersistentPropertyMapping deprecatedMapping = deprecatedMappings[i];
+                    deprecatedMapping.MappedName = null;
+                    deprecatedMapping.MappedType = null;
+                    pMappings.Add(deprecatedMapping);
+                }
             }
 
             m_propertyMappings[typeIndex] = pMappings.ToArray();
             m_isPropertyMappingsEnabled[typeIndex] = pMappingsEnabled.ToArray();
-            m_propertyMappingNames[typeIndex] = pMappings.Select(m => m.MappedName).ToArray();
+            m_propertyMappingNames[typeIndex] = pMappings.Where(m => m.MappedName != null).Select(m => m.MappedName).ToArray();
             m_propertyMappingsSelection[typeIndex] = new int[pMappings.Count];
+
+            string[] mappedKeys = pMappings.Where(m => m.MappedType != null && m.MappedName != null).Select(m => m.MappedType + " " + m.MappedName).ToArray();
+
             for (int i = 0; i < m_propertyMappingsSelection[typeIndex].Length; ++i)
             {
-                m_propertyMappingsSelection[typeIndex][i] = i;
+                PersistentPropertyMapping mapping = m_propertyMappings[typeIndex][i];
+
+                m_propertyMappingsSelection[typeIndex][i] = Array.IndexOf(mappedKeys, mapping.MappedType + " " + mapping.MappedName);
             }
         }
     }
