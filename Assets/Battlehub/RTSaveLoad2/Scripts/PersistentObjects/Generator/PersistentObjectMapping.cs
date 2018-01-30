@@ -28,6 +28,12 @@ namespace Battlehub.RTSaveLoad2
             get { return PersistentNamespace + "." + PersistentTypeName; }
         }
 
+        public string MappedAssemblyQualifiedName
+        {
+            get { return MappedFullTypeName + "," + MappedAssemblyName; }
+        }
+
+        public string MappedAssemblyName;
         public string MappedNamespace;
         public string MappedTypeName;
         public string PersistentNamespace;

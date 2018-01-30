@@ -7,6 +7,7 @@ using ProtoBuf.Meta;
 using UnityEngine;
 using System.IO;
 
+
 namespace Battlehub.RTSaveLoad
 {
     /*Serialization of object field*/
@@ -102,6 +103,8 @@ namespace Battlehub.RTSaveLoad
     {
         public RuntimeTypeModel Create()
         {
+            
+           
             RuntimeTypeModel model = TypeModel.Create();
 
             RegisterTypes(model);
