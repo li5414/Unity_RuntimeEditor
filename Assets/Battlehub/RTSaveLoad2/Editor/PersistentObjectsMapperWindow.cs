@@ -35,6 +35,7 @@ namespace Battlehub.RTSaveLoad2
 
         public const string EditorPrefabsPath = @"/" + BHPath.Root + @"/RTSaveLoad2/Editor/Prefabs";
         public const string ObjectMappingsStoragePath = "Assets" + EditorPrefabsPath + @"/ObjectMappingsStorage.prefab";
+        public const string ObjectMappingsTemplatePath = "Assets" + EditorPrefabsPath + @"/ObjectMappingsTemplate.prefab";
         private Assembly[] m_assemblies;
         private string[] m_assemblyNames;
         private int m_selectedAssemblyIndex;
@@ -265,6 +266,11 @@ namespace Battlehub.RTSaveLoad2
         private void LoadMappings()
         {
             GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ObjectMappingsStoragePath, typeof(GameObject));
+            if(storageGO == null)
+            {
+                storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ObjectMappingsTemplatePath, typeof(GameObject));
+            }
+
             if (storageGO != null)
             {
                 PersistentObjectMapping[] mappings = storageGO.GetComponentsInChildren<PersistentObjectMapping>(true);
