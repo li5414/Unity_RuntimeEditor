@@ -5,6 +5,8 @@ namespace Battlehub.RTSaveLoad2
     [System.Serializable]
     public struct PersistentPropertyMapping
     {
+        public bool IsEnabled;
+        public int PersistentTag;
         public string PersistentName;
         public string PersistentType;
         public bool IsProperty;
@@ -33,6 +35,8 @@ namespace Battlehub.RTSaveLoad2
             get { return MappedFullTypeName + "," + MappedAssemblyName; }
         }
 
+        public bool IsEnabled;
+        public int PersistentTag;
         public string MappedAssemblyName;
         public string MappedNamespace;
         public string MappedTypeName;

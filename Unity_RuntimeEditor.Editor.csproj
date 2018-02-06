@@ -332,9 +332,8 @@
     <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\Editor\RuntimeSaveLoadMenu.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\Editor\SaveLoadConfigGen.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Implementation\Editor\SaveLoadConfigWindow.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Editor\PersistentObjectsMapperWindow.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Editor\RTSaveLoad2Menu.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Editor\Test1.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Editor\Scripts\PersistentObjectsMapperWindow.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Editor\Scripts\Test1.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Scripts\Editor\VirtualizingScrollRectEditor.cs" />
     <Compile Include="Assets\Battlehub\Utils\Editor\EnumFlagsDrawer.cs" />
     <Compile Include="Assets\Battlehub\Utils\Editor\ExposeProperties.cs" />

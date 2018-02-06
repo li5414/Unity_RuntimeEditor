@@ -9,17 +9,33 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1949053607192642}
+  m_RootGameObject: {fileID: 1983911848408762}
   m_IsPrefabParent: 1
---- !u!1 &1459836035787668
+--- !u!1 &1395822890346854
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4236139183029216}
-  - component: {fileID: 114500186787184360}
+  - component: {fileID: 4822320937995290}
+  - component: {fileID: 114725041882104728}
+  m_Layer: 0
+  m_Name: UnityEngine.Timeline.AnimationPlayableAsset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1952516743498578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4944418307885348}
+  - component: {fileID: 114538814907960638}
   m_Layer: 0
   m_Name: UnityEngine.GameObject
   m_TagString: Untagged
@@ -27,14 +43,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1949053607192642
+--- !u!1 &1983911848408762
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4320608838580800}
+  - component: {fileID: 4293020757394268}
   m_Layer: 0
   m_Name: ObjectMappingsStorage
   m_TagString: Untagged
@@ -42,71 +58,172 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4236139183029216
+--- !u!4 &4293020757394268
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1459836035787668}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4320608838580800}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4320608838580800
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1949053607192642}
+  m_GameObject: {fileID: 1983911848408762}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4236139183029216}
+  - {fileID: 4944418307885348}
+  - {fileID: 4822320937995290}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114500186787184360
+--- !u!4 &4822320937995290
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395822890346854}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4293020757394268}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4944418307885348
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952516743498578}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4293020757394268}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114538814907960638
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1459836035787668}
+  m_GameObject: {fileID: 1952516743498578}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0530efbda98e7b4f8991b85a6e01467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsEnabled: 1
+  PersistentTag: 5
   MappedAssemblyName: UnityEngine.CoreModule
   MappedNamespace: UnityEngine
   MappedTypeName: GameObject
   PersistentNamespace: UnityEngine.Battlehub.SL2
   PersistentTypeName: GameObject
   PropertyMappings:
-  - PersistentName: layer
+  - IsEnabled: 1
+    PersistentTag: 1
+    PersistentName: layer
     PersistentType: System.Int32
+    IsProperty: 1
+    MappedName: layer
+    IsMappedProperty: 0
+    MappedType: System.Int32
+    UseBuiltInCodeSnippet: 0
+    BuiltInCodeSnippet: 
+  - IsEnabled: 0
+    PersistentTag: 2
+    PersistentName: active
+    PersistentType: System.Boolean
+    IsProperty: 1
+    MappedName: active
+    IsMappedProperty: 0
+    MappedType: System.Boolean
+    UseBuiltInCodeSnippet: 0
+    BuiltInCodeSnippet: 
+  - IsEnabled: 0
+    PersistentTag: 4
+    PersistentName: tag
+    PersistentType: System.String
     IsProperty: 1
     MappedName: tag
     IsMappedProperty: 0
     MappedType: System.String
     UseBuiltInCodeSnippet: 0
     BuiltInCodeSnippet: 
-  - PersistentName: tag
-    PersistentType: System.String
+  - IsEnabled: 0
+    PersistentTag: 5
+    PersistentName: isStatic
+    PersistentType: System.Boolean
     IsProperty: 1
     MappedName: isStatic
     IsMappedProperty: 0
     MappedType: System.Boolean
     UseBuiltInCodeSnippet: 0
     BuiltInCodeSnippet: 
-  - PersistentName: active
+--- !u!114 &114725041882104728
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395822890346854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0530efbda98e7b4f8991b85a6e01467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsEnabled: 0
+  PersistentTag: 5
+  MappedAssemblyName: UnityEngine.Timeline
+  MappedNamespace: UnityEngine.Timeline
+  MappedTypeName: AnimationPlayableAsset
+  PersistentNamespace: UnityEngine.Timeline.Battlehub.SL2
+  PersistentTypeName: AnimationPlayableAsset
+  PropertyMappings:
+  - IsEnabled: 0
+    PersistentTag: 1
+    PersistentName: position
+    PersistentType: UnityEngine.Vector3
+    IsProperty: 1
+    MappedName: position
+    IsMappedProperty: 0
+    MappedType: UnityEngine.Vector3
+    UseBuiltInCodeSnippet: 0
+    BuiltInCodeSnippet: 
+  - IsEnabled: 0
+    PersistentTag: 2
+    PersistentName: rotation
+    PersistentType: UnityEngine.Quaternion
+    IsProperty: 1
+    MappedName: rotation
+    IsMappedProperty: 0
+    MappedType: UnityEngine.Quaternion
+    UseBuiltInCodeSnippet: 0
+    BuiltInCodeSnippet: 
+  - IsEnabled: 0
+    PersistentTag: 3
+    PersistentName: useTrackMatchFields
     PersistentType: System.Boolean
     IsProperty: 1
-    MappedName: active
+    MappedName: useTrackMatchFields
     IsMappedProperty: 0
     MappedType: System.Boolean
+    UseBuiltInCodeSnippet: 0
+    BuiltInCodeSnippet: 
+  - IsEnabled: 0
+    PersistentTag: 4
+    PersistentName: matchTargetFields
+    PersistentType: UnityEngine.Timeline.MatchTargetFields
+    IsProperty: 1
+    MappedName: matchTargetFields
+    IsMappedProperty: 0
+    MappedType: UnityEngine.Timeline.MatchTargetFields
+    UseBuiltInCodeSnippet: 0
+    BuiltInCodeSnippet: 
+  - IsEnabled: 0
+    PersistentTag: 5
+    PersistentName: clip
+    PersistentType: UnityEngine.AnimationClip
+    IsProperty: 1
+    MappedName: clip
+    IsMappedProperty: 0
+    MappedType: UnityEngine.AnimationClip
     UseBuiltInCodeSnippet: 0
     BuiltInCodeSnippet: 
