@@ -103,12 +103,8 @@ namespace Battlehub.RTSaveLoad
     {
         public RuntimeTypeModel Create()
         {
-            
-           
             RuntimeTypeModel model = TypeModel.Create();
-
             RegisterTypes(model);
-
             return model;
         }
 

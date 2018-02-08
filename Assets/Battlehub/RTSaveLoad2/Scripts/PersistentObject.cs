@@ -1,25 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProtoBuf;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
+
 
 namespace Battlehub.RTSaveLoad2
 {
     public interface IPersistentObject
     {
-        int[] Dependencies
-        {
-            get;
-        }
-
         void ReadFrom(object obj);
 
         void WriteTo(object obj);
 
-        object[] FindDependecies(object obj);
+        void GetDeps(HashSet<int> dependencies);
+
+        void GetDepsFrom(object obj, HashSet<object> dependencies);
+       
     }
 
-    [ProtoContract]    
+    [ProtoContract(AsReferenceDefault = true)]    
     public class PersistentObject  : IPersistentObject
     {
         [ProtoMember(1)]
@@ -27,12 +27,6 @@ namespace Battlehub.RTSaveLoad2
 
         [ProtoMember(2)]
         public int hideFlags;
-
-        private static readonly int[] m_noDepenencies = new int[0];
-        public int[] Dependencies
-        {
-            get { return m_noDepenencies; }
-        }
 
         public virtual void ReadFrom(object obj)
         {
@@ -48,10 +42,12 @@ namespace Battlehub.RTSaveLoad2
             uo.hideFlags = (HideFlags)hideFlags;
         }
 
-        private static readonly object[] m_noDependencies = new object[0];
-        public virtual object[] FindDependecies(object obj)
+        public virtual void GetDeps(HashSet<int> dependencies)
         {
-            return m_noDependencies;
+        }
+     
+        public virtual void GetDepsFrom(object obj, HashSet<object> dependencies)
+        {
         }
     }
 

@@ -697,10 +697,10 @@
     <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\Project.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\ProjectItem.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad\Scripts\Interface\Storage.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentClassMapping.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentMonoBehavior.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentObject.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentObjects\Generator\CodeGen.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentObjects\Generator\PersistentObjectMapping.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\TypeModelCreator.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ExternalDragItem.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ListBoxDemo.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\Rotation.cs" />

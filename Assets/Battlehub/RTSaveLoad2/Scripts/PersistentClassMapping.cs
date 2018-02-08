@@ -6,19 +6,39 @@ namespace Battlehub.RTSaveLoad2
     public struct PersistentPropertyMapping
     {
         public bool IsEnabled;
-        public int PersistentTag;
-        public string PersistentName;
-        public string PersistentType;
         public bool IsProperty;
-        public string MappedName;
-        public bool IsMappedProperty;
-        public string MappedType;
+        public int PersistentTag;
 
-        public bool UseBuiltInCodeSnippet;
+        public string PersistentFullTypeName
+        {
+            get { return PersistentNamespace + "." + PersistentTypeName; }
+        }
+
+        public string MappedFullTypeName
+        {
+            get { return MappedNamespace + "." + MappedTypeName; }
+        }
+
+
+        public string MappedAssemblyQualifiedName
+        {
+            get { return MappedFullTypeName + "," + MappedAssemblyName; }
+        }
+
+        public string PersistentNamespace;
+        public string PersistentTypeName;
+        public string PersistentName;
+
+        public string MappedAssemblyName;
+        public string MappedNamespace;
+        public string MappedTypeName;
+        public string MappedName;
+        
+        public bool UseCustomCode;
         public string BuiltInCodeSnippet;
     }
 
-    public class PersistentObjectMapping : MonoBehaviour
+    public class PersistentClassMapping : MonoBehaviour
     {
         public string MappedFullTypeName
         {
