@@ -49,6 +49,24 @@ namespace Battlehub.RTSaveLoad2
         public virtual void GetDepsFrom(object obj, HashSet<object> dependencies)
         {
         }
+
+        protected void AddDependency(int depenency, HashSet<int> dependencies)
+        {
+            if(depenency > 0 && !dependencies.Contains(depenency))
+            {
+                dependencies.Add(depenency);
+            }
+        }
+
+        protected void AddDependency(object depenency, HashSet<object> dependencies)
+        {
+            if (depenency != null && !dependencies.Contains(depenency))
+            {
+                dependencies.Add(depenency);
+            }
+        }
+
+
     }
 
 }

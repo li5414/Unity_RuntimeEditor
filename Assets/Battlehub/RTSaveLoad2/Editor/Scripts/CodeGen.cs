@@ -9,6 +9,9 @@ namespace Battlehub.RTSaveLoad2
 {
     public class CodeGen
     {
+        private const int AutoFieldTagOffset = 256;
+        private const int SubclassOffset = 1024;
+
         private static readonly string BR = Environment.NewLine;
         private static readonly string END = BR + BR;
 
@@ -57,6 +60,7 @@ namespace Battlehub.RTSaveLoad2
         private static readonly string GetDepsFromMethodTemplate =
             "public virtual void GetDepsFrom(object obj, HashSet<int> dependencies)"    + BR +
             "{"                                                                         + BR +
+            "   UnityObject uo = (UnityObject)obj;"                                     + BR +
             "   {0}"                                                                    + BR +
             "}"                                                                         + END;
 
@@ -70,21 +74,104 @@ namespace Battlehub.RTSaveLoad2
             return type.GetFields();
         }
 
-        public string WritePersistentClassCode(PersistentClassMapping mapping)
+        public string Generate(PersistentClassMapping mapping)
         {
-            StringBuilder sb = new StringBuilder();
-            WritePersistentClassUsings(mapping, sb);
-            string usings = sb.ToString();
-            
+            string usings = CreateUsings(mapping);
             string className = mapping.PersistentTypeName;
-            string baseClassName = "";
-            string body = "";
+            string baseClassName = mapping.PersistentBaseTypeName;
+            string body = CreateBody(mapping);
 
             return string.Format(PersistentClassTemplate, usings, className, baseClassName, body);
         }
 
-        private void WritePersistentClassUsings(PersistentClassMapping mapping, StringBuilder sb)
+        private string CreateBody(PersistentClassMapping mapping)
         {
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i < mapping.PropertyMappings.Length; ++i)
+            {
+                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+
+                Type repacementType = GetReplacementType(prop.MappedType);
+                sb.Append(string.Format(
+                    FieldTemplate, i + AutoFieldTagOffset,
+                    repacementType != null ? repacementType.Name : prop.PersistentTypeName,
+                    prop.PersistentName));
+                sb.Append(END).Append(END);
+            }
+
+            sb.Append(string.Format(ReadFromMethodTemplate, CreateReadMethodBody(mapping)));
+            sb.Append(END).Append(END);
+            sb.Append(string.Format(WriteToMethodTemplate, CreateWriteMethodBody(mapping)));
+            sb.Append(END).Append(END);
+            sb.Append(string.Format(GetDepsMethodTemplate, CreateDepsMethodBody(mapping)));
+            sb.Append(END).Append(END);
+            sb.Append(string.Format(GetDepsFromMethodTemplate, CreateDepsFromMethodBody(mapping)));
+
+            return sb.ToString();
+        }
+
+        private string CreateReadMethodBody(PersistentClassMapping mapping)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
+            {
+                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                sb.Append(string.Format("{0} = uo.{1};", prop.PersistentName, prop.MappedName));
+                sb.Append(END);
+            }
+
+            return sb.ToString();
+        }
+
+        private string CreateWriteMethodBody(PersistentClassMapping mapping)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
+            {
+                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                sb.Append(string.Format("uo.{0} = {1};", prop.PersistentName, prop.MappedName));
+                sb.Append(END);
+            }
+
+            return sb.ToString();
+        }
+
+        private string CreateDepsMethodBody(PersistentClassMapping mapping)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
+            {
+                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                if(prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                {
+                    sb.Append(string.Format("AddDependency({0}, dependencies);", prop.PersistentName));
+                    sb.Append(END);
+                }
+            }
+            return sb.ToString();
+        }
+
+        private string CreateDepsFromMethodBody(PersistentClassMapping mapping)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
+            {
+                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                {
+                    sb.Append(string.Format("AddDependency(uo.{0}, dependencies);", prop.MappedName));
+                    sb.Append(END);
+                }
+            }
+            return sb.ToString();
+        }
+
+        private string CreateUsings(PersistentClassMapping mapping)
+        {
+            StringBuilder sb = new StringBuilder();
             HashSet<string> namespaces = new HashSet<string>();
             for(int i = 0; i < DefaultNamespaces.Length; ++i)
             {
@@ -101,6 +188,11 @@ namespace Battlehub.RTSaveLoad2
                 namespaces.Add(mapping.PersistentNamespace);
             }
 
+            if(!namespaces.Contains(mapping.PersistentBaseNamespace))
+            {
+                namespaces.Add(mapping.PersistentBaseNamespace);
+            }
+
             for(int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
                 PersistentPropertyMapping propertyMapping = mapping.PropertyMappings[i];
@@ -109,7 +201,7 @@ namespace Battlehub.RTSaveLoad2
                     namespaces.Add(propertyMapping.MappedNamespace);
                 }
 
-                Type type = Type.GetType(propertyMapping.MappedAssemblyQualifiedName);
+                Type type = propertyMapping.MappedType;
                 Type replacementType = GetReplacementType(type);
                 if(replacementType != null)
                 {
@@ -126,6 +218,13 @@ namespace Battlehub.RTSaveLoad2
                     }
                 }
             }
+
+            foreach(string ns in namespaces)
+            {
+                sb.Append("using " + ns + ";");
+            }
+
+            return sb.ToString();
         }
 
         private Type GetReplacementType(Type type)
@@ -136,8 +235,5 @@ namespace Battlehub.RTSaveLoad2
             }
             return null;
         }
-
-      
-
     }
 }

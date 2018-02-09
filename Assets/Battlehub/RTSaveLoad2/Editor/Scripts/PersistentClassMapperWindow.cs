@@ -94,8 +94,6 @@ namespace Battlehub.RTSaveLoad2
             public int[] PropertyMappingSelection;
         }
 
-        private static string[] PropertyMappingTypeNames = new[] { "Map To", "Custom" };
-
         private ClassMappingInfo[] m_mappings;
 
         private CodeGen m_codeGen;
@@ -375,10 +373,33 @@ namespace Battlehub.RTSaveLoad2
                 classMapping.MappedNamespace = m_uoTypes[typeIndex].Namespace;
                 classMapping.MappedTypeName = m_uoTypes[typeIndex].Name;
                 classMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(classMapping.MappedNamespace);
-                classMapping.PersistentTypeName = m_uoTypes[typeIndex].Name;
+                classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(m_uoTypes[typeIndex].Name);
+        
+                Type baseType = typeof(UnityObject);
+                Type type = m_uoTypes[typeIndex];
+                while(true)
+                {
+                    type = type.BaseType;
+                    if(type == typeof(UnityObject))
+                    {
+                        break;
+                    }
+
+                    int baseIndex;
+                    if(m_typeToIndex.TryGetValue(type, out baseIndex))
+                    {
+                        if(m_mappings[baseIndex].IsEnabled)
+                        {
+                            baseType = type;
+                            break;
+                        }
+                    }
+                }
+
+                classMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(baseType.Namespace);
+                classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(baseType.Name);
             }
 
-            
             PrefabUtility.CreatePrefab(ClassMappingsStoragePath, storageGO);
             DestroyImmediate(storageGO);
         }

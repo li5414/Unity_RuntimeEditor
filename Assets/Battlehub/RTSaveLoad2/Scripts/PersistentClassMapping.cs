@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Battlehub.RTSaveLoad2
 {
@@ -23,6 +24,11 @@ namespace Battlehub.RTSaveLoad2
         public string MappedAssemblyQualifiedName
         {
             get { return MappedFullTypeName + "," + MappedAssemblyName; }
+        }
+
+        public Type MappedType
+        {
+            get { return Type.GetType(MappedAssemblyQualifiedName); }
         }
 
         public string PersistentNamespace;
@@ -62,6 +68,9 @@ namespace Battlehub.RTSaveLoad2
         public string MappedTypeName;
         public string PersistentNamespace;
         public string PersistentTypeName;
+        public string PersistentBaseNamespace;
+        public string PersistentBaseTypeName;
+
         public PersistentPropertyMapping[] PropertyMappings;
 
         public static string ToPersistentNamespace(string mappedNamespace)
@@ -72,6 +81,11 @@ namespace Battlehub.RTSaveLoad2
         public static string ToMappedNamespace(string persistentNamespace)
         {
             return persistentNamespace.Replace(".Battlehub.SL2", "");
+        }
+
+        public static string ToPersistentName(string typeName)
+        {
+            return "Persistent" + typeName;
         }
     }
 
