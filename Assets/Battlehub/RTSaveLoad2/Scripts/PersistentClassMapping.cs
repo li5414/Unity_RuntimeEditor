@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Battlehub.RTSaveLoad2
 {
-    [System.Serializable]
-    public struct PersistentPropertyMapping
+    [Serializable]
+    public class PersistentPropertyMapping
     {
         public bool IsEnabled;
         public bool IsProperty;
@@ -44,6 +44,19 @@ namespace Battlehub.RTSaveLoad2
         public string BuiltInCodeSnippet;
     }
 
+    [Serializable]
+    public class PersistentSubclass
+    {
+        public int PersistentTag;
+        public string FullTypeName
+        {
+            get { return Namespace + "." + TypeName; }
+        }
+        public string Namespace;
+        public string TypeName;
+        public bool IsEnabled;
+    }
+
     public class PersistentClassMapping : MonoBehaviour
     {
         public string MappedFullTypeName
@@ -62,7 +75,8 @@ namespace Battlehub.RTSaveLoad2
         }
 
         public bool IsEnabled;
-        public int PersistentTag;
+        public int PersistentPropertyTag;
+        public int PersistentSubclassTag;
         public string MappedAssemblyName;
         public string MappedNamespace;
         public string MappedTypeName;
@@ -71,6 +85,7 @@ namespace Battlehub.RTSaveLoad2
         public string PersistentBaseNamespace;
         public string PersistentBaseTypeName;
 
+        public PersistentSubclass[] Subclasses;
         public PersistentPropertyMapping[] PropertyMappings;
 
         public static string ToPersistentNamespace(string mappedNamespace)
