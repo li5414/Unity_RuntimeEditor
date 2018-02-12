@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
 namespace Battlehub.RTSaveLoad2
@@ -84,14 +85,28 @@ namespace Battlehub.RTSaveLoad2
         private static readonly string AddSubtypeTemplate =
             "   .AddSubType({1}, typeof({0}))"                                          ;
 
+
         public PropertyInfo[] GetProperties(Type type)
         {
-            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null).ToArray();
+            return GetAllProperties(type).Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null).ToArray();
+        }
+
+        public PropertyInfo[] GetAllProperties(Type type)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(p => p.GetIndexParameters().Length == 0).ToArray();
         }
 
         public FieldInfo[] GetFields(Type type)
         {
-            return type.GetFields();
+            return type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        }
+
+        public string TypeName(Type type)
+        {
+            if (type.DeclaringType == null)
+                return type.Name;
+
+            return TypeName(type.DeclaringType) + "+" + type.Name;
         }
 
         public string CreateTypeModelCreator(PersistentClassMapping[] mappings)

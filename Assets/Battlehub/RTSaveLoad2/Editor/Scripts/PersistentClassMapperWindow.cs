@@ -8,57 +8,17 @@ using UnityObject = UnityEngine.Object;
 
 namespace Battlehub.RTSaveLoad2
 {
-    public class PersistentClassMapperWindow : EditorWindow
+
+    public class PersistentClassMapperGUI
     {
-        [MenuItem("Tools/Runtime SaveLoad2/Persistent Classes Mapper")]
-        public static void ShowMenuItem()
-        {
-            ShowWindow();
-        }
-
-        public static void ShowWindow()
-        {
-            PersistentClassMapperWindow prevWindow = GetWindow<PersistentClassMapperWindow>();
-            if (prevWindow != null)
-            {
-                prevWindow.Close();
-            }
-
-            PersistentClassMapperWindow window = CreateInstance<PersistentClassMapperWindow>();
-            window.titleContent = new GUIContent("RTSL2 Config");
-            window.Show();
-            window.position = new Rect(200, 200, 600, 600);
-        }
-
-        public const string EditorPrefabsPath = @"/" + BHPath.Root + @"/RTSaveLoad2/Editor/Prefabs";
-        public const string ClassMappingsStoragePath = "Assets" + EditorPrefabsPath + @"/ClassMappingsStorage.prefab";
-        public const string ClassMappingsTemplatePath = "Assets" + EditorPrefabsPath + @"/ClassMappingsTemplate.prefab";
-        private Assembly[] m_assemblies;
-        private string[] m_assemblyNames;
-        private int m_selectedAssemblyIndex;
+        private Type m_baseType;
+        private Func<Type, string, bool> m_groupFilter;
+        private string[] m_groupNames;
+        private string m_groupLabel;
+        private int m_selectedGroupIndex;
         private string m_filterText = string.Empty;
-
-        private Vector2 m_scrollPosition;
-        private Type[] m_uoTypes;
-        private Type[] m_mostImportantTypes =
-        {
-            typeof(UnityObject),
-            typeof(GameObject),
-            typeof(MeshRenderer),
-            typeof(MeshFilter),
-            typeof(SkinnedMeshRenderer),
-            typeof(Mesh),
-            typeof(Material),
-            typeof(Rigidbody),
-            typeof(BoxCollider),
-            typeof(SphereCollider),
-            typeof(CapsuleCollider),
-            typeof(MeshCollider),
-            typeof(Camera),
-            typeof(AudioClip),
-            typeof(AudioSource),
-            typeof(Light),
-        };
+        private Vector2 m_scrollViewPosition;
+        private Type[] m_types;
 
         private Dictionary<Type, int> m_typeToIndex;
 
@@ -74,7 +34,6 @@ namespace Battlehub.RTSaveLoad2
 
         private int m_selectedCount;
         private int[] m_filteredTypeIndices;
-
         private class ClassMappingInfo
         {
             public int PersistentPropertyTag;
@@ -91,15 +50,31 @@ namespace Battlehub.RTSaveLoad2
             public string[][] PropertyMappingNamespaces;
             public string[][] PropertyMappingAssemblyNames;
             public int[] PropertyMappingSelection;
+
+            public bool IsSupportedPlaftormsSectionExpanded;
+            public HashSet<RuntimePlatform> UnsupportedPlatforms;
         }
 
         private ClassMappingInfo[] m_mappings;
-
+        private string m_mappingStoragePath;
+        private string m_mappingTemplateStoragePath;
         private CodeGen m_codeGen;
 
-        private void OnGUI()
+        public PersistentClassMapperGUI(CodeGen codeGen, string mappingStorage, string mappingTemplateStorage, Type baseType, Type[] types, string[] groupNames, string groupLabel, Func<Type, string, bool> groupFilter)
         {
-            if(m_mappings == null)
+            m_mappingStoragePath = mappingStorage;
+            m_mappingTemplateStoragePath = mappingTemplateStorage;
+            m_codeGen = codeGen;
+            m_baseType = baseType;
+            m_types = types;
+            m_groupNames = groupNames;
+            m_groupLabel = groupLabel;
+            m_groupFilter = groupFilter;
+        }
+
+        public void OnGUI()
+        {
+            if (m_mappings == null)
             {
                 Initialize();
                 LoadMappings();
@@ -108,16 +83,16 @@ namespace Battlehub.RTSaveLoad2
             EditorGUILayout.Separator();
             EditorGUI.BeginChangeCheck();
 
-            m_selectedAssemblyIndex = EditorGUILayout.Popup("Assembly", m_selectedAssemblyIndex, m_assemblyNames);
+            m_selectedGroupIndex = EditorGUILayout.Popup(m_groupLabel, m_selectedGroupIndex, m_groupNames);
             m_filterText = EditorGUILayout.TextField("Type Filter:", m_filterText);
 
             if (EditorGUI.EndChangeCheck())
             {
                 List<int> filteredTypeIndices = new List<int>();
-                for (int i = 0; i < m_uoTypes.Length; ++i)
+                for (int i = 0; i < m_types.Length; ++i)
                 {
-                    Type type = m_uoTypes[i];
-                    if (type.Name.ToLower().Contains(m_filterText.ToLower()) && (type.Assembly == m_assemblies[m_selectedAssemblyIndex] || m_selectedAssemblyIndex == 0))
+                    Type type = m_types[i];
+                    if (m_codeGen.TypeName(type).ToLower().Contains(m_filterText.ToLower()) && (m_selectedGroupIndex == 0 || m_groupFilter(type, m_groupNames[m_selectedGroupIndex])))
                     {
                         filteredTypeIndices.Add(i);
                     }
@@ -163,9 +138,8 @@ namespace Battlehub.RTSaveLoad2
                 LoadMappings();
             }
 
-
             EditorGUILayout.Separator();
-            m_scrollPosition = EditorGUILayout.BeginScrollView(m_scrollPosition);
+            m_scrollViewPosition = EditorGUILayout.BeginScrollView(m_scrollViewPosition);
 
             EditorGUILayout.BeginVertical();
             {
@@ -177,65 +151,25 @@ namespace Battlehub.RTSaveLoad2
             }
             EditorGUILayout.EndVertical();
 
-            EditorGUILayout.EndScrollView();
-
-            EditorGUILayout.BeginHorizontal();
-
-            EditorGUI.BeginChangeCheck();
-            GUILayout.Button("Create Persistent Objects");
-            if (EditorGUI.EndChangeCheck())
-            {
-                SaveMappings();
-            }
-
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndScrollView();  
         }
 
         private void Initialize()
         {
-            m_codeGen = new CodeGen();
-            m_assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("UnityEngine")).OrderBy(a => a.FullName).ToArray();
-
-            List<Type> allUOTypes = new List<Type>();
-            List<string> assemblyNames = new List<string> { "All" };
-            List<Assembly> assemblies = new List<Assembly>() { null };
-
-            for (int i = 0; i < m_assemblies.Length; ++i)
-            {
-                Assembly assembly = m_assemblies[i];
-                Type[] uoTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(UnityObject))).ToArray();
-                if (uoTypes.Length > 0)
-                {
-                    assemblies.Add(assembly);
-                    assemblyNames.Add(assembly.GetName().Name);
-                    allUOTypes.AddRange(uoTypes);
-                }
-            }
-
-            for (int i = 0; i < m_mostImportantTypes.Length; ++i)
-            {
-                allUOTypes.Remove(m_mostImportantTypes[i]);
-            }
-
-            m_uoTypes = m_mostImportantTypes.Union(allUOTypes.OrderBy(t => t.Name)).ToArray();
-
-            m_mappings = new ClassMappingInfo[m_uoTypes.Length];
-            for (int i = 0; i < m_uoTypes.Length; ++i)
+            m_mappings = new ClassMappingInfo[m_types.Length];
+            for (int i = 0; i < m_types.Length; ++i)
             {
                 m_mappings[i] = new ClassMappingInfo();
             }
 
             m_typeToIndex = new Dictionary<Type, int>();
-            m_filteredTypeIndices = new int[m_uoTypes.Length];
+            m_filteredTypeIndices = new int[m_types.Length];
             for (int i = 0; i < m_filteredTypeIndices.Length; ++i)
             {
                 m_filteredTypeIndices[i] = i;
-                m_typeToIndex.Add(m_uoTypes[i], i);
-                m_mappings[i].IsParentExpanded = new bool[GetAncestorsCount(m_uoTypes[i])];
+                m_typeToIndex.Add(m_types[i], i);
+                m_mappings[i].IsParentExpanded = new bool[GetAncestorsCount(m_types[i])];
             }
-
-            m_assemblies = assemblies.ToArray();
-            m_assemblyNames = assemblyNames.ToArray();
         }
 
         private void SelectAll()
@@ -259,7 +193,7 @@ namespace Battlehub.RTSaveLoad2
                 m_mappings[i].IsEnabled = false;
                 TryExpandType(i);
 
-                if(m_mappings[i].IsPropertyMappingEnabled != null)
+                if (m_mappings[i].IsPropertyMappingEnabled != null)
                 {
                     for (int j = 0; j < m_mappings[i].IsPropertyMappingEnabled.Length; ++j)
                     {
@@ -272,10 +206,10 @@ namespace Battlehub.RTSaveLoad2
 
         private void LoadMappings()
         {
-            GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ClassMappingsStoragePath, typeof(GameObject));
-            if(storageGO == null)
+            GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(m_mappingStoragePath, typeof(GameObject));
+            if (storageGO == null)
             {
-                storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ClassMappingsTemplatePath, typeof(GameObject));
+                storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(m_mappingTemplateStoragePath, typeof(GameObject));
             }
 
             if (storageGO != null)
@@ -304,18 +238,18 @@ namespace Battlehub.RTSaveLoad2
             m_mappings[0].IsEnabled = true;
         }
 
-        private void SaveMappings()
+        public void SaveMappings()
         {
-            GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ClassMappingsStoragePath, typeof(GameObject));
+            GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(m_mappingStoragePath, typeof(GameObject));
             if (storageGO == null)
             {
-                storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(ClassMappingsTemplatePath, typeof(GameObject));
+                storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(m_mappingTemplateStoragePath, typeof(GameObject));
             }
 
             Dictionary<string, PersistentClassMapping> existingMappings;
             if (storageGO != null)
             {
-                storageGO = Instantiate(storageGO);
+                storageGO = UnityObject.Instantiate(storageGO);
                 existingMappings = storageGO.GetComponentsInChildren<PersistentClassMapping>(true).ToDictionary(m => m.name);
             }
             else
@@ -328,18 +262,18 @@ namespace Battlehub.RTSaveLoad2
             for (int typeIndex = 0; typeIndex < m_mappings.Length; ++typeIndex)
             {
                 ClassMappingInfo mapping = m_mappings[typeIndex];
-                if(!mapping.IsEnabled)
+                if (!mapping.IsEnabled)
                 {
                     continue;
                 }
                 Dictionary<string, PersistentSubclass> subclassDictionary;
-                if(mapping.Subclasses == null)
+                if (mapping.Subclasses == null)
                 {
                     subclassDictionary = new Dictionary<string, PersistentSubclass>();
                 }
                 else
                 {
-                    for(int i = 0; i < mapping.Subclasses.Length; ++i)
+                    for (int i = 0; i < mapping.Subclasses.Length; ++i)
                     {
                         PersistentSubclass subclass = mapping.Subclasses[i];
                         subclass.IsEnabled = false;
@@ -360,28 +294,28 @@ namespace Battlehub.RTSaveLoad2
                 }
 
 
-                Type type = m_uoTypes[typeIndex];
+                Type type = m_types[typeIndex];
                 Type baseType = GetEnabledBaseType(typeIndex);
-                if(baseType == null)
+                if (baseType == null)
                 {
                     continue;
                 }
 
                 int baseTypeIndex;
-                if(m_typeToIndex.TryGetValue(baseType, out baseTypeIndex))
+                if (m_typeToIndex.TryGetValue(baseType, out baseTypeIndex))
                 {
                     ClassMappingInfo baseClassMapping = m_mappings[baseTypeIndex];
-                    string ns = PersistentClassMapping.ToPersistentNamespace(m_uoTypes[typeIndex].Namespace);
-                    string typeName = PersistentClassMapping.ToPersistentName(m_uoTypes[typeIndex].Name);
+                    string ns = PersistentClassMapping.ToPersistentNamespace(m_types[typeIndex].Namespace);
+                    string typeName = PersistentClassMapping.ToPersistentName(m_types[typeIndex].Name);
                     string fullTypeName = string.Format("{0}.{1}", ns, typeName);
 
                     Dictionary<string, PersistentSubclass> subclassDictionary = typeIndexToSubclasses[baseTypeIndex];
-                    if(!subclassDictionary.ContainsKey(fullTypeName))
+                    if (!subclassDictionary.ContainsKey(fullTypeName))
                     {
                         PersistentSubclass subclass = new PersistentSubclass();
                         subclass.IsEnabled = true;
                         subclass.Namespace = PersistentClassMapping.ToPersistentNamespace(type.Namespace);
-                        subclass.TypeName = PersistentClassMapping.ToPersistentName(type.Name);
+                        subclass.TypeName = PersistentClassMapping.ToPersistentName(m_codeGen.TypeName(type));
                         baseClassMapping.PersistentSubclassTag++;
                         subclass.PersistentTag = baseClassMapping.PersistentSubclassTag;
 
@@ -398,11 +332,11 @@ namespace Battlehub.RTSaveLoad2
                 }
 
                 PersistentClassMapping classMapping;
-                if (!existingMappings.TryGetValue(m_uoTypes[typeIndex].FullName, out classMapping))
+                if (!existingMappings.TryGetValue(m_types[typeIndex].FullName, out classMapping))
                 {
                     GameObject typeStorageGO = new GameObject();
                     typeStorageGO.transform.SetParent(storageGO.transform, false);
-                    typeStorageGO.name = m_uoTypes[typeIndex].FullName;
+                    typeStorageGO.name = m_types[typeIndex].FullName;
                     classMapping = typeStorageGO.AddComponent<PersistentClassMapping>();
                 }
 
@@ -438,18 +372,18 @@ namespace Battlehub.RTSaveLoad2
                 classMapping.PersistentPropertyTag = m_mappings[typeIndex].PersistentPropertyTag;
                 classMapping.PersistentSubclassTag = m_mappings[typeIndex].PersistentSubclassTag;
                 classMapping.PropertyMappings = selectedPropertyMappings.ToArray();
-                if(typeIndexToSubclasses.ContainsKey(typeIndex))
+                if (typeIndexToSubclasses.ContainsKey(typeIndex))
                 {
                     classMapping.Subclasses = typeIndexToSubclasses[typeIndex].Values.ToArray();
-                }      
-                classMapping.MappedAssemblyName = m_uoTypes[typeIndex].Assembly.FullName.Split(',')[0];
-                classMapping.MappedNamespace = m_uoTypes[typeIndex].Namespace;
-                classMapping.MappedTypeName = m_uoTypes[typeIndex].Name;
+                }
+                classMapping.MappedAssemblyName = m_types[typeIndex].Assembly.FullName.Split(',')[0];
+                classMapping.MappedNamespace = m_types[typeIndex].Namespace;
+                classMapping.MappedTypeName = m_types[typeIndex].Name;
                 classMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(classMapping.MappedNamespace);
-                classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(m_uoTypes[typeIndex].Name);
+                classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(m_types[typeIndex].Name);
 
                 Type baseType = GetEnabledBaseType(typeIndex);
-                if(baseType == null)
+                if (baseType == null)
                 {
                     classMapping.PersistentBaseNamespace = null;
                     classMapping.PersistentBaseTypeName = null;
@@ -457,23 +391,23 @@ namespace Battlehub.RTSaveLoad2
                 else
                 {
                     classMapping.PersistentBaseNamespace = PersistentClassMapping.ToPersistentNamespace(baseType.Namespace);
-                    classMapping.PersistentBaseTypeName = PersistentClassMapping.ToPersistentName(baseType.Name);
+                    classMapping.PersistentBaseTypeName = PersistentClassMapping.ToPersistentName(m_codeGen.TypeName(baseType));
                 }
-           
+
             }
 
-            PrefabUtility.CreatePrefab(ClassMappingsStoragePath, storageGO);
-            DestroyImmediate(storageGO);
+            PrefabUtility.CreatePrefab(m_mappingStoragePath, storageGO);
+            UnityObject.DestroyImmediate(storageGO);
         }
 
         private Type GetEnabledBaseType(int typeIndex)
         {
             Type baseType = null;
-            Type type = m_uoTypes[typeIndex];
+            Type type = m_types[typeIndex];
             while (true)
             {
                 type = type.BaseType;
-                if (type == typeof(UnityObject))
+                if (type == m_baseType)
                 {
                     baseType = type;
                     break;
@@ -501,7 +435,7 @@ namespace Battlehub.RTSaveLoad2
         private int GetAncestorsCount(Type type)
         {
             int count = 0;
-            while (type != null && type.BaseType != typeof(UnityObject))
+            while (type != null && type.BaseType != m_baseType)
             {
                 count++;
                 type = type.BaseType;
@@ -509,15 +443,16 @@ namespace Battlehub.RTSaveLoad2
             return count;
         }
 
+        private GUIContent m_guiContent = new GUIContent();
         private void DrawTypeEditor(int rootTypeIndex, int typeIndex, int indent = 1)
         {
-            Type type = m_uoTypes[typeIndex];
-            if(type == typeof(UnityObject))
+            Type type = m_types[typeIndex];
+            if (type == m_baseType)
             {
                 return;
             }
 
-            string label = type.Name;
+            string label = m_codeGen.TypeName(type);
             bool isExpandedChanged;
             bool isExpanded;
             bool isSelectionChanged;
@@ -545,7 +480,7 @@ namespace Battlehub.RTSaveLoad2
                 isExpandedChanged = EditorGUI.EndChangeCheck();
             }
             EditorGUILayout.EndHorizontal();
-        
+
             if (isExpandedChanged || isSelectionChanged)
             {
                 if (isExpandedChanged)
@@ -571,7 +506,43 @@ namespace Battlehub.RTSaveLoad2
             }
 
             if (isExpanded)
-            {
+            {  EditorGUILayout.BeginHorizontal();
+                    {
+                        GUILayout.Space(5 + 18 * indent);
+                        EditorGUILayout.BeginVertical();
+                        m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded = EditorGUILayout.Foldout(m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded, "Supported Platforms");
+                        if(m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded)
+                        {
+                            
+                            string[] platformNames = Enum.GetNames(typeof(RuntimePlatform));
+                            RuntimePlatform[] platforms = (RuntimePlatform[])Enum.GetValues(typeof(RuntimePlatform));
+                          
+                            for(int i = 0; i < platformNames.Length; ++i)
+                            {
+                              
+                                EditorGUI.BeginChangeCheck();
+                                bool platformChecked = EditorGUILayout.Toggle(platformNames[i], m_mappings[typeIndex].UnsupportedPlatforms == null || !m_mappings[typeIndex].UnsupportedPlatforms.Contains(platforms[i]));
+                                if (EditorGUI.EndChangeCheck())
+                                {
+                                    if(m_mappings[typeIndex].UnsupportedPlatforms == null)
+                                    {
+                                        m_mappings[typeIndex].UnsupportedPlatforms = new HashSet<RuntimePlatform>();
+                                    }
+                                    if(platformChecked)
+                                    {
+                                        m_mappings[typeIndex].UnsupportedPlatforms.Remove(platforms[i]);
+                                    }
+                                    else
+                                    {
+                                        m_mappings[typeIndex].UnsupportedPlatforms.Add(platforms[i]);
+                                    }
+                                }
+                              
+                            }
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+                    EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginVertical();
                 {
                     for (int propIndex = 0; propIndex < m_mappings[typeIndex].PropertyMappings.Length; ++propIndex)
@@ -579,20 +550,21 @@ namespace Battlehub.RTSaveLoad2
                         EditorGUILayout.BeginHorizontal();
                         {
                             GUILayout.Space(5 + 18 * indent);
-
+                      
                             PersistentPropertyMapping pMapping = m_mappings[typeIndex].PropertyMappings[propIndex];
-
+                            
                             m_mappings[typeIndex].IsPropertyMappingEnabled[propIndex] = EditorGUILayout.Toggle(m_mappings[typeIndex].IsPropertyMappingEnabled[propIndex], GUILayout.MaxWidth(20));
 
-                            EditorGUILayout.LabelField(pMapping.PersistentName, GUILayout.MaxWidth(230));
+                            m_guiContent.text = pMapping.PersistentName;
+                            m_guiContent.tooltip = pMapping.PersistentTypeName;
+                            EditorGUILayout.LabelField(m_guiContent, GUILayout.MaxWidth(230));
 
                             int newPropertyIndex = EditorGUILayout.Popup(m_mappings[typeIndex].PropertyMappingSelection[propIndex], m_mappings[typeIndex].PropertyMappingNames[propIndex]);
                             m_mappings[typeIndex].PropertyMappingSelection[propIndex] = newPropertyIndex;
-                           
 
                             EditorGUI.BeginChangeCheck();
                             GUILayout.Button("X", GUILayout.Width(20));
-                            if(EditorGUI.EndChangeCheck())
+                            if (EditorGUI.EndChangeCheck())
                             {
                                 m_mappings[typeIndex].PropertyMappingSelection[propIndex] = -1;
                             }
@@ -602,14 +574,22 @@ namespace Battlehub.RTSaveLoad2
                         EditorGUILayout.EndHorizontal();
                     }
 
+
+                  
+
                     EditorGUILayout.BeginHorizontal();
                     {
                         GUILayout.Space(5 + 18 * indent);
                         GUILayout.Button("Edit", GUILayout.Width(100));
+                       
                     }
                     EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(5 + 18 * indent);
+                    EditorGUILayout.HelpBox("Template for this script compiled with errors. Please submit bug report to Battlehub@outlook.com" + Environment.NewLine + "Unity3d " + Application.unityVersion + "; RTSL Version " + RTSL2Version.Version, MessageType.Error);
+                    EditorGUILayout.EndHorizontal();                  
 
-                    if (type.BaseType != typeof(UnityObject))
+                    if (type.BaseType != m_baseType)
                     {
                         int parentIndex;
                         if (m_typeToIndex.TryGetValue(type.BaseType, out parentIndex))
@@ -619,7 +599,7 @@ namespace Battlehub.RTSaveLoad2
                     }
                 }
                 EditorGUILayout.EndVertical();
-                
+
                 EditorGUILayout.Separator();
             }
         }
@@ -638,7 +618,7 @@ namespace Battlehub.RTSaveLoad2
 
         private void ExpandType(int typeIndex)
         {
-            Type type = m_uoTypes[typeIndex];
+            Type type = m_types[typeIndex];
 
             List<PersistentPropertyMapping> pMappings = new List<PersistentPropertyMapping>();
             List<bool> pMappingsEnabled = new List<bool>();
@@ -649,9 +629,9 @@ namespace Battlehub.RTSaveLoad2
 
             HashSet<string> fieldMappingsHs = new HashSet<string>();
             IEnumerable<string> fmapKeys = fieldMappings.Select(fMap => fMap.PersistentFullTypeName + " " + fMap.PersistentName);
-            foreach(string key in fmapKeys)
+            foreach (string key in fmapKeys)
             {
-                if(!fieldMappingsHs.Contains(key))
+                if (!fieldMappingsHs.Contains(key))
                 {
                     fieldMappingsHs.Add(key);
                 }
@@ -677,11 +657,11 @@ namespace Battlehub.RTSaveLoad2
             PropertyInfo[] properties = m_codeGen.GetProperties(type);
             HashSet<string> propertyHs = new HashSet<string>(properties.Select(pInfo => pInfo.PropertyType.FullName + " " + pInfo.Name));
 
-            for(int i = 0; i < fieldMappings.Length; ++i)
+            for (int i = 0; i < fieldMappings.Length; ++i)
             {
                 PersistentPropertyMapping mapping = fieldMappings[i];
                 string key = mapping.MappedFullTypeName + " " + mapping.MappedName;
-                if(!fieldHs.Contains(key))
+                if (!fieldHs.Contains(key))
                 {
                     mapping.MappedName = null;
                     mapping.MappedTypeName = null;
@@ -705,7 +685,7 @@ namespace Battlehub.RTSaveLoad2
 
                 string key = string.Format("{0}.{1}",
                     PersistentClassMapping.ToPersistentNamespace(fInfo.FieldType.Namespace),
-                    fInfo.FieldType.Name) + " " + fInfo.Name;
+                    m_codeGen.TypeName(fInfo.FieldType)) + " " + fInfo.Name;
 
                 if (fieldMappingsHs.Contains(key))
                 {
@@ -714,13 +694,13 @@ namespace Battlehub.RTSaveLoad2
 
                 PersistentPropertyMapping pMapping = new PersistentPropertyMapping();
                 pMapping.PersistentName = fInfo.Name;
-                pMapping.PersistentTypeName = fInfo.FieldType.Name;
+                pMapping.PersistentTypeName = m_codeGen.TypeName(fInfo.FieldType);
                 pMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(fInfo.FieldType.Namespace);
 
                 pMapping.MappedName = fInfo.Name;
-                pMapping.MappedTypeName = fInfo.FieldType.Name;
+                pMapping.MappedTypeName = m_codeGen.TypeName(fInfo.FieldType);
                 pMapping.MappedNamespace = fInfo.FieldType.Namespace;
-                pMapping.MappedAssemblyName = fInfo.FieldType.Assembly.FullName.Split(',')[0];      
+                pMapping.MappedAssemblyName = fInfo.FieldType.Assembly.FullName.Split(',')[0];
                 pMapping.IsProperty = false;
 
                 pMapping.UseCustomCode = false;
@@ -756,9 +736,9 @@ namespace Battlehub.RTSaveLoad2
             {
                 PropertyInfo pInfo = properties[p];
 
-                string key = string.Format("{0}.{1}", 
+                string key = string.Format("{0}.{1}",
                     PersistentClassMapping.ToPersistentNamespace(pInfo.PropertyType.Namespace),
-                    pInfo.PropertyType.Name) + " " + pInfo.Name;
+                    m_codeGen.TypeName(pInfo.PropertyType)) + " " + pInfo.Name;
 
                 if (propertyMappingsHs.Contains(key))
                 {
@@ -768,11 +748,11 @@ namespace Battlehub.RTSaveLoad2
                 PersistentPropertyMapping pMapping = new PersistentPropertyMapping();
 
                 pMapping.PersistentName = pInfo.Name;       //property name of mapping
-                pMapping.PersistentTypeName = pInfo.PropertyType.Name;
+                pMapping.PersistentTypeName = m_codeGen.TypeName(pInfo.PropertyType);
                 pMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(pInfo.PropertyType.Namespace);
 
                 pMapping.MappedName = pInfo.Name;             //property name of unity type
-                pMapping.MappedTypeName = pInfo.PropertyType.Name;
+                pMapping.MappedTypeName = m_codeGen.TypeName(pInfo.PropertyType);
                 pMapping.MappedNamespace = pInfo.PropertyType.Namespace;
                 pMapping.MappedAssemblyName = pInfo.PropertyType.Assembly.FullName.Split(',')[0];
                 pMapping.IsProperty = true;
@@ -787,7 +767,7 @@ namespace Battlehub.RTSaveLoad2
             m_mappings[typeIndex].PropertyMappings = pMappings.ToArray();
             m_mappings[typeIndex].IsPropertyMappingEnabled = pMappingsEnabled.ToArray();
 
-            m_mappings[typeIndex].PropertyMappingNames = new string[pMappings.Count][]; 
+            m_mappings[typeIndex].PropertyMappingNames = new string[pMappings.Count][];
             m_mappings[typeIndex].PropertyMappingTypeNames = new string[pMappings.Count][];
             m_mappings[typeIndex].PropertyMappingNamespaces = new string[pMappings.Count][];
             m_mappings[typeIndex].PropertyMappingAssemblyNames = new string[pMappings.Count][];
@@ -795,14 +775,14 @@ namespace Battlehub.RTSaveLoad2
 
             string[][] mappedKeys = new string[pMappings.Count][];
 
-            for(int propIndex = 0; propIndex < pMappings.Count; ++propIndex)
+            for (int propIndex = 0; propIndex < pMappings.Count; ++propIndex)
             {
                 PersistentPropertyMapping pMapping = pMappings[propIndex];
 
                 var propertyInfo = GetSuitableFields(fields, PersistentClassMapping.ToMappedNamespace(pMapping.PersistentNamespace) + "." + pMapping.PersistentTypeName)
-                    .Select(f => new { Name = f.Name, Type = f.FieldType.Name, Namespace = f.FieldType.Namespace, Assembly = f.FieldType.Assembly.FullName.Split(',')[0] })
+                    .Select(f => new { Name = f.Name, Type = m_codeGen.TypeName(f.FieldType), Namespace = f.FieldType.Namespace, Assembly = f.FieldType.Assembly.FullName.Split(',')[0] })
                     .Union(GetSuitableProperties(properties, PersistentClassMapping.ToMappedNamespace(pMapping.PersistentNamespace) + "." + pMapping.PersistentTypeName)
-                    .Select(p => new { Name = p.Name, Type = p.PropertyType.Name, Namespace = p.PropertyType.Namespace, Assembly = p.PropertyType.Assembly.FullName.Split(',')[0] }))
+                    .Select(p => new { Name = p.Name, Type = m_codeGen.TypeName(p.PropertyType), Namespace = p.PropertyType.Namespace, Assembly = p.PropertyType.Assembly.FullName.Split(',')[0] }))
                     .OrderBy(p => p.Name)
                     .ToArray();
 
@@ -821,6 +801,7 @@ namespace Battlehub.RTSaveLoad2
             }
         }
 
+     
 
         private IEnumerable<PropertyInfo> GetSuitableProperties(PropertyInfo[] properties, string persistentType)
         {
@@ -831,7 +812,251 @@ namespace Battlehub.RTSaveLoad2
         {
             return fields.Where(fInfo => fInfo.FieldType.FullName == persistentType);
         }
+    }
 
-        
+    public class PersistentClassMapperWindow : EditorWindow
+    {
+        [MenuItem("Tools/Runtime SaveLoad2/Persistent Classes Mapper")]
+        public static void ShowMenuItem()
+        {
+            ShowWindow();
+        }
+
+        public static void ShowWindow()
+        {
+            PersistentClassMapperWindow prevWindow = GetWindow<PersistentClassMapperWindow>();
+            if (prevWindow != null)
+            {
+                prevWindow.Close();
+            }
+
+            PersistentClassMapperWindow window = CreateInstance<PersistentClassMapperWindow>();
+            window.titleContent = new GUIContent("RTSL2 Config");
+            window.Show();
+            window.position = new Rect(20, 40, 1280, 768);
+        }
+
+        private Type[] m_mostImportantUOTypes =
+        {
+            typeof(UnityObject),
+            typeof(GameObject),
+            typeof(MeshRenderer),
+            typeof(MeshFilter),
+            typeof(SkinnedMeshRenderer),
+            typeof(Mesh),
+            typeof(Material),
+            typeof(Rigidbody),
+            typeof(BoxCollider),
+            typeof(SphereCollider),
+            typeof(CapsuleCollider),
+            typeof(MeshCollider),
+            typeof(Camera),
+            typeof(AudioClip),
+            typeof(AudioSource),
+            typeof(Light),
+        };
+
+        private Type[] m_mostImportantSurrogateTypes =
+        {
+            typeof(object),
+            typeof(Vector2),
+            typeof(Vector3),
+            typeof(Vector4),
+            typeof(Vector2Int),
+            typeof(Vector3Int),
+            typeof(Color),
+            typeof(Color32),
+            typeof(Matrix4x4),
+        };
+
+        public const string EditorPrefabsPath = @"/" + BHPath.Root + @"/RTSaveLoad2/Editor/Prefabs";
+
+        public const string ClassMappingsStoragePath = "Assets" + EditorPrefabsPath + @"/ClassMappingsStorage.prefab";
+        public const string ClassMappingsTemplatePath = "Assets" + EditorPrefabsPath + @"/ClassMappingsTemplate.prefab";
+        public const string SurrogatesMappingsStoragePath = "Assets" + EditorPrefabsPath + @"/SurrogatesMappingsStorage.prefab";
+        public const string SurrogatesMappingsTemplatePath = "Assets" + EditorPrefabsPath + @"/SurrogatesMappingsTemplate.prefab";
+
+
+        private Type[] m_uoTypes;
+        private PersistentClassMapperGUI m_uoMapperGUI;
+        private PersistentClassMapperGUI m_surrogatesMapperGUI;
+        private CodeGen m_codeGen = new CodeGen();
+
+        private void GetUOAssembliesAndTypes(out Assembly[] assemblies, out Type[] types)
+        {
+            assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("UnityEngine")).OrderBy(a => a.FullName).ToArray();
+
+            List<Type> allUOTypes = new List<Type>();
+            List<Assembly> assembliesList = new List<Assembly>() { null };
+
+            for (int i = 0; i < assemblies.Length; ++i)
+            {
+                Assembly assembly = assemblies[i];
+                Type[] uoTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(UnityObject))).ToArray();
+                if (uoTypes.Length > 0)
+                {
+                    assembliesList.Add(assembly);
+                    allUOTypes.AddRange(uoTypes);
+                }
+            }
+
+            for (int i = 0; i < m_mostImportantUOTypes.Length; ++i)
+            {
+                allUOTypes.Remove(m_mostImportantUOTypes[i]);
+            }
+
+            types = m_mostImportantUOTypes.Union(allUOTypes.OrderBy(t => m_codeGen.TypeName(t))).ToArray();
+            assemblies = assembliesList.ToArray();
+        }
+
+        private Type GetSurrogateType(Type type)
+        {
+            if(type.IsArray)
+            {
+                type = type.GetElementType();
+            }
+
+            if(!type.IsSubclassOf(typeof(UnityObject)) && 
+                    type != typeof(UnityObject) &&
+                   !type.IsEnum &&
+                   !type.IsGenericType &&
+                   !type.IsArray &&
+                   !type.IsPrimitive &&
+                    type != typeof(string))
+            {
+                return type;
+            }
+            return null;
+        }
+
+        private void GetTypesRecursive(Type type, HashSet<Type> typesHS)
+        {
+            PropertyInfo[] properties = m_codeGen.GetAllProperties(type);
+            FieldInfo[] fields = m_codeGen.GetFields(type);
+
+            for (int p = 0; p < properties.Length; ++p)
+            {
+                PropertyInfo pInfo = properties[p];
+                if (!typesHS.Contains(pInfo.PropertyType))
+                {
+                    Type surrogateType = GetSurrogateType(pInfo.PropertyType);
+                    if(surrogateType != null && !typesHS.Contains(surrogateType))
+                    {
+                        typesHS.Add(surrogateType);
+                        GetTypesRecursive(surrogateType, typesHS);
+                    }
+                }
+            }
+
+            for (int f = 0; f < fields.Length; ++f)
+            {
+                FieldInfo fInfo = fields[f];
+                if (!typesHS.Contains(fInfo.FieldType))
+                {
+                    Type surrogateType = GetSurrogateType(fInfo.FieldType);
+                    if (surrogateType != null && !typesHS.Contains(surrogateType))
+                    {
+                        typesHS.Add(surrogateType);
+                        GetTypesRecursive(surrogateType, typesHS);
+                    }
+                }
+            }
+        }
+
+        private void GetSurrogateAssembliesAndTypes(Type[] uoTypes, out Dictionary<string, HashSet<Type>> declaredIn, out Type[] types)
+        {
+            HashSet<Type> allTypesHS = new HashSet<Type>();
+            declaredIn = new Dictionary<string, HashSet<Type>>();
+            
+            for(int typeIndex = 0; typeIndex < uoTypes.Length; ++typeIndex)
+            {
+                Type uoType = uoTypes[typeIndex];
+
+                HashSet<Type> typesHs = new HashSet<Type>();
+                GetTypesRecursive(uoType, typesHs);
+                declaredIn.Add(uoType.Name, typesHs);
+
+                foreach (Type type in typesHs)
+                {
+                    if(!allTypesHS.Contains(type))
+                    {
+                        allTypesHS.Add(type);
+                    }
+                }
+            }
+
+            for (int i = 0; i < m_mostImportantSurrogateTypes.Length; ++i)
+            {
+                allTypesHS.Remove(m_mostImportantSurrogateTypes[i]);
+            }
+
+            types = m_mostImportantSurrogateTypes.Union(allTypesHS.OrderBy(t => m_codeGen.TypeName(t))).ToArray();
+        }
+
+        private void OnGUI()
+        {
+            if(m_uoMapperGUI == null)
+            {
+                Assembly[] assemblies;
+                GetUOAssembliesAndTypes(out assemblies, out m_uoTypes);
+                m_uoMapperGUI = new PersistentClassMapperGUI(
+                    m_codeGen, 
+                    ClassMappingsStoragePath, 
+                    ClassMappingsStoragePath, 
+                    typeof(UnityObject), 
+                    m_uoTypes, 
+                    assemblies.Select(a => a == null ? "All" : a.GetName().Name).ToArray(),
+                    "Assembly",
+                    (type, groupName) => type.Assembly.GetName().Name == groupName);
+            }
+
+            if(m_surrogatesMapperGUI == null)
+            {
+                Type[] types;
+                Dictionary<string, HashSet<Type>> declaredIn;
+                GetSurrogateAssembliesAndTypes(m_uoTypes, out declaredIn, out types);
+                m_surrogatesMapperGUI = new PersistentClassMapperGUI(
+                    m_codeGen, 
+                    SurrogatesMappingsStoragePath, 
+                    SurrogatesMappingsTemplatePath, 
+                    typeof(object),
+                    types, 
+                    new[] { "All" }.Union(declaredIn.Where(t => t.Value.Count > 0).Select(t => t.Key)).ToArray(), 
+                    "Declaring Type",
+                    (type, groupName) => declaredIn[groupName].Contains(type));
+            }
+
+            EditorGUILayout.Separator();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical(GUILayout.MinWidth(position.width / 2));
+      
+            m_uoMapperGUI.OnGUI();
+
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical(GUILayout.MinWidth(position.width / 2));
+ 
+            m_surrogatesMapperGUI.OnGUI();
+
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Separator();
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.HelpBox("Please note that most of the data are stored and restored using public properties which may cause undesired side effects. For example accessing renderer.material or meshfilter.mesh will instantiate new objects.", MessageType.Info);
+            GUILayout.Button("Create Persistent Objects", GUILayout.Height(37));
+            if (EditorGUI.EndChangeCheck())
+            {
+                m_uoMapperGUI.SaveMappings();
+                m_surrogatesMapperGUI.SaveMappings();
+            }
+      
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Separator();
+
+
+        }
+
     }
 }
