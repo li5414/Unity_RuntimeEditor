@@ -506,43 +506,44 @@ namespace Battlehub.RTSaveLoad2
             }
 
             if (isExpanded)
-            {  EditorGUILayout.BeginHorizontal();
+            {
+                EditorGUILayout.BeginHorizontal();
+                {
+                    GUILayout.Space(5 + 18 * indent);
+                    EditorGUILayout.BeginVertical();
+                    m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded = EditorGUILayout.Foldout(m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded, "Supported Platforms");
+                    if (m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded)
                     {
-                        GUILayout.Space(5 + 18 * indent);
-                        EditorGUILayout.BeginVertical();
-                        m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded = EditorGUILayout.Foldout(m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded, "Supported Platforms");
-                        if(m_mappings[typeIndex].IsSupportedPlaftormsSectionExpanded)
+
+                        string[] platformNames = Enum.GetNames(typeof(RuntimePlatform));
+                        RuntimePlatform[] platforms = (RuntimePlatform[])Enum.GetValues(typeof(RuntimePlatform));
+
+                        for (int i = 0; i < platformNames.Length; ++i)
                         {
-                            
-                            string[] platformNames = Enum.GetNames(typeof(RuntimePlatform));
-                            RuntimePlatform[] platforms = (RuntimePlatform[])Enum.GetValues(typeof(RuntimePlatform));
-                          
-                            for(int i = 0; i < platformNames.Length; ++i)
+
+                            EditorGUI.BeginChangeCheck();
+                            bool platformChecked = EditorGUILayout.Toggle(platformNames[i], m_mappings[typeIndex].UnsupportedPlatforms == null || !m_mappings[typeIndex].UnsupportedPlatforms.Contains(platforms[i]));
+                            if (EditorGUI.EndChangeCheck())
                             {
-                              
-                                EditorGUI.BeginChangeCheck();
-                                bool platformChecked = EditorGUILayout.Toggle(platformNames[i], m_mappings[typeIndex].UnsupportedPlatforms == null || !m_mappings[typeIndex].UnsupportedPlatforms.Contains(platforms[i]));
-                                if (EditorGUI.EndChangeCheck())
+                                if (m_mappings[typeIndex].UnsupportedPlatforms == null)
                                 {
-                                    if(m_mappings[typeIndex].UnsupportedPlatforms == null)
-                                    {
-                                        m_mappings[typeIndex].UnsupportedPlatforms = new HashSet<RuntimePlatform>();
-                                    }
-                                    if(platformChecked)
-                                    {
-                                        m_mappings[typeIndex].UnsupportedPlatforms.Remove(platforms[i]);
-                                    }
-                                    else
-                                    {
-                                        m_mappings[typeIndex].UnsupportedPlatforms.Add(platforms[i]);
-                                    }
+                                    m_mappings[typeIndex].UnsupportedPlatforms = new HashSet<RuntimePlatform>();
                                 }
-                              
+                                if (platformChecked)
+                                {
+                                    m_mappings[typeIndex].UnsupportedPlatforms.Remove(platforms[i]);
+                                }
+                                else
+                                {
+                                    m_mappings[typeIndex].UnsupportedPlatforms.Add(platforms[i]);
+                                }
                             }
+
                         }
-                        EditorGUILayout.EndVertical();
                     }
-                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginVertical();
                 {
                     for (int propIndex = 0; propIndex < m_mappings[typeIndex].PropertyMappings.Length; ++propIndex)
@@ -550,9 +551,9 @@ namespace Battlehub.RTSaveLoad2
                         EditorGUILayout.BeginHorizontal();
                         {
                             GUILayout.Space(5 + 18 * indent);
-                      
+
                             PersistentPropertyMapping pMapping = m_mappings[typeIndex].PropertyMappings[propIndex];
-                            
+
                             m_mappings[typeIndex].IsPropertyMappingEnabled[propIndex] = EditorGUILayout.Toggle(m_mappings[typeIndex].IsPropertyMappingEnabled[propIndex], GUILayout.MaxWidth(20));
 
                             m_guiContent.text = pMapping.PersistentName;
@@ -575,19 +576,19 @@ namespace Battlehub.RTSaveLoad2
                     }
 
 
-                  
+
 
                     EditorGUILayout.BeginHorizontal();
                     {
                         GUILayout.Space(5 + 18 * indent);
                         GUILayout.Button("Edit", GUILayout.Width(100));
-                       
+
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(5 + 18 * indent);
                     EditorGUILayout.HelpBox("Template for this script compiled with errors. Please submit bug report to Battlehub@outlook.com" + Environment.NewLine + "Unity3d " + Application.unityVersion + "; RTSL Version " + RTSL2Version.Version, MessageType.Error);
-                    EditorGUILayout.EndHorizontal();                  
+                    EditorGUILayout.EndHorizontal();
 
                     if (type.BaseType != m_baseType)
                     {
@@ -703,8 +704,7 @@ namespace Battlehub.RTSaveLoad2
                 pMapping.MappedAssemblyName = fInfo.FieldType.Assembly.FullName.Split(',')[0];
                 pMapping.IsProperty = false;
 
-                pMapping.UseCustomCode = false;
-                pMapping.BuiltInCodeSnippet = null;
+                pMapping.UseSurrogate = m_codeGen.GetSurrogateType(fInfo.FieldType) != null;
 
                 pMappingsEnabled.Add(false);
                 pMappings.Add(pMapping);
@@ -757,8 +757,7 @@ namespace Battlehub.RTSaveLoad2
                 pMapping.MappedAssemblyName = pInfo.PropertyType.Assembly.FullName.Split(',')[0];
                 pMapping.IsProperty = true;
 
-                pMapping.UseCustomCode = false;
-                pMapping.BuiltInCodeSnippet = null;
+                pMapping.UseSurrogate = m_codeGen.GetSurrogateType(pInfo.PropertyType) != null;
 
                 pMappingsEnabled.Add(false);
                 pMappings.Add(pMapping);
@@ -800,8 +799,6 @@ namespace Battlehub.RTSaveLoad2
                 m_mappings[typeIndex].PropertyMappingSelection[propIndex] = Array.IndexOf(mappedKeys[propIndex], mapping.MappedFullTypeName + " " + mapping.MappedName);
             }
         }
-
-     
 
         private IEnumerable<PropertyInfo> GetSuitableProperties(PropertyInfo[] properties, string persistentType)
         {
@@ -909,25 +906,7 @@ namespace Battlehub.RTSaveLoad2
             assemblies = assembliesList.ToArray();
         }
 
-        private Type GetSurrogateType(Type type)
-        {
-            if(type.IsArray)
-            {
-                type = type.GetElementType();
-            }
-
-            if(!type.IsSubclassOf(typeof(UnityObject)) && 
-                    type != typeof(UnityObject) &&
-                   !type.IsEnum &&
-                   !type.IsGenericType &&
-                   !type.IsArray &&
-                   !type.IsPrimitive &&
-                    type != typeof(string))
-            {
-                return type;
-            }
-            return null;
-        }
+       
 
         private void GetTypesRecursive(Type type, HashSet<Type> typesHS)
         {
@@ -939,7 +918,7 @@ namespace Battlehub.RTSaveLoad2
                 PropertyInfo pInfo = properties[p];
                 if (!typesHS.Contains(pInfo.PropertyType))
                 {
-                    Type surrogateType = GetSurrogateType(pInfo.PropertyType);
+                    Type surrogateType = m_codeGen.GetSurrogateType(pInfo.PropertyType);
                     if(surrogateType != null && !typesHS.Contains(surrogateType))
                     {
                         typesHS.Add(surrogateType);
@@ -953,7 +932,7 @@ namespace Battlehub.RTSaveLoad2
                 FieldInfo fInfo = fields[f];
                 if (!typesHS.Contains(fInfo.FieldType))
                 {
-                    Type surrogateType = GetSurrogateType(fInfo.FieldType);
+                    Type surrogateType = m_codeGen.GetSurrogateType(fInfo.FieldType);
                     if (surrogateType != null && !typesHS.Contains(surrogateType))
                     {
                         typesHS.Add(surrogateType);

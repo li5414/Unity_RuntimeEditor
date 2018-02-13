@@ -4,7 +4,6 @@ using ProtoBuf;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
-
 namespace Battlehub.RTSaveLoad2
 {
     public interface IPersistentObject
@@ -16,7 +15,6 @@ namespace Battlehub.RTSaveLoad2
         void GetDeps(HashSet<int> dependencies);
 
         void GetDepsFrom(object obj, HashSet<object> dependencies);
-       
     }
 
     [ProtoContract(AsReferenceDefault = true)]    
@@ -65,8 +63,6 @@ namespace Battlehub.RTSaveLoad2
                 dependencies.Add(depenency);
             }
         }
-
-
     }
 
 }

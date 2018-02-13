@@ -6,9 +6,9 @@ using System;
 using ProtoBuf.Meta;
 using UnityEngine;
 using System.IO;
+using Battlehub.RTSaveLoad;
 
-
-namespace Battlehub.RTSaveLoad
+namespace Battlehub.RTSaveLoad2
 {
     /*Serialization of object field*/
     [ProtoContract]
@@ -72,32 +72,10 @@ namespace Battlehub.RTSaveLoad
         }
     }
 
-
-    [ProtoContract]
-    public class Vector3Surrogate
-    {
-        public Single x;
-        public Single y;
-        public Single z;
-        public static implicit operator UnityEngine.Vector3(Vector3Surrogate v)
-        {
-            Vector3 o = new Vector3();
-            o.x = v.x;
-            o.y = v.y;
-            o.z = v.z;
-            return o;
-        }
-        public static implicit operator Vector3Surrogate(UnityEngine.Vector3 v)
-        {
-            Vector3Surrogate o = new Vector3Surrogate();
-            o.x = v.x;
-            o.y = v.y;
-            o.z = v.z;
-            return o;
-        }
-
-    }
     
+
+
+  
 
     public class TypeModelCreator2
     {
@@ -201,7 +179,7 @@ namespace Battlehub.RTSaveLoad
 }
 
 
-namespace Battlehub.RTSaveLoad.Tests
+namespace Battlehub.RTSaveLoad2.Tests
 {
 
 
