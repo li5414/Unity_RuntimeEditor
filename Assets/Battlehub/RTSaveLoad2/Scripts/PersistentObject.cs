@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ProtoBuf;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
@@ -10,7 +9,7 @@ namespace Battlehub.RTSaveLoad2
     {
         void ReadFrom(object obj);
 
-        void WriteTo(object obj);
+        object WriteTo(object obj);
 
         void GetDeps(HashSet<int> dependencies);
 
@@ -33,36 +32,39 @@ namespace Battlehub.RTSaveLoad2
             hideFlags = (int)uo.hideFlags;
         }
 
-        public virtual void WriteTo(object obj)
+        public virtual object WriteTo(object obj)
         {
             UnityObject uo = (UnityObject)obj;
             uo.name = name;
             uo.hideFlags = (HideFlags)hideFlags;
+            return obj;
         }
 
-        public virtual void GetDeps(HashSet<int> dependencies)
+        public virtual void GetDeps(HashSet<int> deps)
         {
         }
      
-        public virtual void GetDepsFrom(object obj, HashSet<object> dependencies)
+        public virtual void GetDepsFrom(object obj, HashSet<object> deps)
         {
         }
 
-        protected void AddDependency(int depenency, HashSet<int> dependencies)
+        protected void AddDependency(int depenency, HashSet<int> hs)
         {
-            if(depenency > 0 && !dependencies.Contains(depenency))
+            if(depenency > 0 && !hs.Contains(depenency))
             {
-                dependencies.Add(depenency);
+                hs.Add(depenency);
             }
         }
 
-        protected void AddDependency(object depenency, HashSet<object> dependencies)
+        protected void AddDependency(object depenency, HashSet<object> hs)
         {
-            if (depenency != null && !dependencies.Contains(depenency))
+            if (depenency != null && !hs.Contains(depenency))
             {
-                dependencies.Add(depenency);
+                hs.Add(depenency);
             }
         }
+
+       
     }
 
 }

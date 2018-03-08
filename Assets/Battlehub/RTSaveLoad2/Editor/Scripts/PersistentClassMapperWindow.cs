@@ -705,6 +705,7 @@ namespace Battlehub.RTSaveLoad2
                 pMapping.IsProperty = false;
 
                 pMapping.UseSurrogate = m_codeGen.GetSurrogateType(fInfo.FieldType) != null;
+                pMapping.HasDependenciesOrIsDependencyItself = m_codeGen.HasDependencies(fInfo.FieldType);
 
                 pMappingsEnabled.Add(false);
                 pMappings.Add(pMapping);
@@ -751,13 +752,14 @@ namespace Battlehub.RTSaveLoad2
                 pMapping.PersistentTypeName = m_codeGen.TypeName(pInfo.PropertyType);
                 pMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(pInfo.PropertyType.Namespace);
 
-                pMapping.MappedName = pInfo.Name;             //property name of unity type
+                pMapping.MappedName = pInfo.Name;           //property name of unity type
                 pMapping.MappedTypeName = m_codeGen.TypeName(pInfo.PropertyType);
                 pMapping.MappedNamespace = pInfo.PropertyType.Namespace;
                 pMapping.MappedAssemblyName = pInfo.PropertyType.Assembly.FullName.Split(',')[0];
                 pMapping.IsProperty = true;
 
                 pMapping.UseSurrogate = m_codeGen.GetSurrogateType(pInfo.PropertyType) != null;
+                pMapping.HasDependenciesOrIsDependencyItself = m_codeGen.HasDependencies(pInfo.PropertyType);
 
                 pMappingsEnabled.Add(false);
                 pMappings.Add(pMapping);
@@ -905,8 +907,6 @@ namespace Battlehub.RTSaveLoad2
             types = m_mostImportantUOTypes.Union(allUOTypes.OrderBy(t => m_codeGen.TypeName(t))).ToArray();
             assemblies = assembliesList.ToArray();
         }
-
-       
 
         private void GetTypesRecursive(Type type, HashSet<Type> typesHS)
         {

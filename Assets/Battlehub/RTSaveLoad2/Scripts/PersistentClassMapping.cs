@@ -50,7 +50,7 @@ namespace Battlehub.RTSaveLoad2
         public string MappedName;
 
         public bool UseSurrogate;
-
+        public bool HasDependenciesOrIsDependencyItself;
     }
 
     [Serializable]
@@ -86,6 +86,11 @@ namespace Battlehub.RTSaveLoad2
         public string PersistentSurrogateTypeName
         {
             get { return PersistentTypeName + "Surrogate"; }
+        }
+
+        public string PersistentSurrogateBaseTypeName
+        {
+            get { return PersistentBaseTypeName + "Surrogate"; }
         }
 
         public string MappedSurrogateTypeName
