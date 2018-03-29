@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1260904434272654}
+  m_IsPrefabParent: 1
+--- !u!1 &1260904434272654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4575624903506786}
+  - component: {fileID: 114410961198495722}
+  m_Layer: 0
+  m_Name: Battlehub_EditorsMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4575624903506786
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1260904434272654}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114410961198495722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1260904434272654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c556f3441c2c342a2b1779dd1a8c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Editors:
+  - {fileID: 1000012655383494, guid: f4e860c0bb438c84aa287f173679c55c, type: 2}
+  - {fileID: 1000013047643290, guid: e693dc4ba5b2d2944beb8c0a37bc5b24, type: 2}
+  - {fileID: 1000014028562918, guid: 3c0c55d6d173dba488e433a1ccea2f9f, type: 2}
+  - {fileID: 1000014122670094, guid: 76a0dc571d300e34aa90a7bfdf97ccee, type: 2}
+  - {fileID: 1000013331282784, guid: 33698ec4f383990468b6b33ee45ab85a, type: 2}
+  - {fileID: 1000013047643290, guid: 2bbd1371aabed6a46bd408f885e18096, type: 2}
+  - {fileID: 1000013047643290, guid: 643453017e0bd0c4f8dde40fd843dfa8, type: 2}
+  - {fileID: 1000012517089462, guid: b498a59951906cf449978acbbed656cc, type: 2}
+  - {fileID: 1000012517089462, guid: a75b3c61f68954644bde33feb6f5e2a1, type: 2}
+  - {fileID: 1000012517089462, guid: 3cb05b183312f1e498e885e875ffab05, type: 2}
+  - {fileID: 1000014075958742, guid: 7f48cf159c7eef6459001505aedc96f2, type: 2}
+  - {fileID: 1000013752748570, guid: 4f2c36514ecb19c4d8a69997aaa1eab5, type: 2}
+  - {fileID: 1000014011597448, guid: ce1efab434cbb3041bf5f67fd2d43e3b, type: 2}
+  - {fileID: 1000012088153226, guid: c1b9c748869d0e34b89a79508189bbd0, type: 2}
+  - {fileID: 1000010301640976, guid: a28b14176ccd9eb459849ee58b6ba3a7, type: 2}
+  - {fileID: 1000013698204324, guid: eca87d2c3ae2cd040a38796b85e02739, type: 2}
+  - {fileID: 1000012088153226, guid: 6177c63e05390c745b5a906a8e178499, type: 2}
+  - {fileID: 1000013256475392, guid: daf1985b0ff70be4f949269449ad5ab1, type: 2}
+  - {fileID: 1000013256475392, guid: b3869b72d165b1a4bbc0a2af36147707, type: 2}
+  - {fileID: 1000013256475392, guid: 2291aaf81204cc74ebdc34c552e56fa6, type: 2}
+  IsDefaultMaterialEditorEnabled: 1
+  DefaultMaterialEditor: {fileID: 1000013302785078, guid: e271b6853f0d680408d9527a996e88ce,
+    type: 2}
+  Shaders:
+  - {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  MaterialEditors:
+  - {fileID: 1000013302785078, guid: e271b6853f0d680408d9527a996e88ce, type: 2}
+  IsMaterialEditorEnabled: 01

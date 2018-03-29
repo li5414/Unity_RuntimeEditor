@@ -1,0 +1,1 @@
+{"dummy":0,"Name":"Battlehub/RTCommon/Billboard","InstanceId":8589934908,"PropertyCount":2,"PropertyDescriptions":["Color","Texture Image"],"PropertyNames":["_Color","_MainTex"],"PropertyTypes":[0,4],"PropertyRangeLimits":[{"Def":1.0,"Min":1.0,"Max":1.0},{"Def":0.0,"Min":0.0,"Max":0.0}],"PropertyTexDims":[1,2],"IsHidden":[false,false]}

@@ -1,0 +1,1 @@
+{"dummy":0,"Name":"Particles/Additive (Soft)","InstanceId":8589934904,"PropertyCount":2,"PropertyDescriptions":["Particle Texture","Soft Particles Factor"],"PropertyNames":["_MainTex","_InvFade"],"PropertyTypes":[4,3],"PropertyRangeLimits":[{"Def":0.0,"Min":0.0,"Max":0.0},{"Def":1.0,"Min":0.009999999776482582,"Max":3.0}],"PropertyTexDims":[2,1],"IsHidden":[false,false]}

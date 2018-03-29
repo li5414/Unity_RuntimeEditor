@@ -89,6 +89,10 @@ namespace Battlehub.RTSaveLoad2
         private static readonly string AddSubtypeTemplate =
             "   .AddSubType({1}, typeof({0}))"                                          ;
 
+#warning Add Surrogate Template
+        private static readonly string AddSurrogateTemple = " " + END;
+
+
         public PropertyInfo[] GetProperties(Type type)
         {
             return GetAllProperties(type).Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null).ToArray();

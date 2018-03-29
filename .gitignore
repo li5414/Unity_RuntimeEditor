@@ -1,14 +1,6 @@
-Assets/Battlehub/Cubeman
-Assets/Battlehub/Effects
-Assets/Battlehub/ObjectToTexture
-Assets/Battlehub/RTCommon
-Assets/Battlehub/RTEditor
-Assets/Battlehub/RTGizmos
-Assets/Battlehub/RTHandles
-Assets/Battlehub/RTSaveLoad
-Assets/Battlehub/UIControls
-Assets/Battlehub/Utils
-
+Library
+UnityPackageManager
+ProjectSettings
 Library
 .vs/Unity_RuntimeEditor/v14/.suo
 

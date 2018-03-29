@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 900429248
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0ea6b5e21ef0a360dbd5abeea8b10beb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 61034d8db63b99ac9f5f53a55809b2c3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 952abdc1f8989ba4d8f29ed5c1958e4b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 17704c156e256dc419f9b73503f08b37, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 184
+  Script: {instanceID: 0}
+- Class: 185
+  Script: {instanceID: 0}
+- Class: 186
+  Script: {instanceID: 0}
+Assets:
+- Assets/Ev4D/Materials/Crocodile_Skin.sbsar
+- Assets/Ev4D/Materials/bricks_032.sbsar
+- Assets/Battlehub/RTSaveLoad/ResourceMaps/ResourceMap_pbr__462eb27e-b825-43ea-958f-58d33108b391.prefab
+- Assets/Ev4D/Prefabs/Sphere.prefab
+- Assets/Ev4D/Prefabs/Cube.prefab
+Dependencies: []
