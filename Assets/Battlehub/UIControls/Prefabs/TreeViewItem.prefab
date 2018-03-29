@@ -279,10 +279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanDrag: 1
-  CanEdit: 1
-  CanDrop: 1
-  ItemPresenter: {fileID: 0}
-  EditorPresenter: {fileID: 0}
   m_itemLayout: {fileID: 11476104}
 --- !u!114 &11440566
 MonoBehaviour:

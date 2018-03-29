@@ -136,35 +136,5 @@ namespace Battlehub.RTEditor
                 DragHighlight.SetActive(false);
             }
         }
-
-        private float m_prevClick;
-        protected override void Update()
-        {
-            base.Update();
-
-            if (m_isPointerOver)
-            {
-                if (UnityEngine.Input.GetMouseButtonDown(0))
-                {
-                    if (Time.time - m_prevClick < 0.3)
-                    {
-                        SelectMaterial();
-                    }
-                    else
-                    {
-                        m_prevClick = Time.time;
-                    }
-
-                }
-            }
-        }
-        private void SelectMaterial()
-        {
-            UnityObject value = GetValue();
-            if (value != null)
-            {
-                RuntimeSelection.activeObject = value;
-            }
-        }
     }
 }

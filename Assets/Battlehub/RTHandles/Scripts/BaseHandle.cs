@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 using Battlehub.RTCommon;
+using Battlehub.Utils;
 
 namespace Battlehub.RTHandles
 {
@@ -61,7 +62,8 @@ namespace Battlehub.RTHandles
             get { return m_activeTargets; }
         }
 
-        
+
+        private Transform[] m_activeRealTargets;
         private Transform[] m_realTargets;
         protected Transform[] RealTargets
         {
@@ -74,9 +76,58 @@ namespace Battlehub.RTHandles
                 return m_realTargets;
             }
         }
+
         private Transform[] m_commonCenter;
         private Transform[] m_commonCenterTarget;
 
+
+
+        private void GetActiveRealTargets()
+        {
+            if(m_realTargets == null)
+            {
+                m_activeRealTargets = null;
+                return;
+            }
+
+            m_realTargets = m_realTargets.Where(t => t != null && t.hideFlags == HideFlags.None).ToArray();
+            HashSet<Transform> targetsHS = new HashSet<Transform>();
+            for (int i = 0; i < m_realTargets.Length; ++i)
+            {
+                if (m_realTargets[i] != null && !targetsHS.Contains(m_realTargets[i]))
+                {
+                    targetsHS.Add(m_realTargets[i]);
+                }
+            }
+            m_realTargets = targetsHS.ToArray();
+            if (m_realTargets.Length == 0)
+            {
+                m_activeRealTargets = new Transform[0];
+                return;
+            }
+            else if (m_realTargets.Length == 1)
+            {
+                m_activeRealTargets = new[] { m_realTargets[0] };
+            }
+
+            for (int i = 0; i < m_realTargets.Length; ++i)
+            {
+                Transform target = m_realTargets[i];
+                Transform p = target.parent;
+                while (p != null)
+                {
+                    if (targetsHS.Contains(p))
+                    {
+                        targetsHS.Remove(target);
+                        break;
+                    }
+
+                    p = p.parent;
+                }
+            }
+
+            m_activeRealTargets = targetsHS.ToArray();
+        }
         /// <summary>
         /// All Target objects
         /// </summary>
@@ -91,7 +142,8 @@ namespace Battlehub.RTHandles
             set
             {
                 DestroyCommonCenter();
-
+                m_realTargets = value;
+                GetActiveRealTargets();
                 Targets_Internal = value;
                 if (Targets_Internal == null || Targets_Internal.Length == 0)
                 {
@@ -100,8 +152,6 @@ namespace Battlehub.RTHandles
 
                 if (RuntimeTools.PivotMode == RuntimePivotMode.Center && ActiveTargets.Length > 1)
                 {
-                    m_realTargets = Targets;
-
                     Vector3 centerPosition = Targets_Internal[0].position;
                     for (int i = 1; i < Targets_Internal.Length; ++i)
                     {
@@ -116,7 +166,7 @@ namespace Battlehub.RTHandles
                     m_commonCenterTarget = new Transform[m_realTargets.Length];
                     for (int i = 0; i < m_commonCenterTarget.Length; ++i)
                     {
-                        GameObject target = new GameObject { name = "ActiveTarget" };
+                        GameObject target = new GameObject { name = "ActiveTarget " + m_realTargets[i].name };
                         target.transform.SetParent(m_commonCenter[0]);
 
                         target.transform.position = m_realTargets[i].position;
@@ -345,6 +395,9 @@ namespace Battlehub.RTHandles
             }
 
             OnEnableOverride();
+
+            RuntimeUndo.UndoCompleted += OnUndoCompleted;
+            RuntimeUndo.RedoCompleted += OnRedoCompleted;
         }
 
         private void OnDisable()
@@ -357,6 +410,9 @@ namespace Battlehub.RTHandles
             DestroyCommonCenter();
 
             OnDisableOverride();
+
+            RuntimeUndo.UndoCompleted -= OnUndoCompleted;
+            RuntimeUndo.RedoCompleted -= OnRedoCompleted;
         }
 
         private void OnDestroy()
@@ -582,11 +638,35 @@ namespace Battlehub.RTHandles
             if (EnableUndo)
             {
                 RuntimeUndo.BeginRecord();
-                for (int i = 0; i < RealTargets.Length; ++i)
+                for (int i = 0; i < m_activeRealTargets.Length; ++i)
                 {
-                    RuntimeUndo.RecordTransform(RealTargets[i]);
+                    RuntimeUndo.RecordTransform(m_activeRealTargets[i]);
                 }
                 RuntimeUndo.EndRecord();
+            }
+        }
+
+        private void OnRedoCompleted()
+        {
+            if (RuntimeTools.PivotMode == RuntimePivotMode.Center)
+            {
+                if(m_realTargets != null)
+                {
+                    Targets = m_realTargets;
+                }
+             
+            }
+        }
+
+        private void OnUndoCompleted()
+        {
+            if (RuntimeTools.PivotMode == RuntimePivotMode.Center)
+            {
+                if (m_realTargets != null)
+                {
+                    Targets = m_realTargets;
+                }
+              
             }
         }
 

@@ -2462,7 +2462,7 @@ GameObject:
   - component: {fileID: 114000011534016414}
   - component: {fileID: 114000012072899884}
   - component: {fileID: 114000012759490978}
-  - component: {fileID: 114499914428469888}
+  - component: {fileID: 114305281843024428}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -7095,16 +7095,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WindowType: 3
   TreeViewPrefab: {fileID: 110726, guid: 741f31daca5ff07498d227214325f62e, type: 2}
-  DisabledItemColor:
-    r: 0.33333334
-    g: 0.33333334
-    b: 0.33333334
-    a: 1
-  EnabledItemColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  DisabledItemColor: {r: 0.33333334, g: 0.33333334, b: 0.33333334, a: 1}
+  EnabledItemColor: {r: 1, g: 1, b: 1, a: 1}
   ItemDoubleClick:
     m_PersistentCalls:
       m_Calls:
@@ -7404,7 +7396,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_projectTemplate: {fileID: 114257519739094116}
-  m_projectName: Assets
   m_dynamicResourcesRoot: {fileID: 4413956657015400}
 --- !u!114 &114137712966940692
 MonoBehaviour:
@@ -7917,6 +7908,28 @@ MonoBehaviour:
   Objects:
   - {fileID: 2100000, guid: ee338c90fb20ec24fad8503d7feebdce, type: 2}
   - {fileID: 2100000, guid: 5476979c1fc13da43b4545049c2250ca, type: 2}
+--- !u!114 &114305281843024428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010609089684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17704c156e256dc419f9b73503f08b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guid: cdfb1a12-1d10-4141-a785-08c65454666a
+  Mapping:
+  - Name: EventSystem
+    Object: {fileID: 114000012759490978}
+    Id: 6464
+  - Name: EventSystem
+    Object: {fileID: 1000010609089684}
+    Id: 6465
+  - Name: EventSystem
+    Object: {fileID: 4000013164774054}
+    Id: 6466
 --- !u!114 &114315706084508214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8583,28 +8596,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!114 &114499914428469888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010609089684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17704c156e256dc419f9b73503f08b37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid: cdfb1a12-1d10-4141-a785-08c65454666a
-  Mapping:
-  - Name: EventSystem
-    Object: {fileID: 114000012759490978}
-    Id: 6464
-  - Name: EventSystem
-    Object: {fileID: 1000010609089684}
-    Id: 6465
-  - Name: EventSystem
-    Object: {fileID: 4000013164774054}
-    Id: 6466
 --- !u!114 &114515222420616118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8984,6 +8975,7 @@ MonoBehaviour:
   m_projectResources: {fileID: 114270054742516770}
   m_btnDuplicate: {fileID: 114480275494333962}
   m_btnAddFolder: {fileID: 114000011282704816}
+  ProjectName: Assets
   DuplicateKey: 100
   RuntimeModifierKey: 306
   EditorModifierKey: 304
@@ -9114,7 +9106,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TypeHint: 16
   Objects:
-  - {fileID: 0}
   - {fileID: 2800000, guid: 331e15f600e7e5644a91e58a5763859d, type: 3}
 --- !u!114 &114689489111437770
 MonoBehaviour:

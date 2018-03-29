@@ -625,7 +625,7 @@ namespace Battlehub.RTSaveLoad
         public override void ReadFrom(object obj)
         {
             base.ReadFrom(obj);
-        
+         
             if (baseObjectData != null)
             {
                 baseObjectData.ReadFrom(obj);

@@ -1,5 +1,4 @@
 ﻿using Battlehub.RTSaveLoad;
-using System;
 using UnityEngine;
 
 namespace Battlehub.RTHandles
@@ -40,11 +39,6 @@ namespace Battlehub.RTHandles
             if (m_camera.depth != 0.01)
             {
                 m_camera.depth = 0.01f;
-            }
-
-            if (m_camera.nearClipPlane != SceneCamera.nearClipPlane)
-            {
-                m_camera.nearClipPlane = SceneCamera.nearClipPlane;
             }
         }
 

@@ -32,8 +32,8 @@ namespace Battlehub.RTSaveLoad
 			m_objToData.Add(typeof(UnityEngine.LightmapSettings), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentLightmapSettings));
 			m_objToData.Add(typeof(UnityEngine.MeshRenderer), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentMeshRenderer));
 			m_objToData.Add(typeof(UnityEngine.GUIElement), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUIElement));
-			m_objToData.Add(typeof(UnityEngine.GUITexture), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUITexture));
-			m_objToData.Add(typeof(UnityEngine.GUILayer), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUILayer));
+			//m_objToData.Add(typeof(UnityEngine.GUITexture), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUITexture));
+			//m_objToData.Add(typeof(UnityEngine.GUILayer), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUILayer));
 			m_objToData.Add(typeof(UnityEngine.Light), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentLight));
 			m_objToData.Add(typeof(UnityEngine.LightProbeGroup), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentLightProbeGroup));
 			m_objToData.Add(typeof(UnityEngine.LightProbeProxyVolume), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentLightProbeProxyVolume));
@@ -50,7 +50,7 @@ namespace Battlehub.RTSaveLoad
 			m_objToData.Add(typeof(UnityEngine.ShaderVariantCollection), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentShaderVariantCollection));
 			m_objToData.Add(typeof(UnityEngine.Sprite), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentSprite));
 			m_objToData.Add(typeof(UnityEngine.SpriteRenderer), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentSpriteRenderer));
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
             m_objToData.Add(typeof(UnityEngine.ProceduralMaterial), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentProceduralMaterial));
             m_objToData.Add(typeof(UnityEngine.ProceduralTexture), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentProceduralTexture));
 #endif
@@ -148,7 +148,7 @@ namespace Battlehub.RTSaveLoad
 			m_objToData.Add(typeof(UnityEngine.TerrainData), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentTerrainData));
 			m_objToData.Add(typeof(UnityEngine.Terrain), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentTerrain));
 			m_objToData.Add(typeof(UnityEngine.Tree), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentTree));
-			m_objToData.Add(typeof(UnityEngine.GUIText), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUIText));
+			//m_objToData.Add(typeof(UnityEngine.GUIText), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentGUIText));
 			m_objToData.Add(typeof(UnityEngine.TextMesh), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentTextMesh));
 			m_objToData.Add(typeof(UnityEngine.Font), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentFont));
 			m_objToData.Add(typeof(UnityEngine.Canvas), typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentCanvas));

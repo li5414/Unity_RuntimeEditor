@@ -106,7 +106,7 @@ namespace Battlehub.RTEditor
 
             GameObject editorPrefab;
 
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
             if (objType == typeof(Material) || objType == typeof(ProceduralMaterial))    
 #else
             if (objType == typeof(Material))

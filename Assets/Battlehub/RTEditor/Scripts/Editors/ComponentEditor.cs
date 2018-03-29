@@ -43,12 +43,8 @@ namespace Battlehub.RTEditor
             }
         }
 
-        public object Target
-        {
-            get;
-            set;
-        }
-
+		public object Target;
+        
         public PropertyDescriptor(string label, object target, MemberInfo memberInfo)
         {
             MemberInfo = memberInfo;

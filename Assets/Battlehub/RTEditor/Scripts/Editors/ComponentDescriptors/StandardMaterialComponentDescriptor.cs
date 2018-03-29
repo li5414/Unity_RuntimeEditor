@@ -197,7 +197,29 @@ namespace Battlehub.RTEditor
         private static void SetMaterialKeywords(Material material, WorkflowMode workflowMode)
         {
 
-             // Note: keywords must be based on Material value not on MaterialProperty due to multi-edit & material animation
+            //  // Note: keywords must be based on Material value not on MaterialProperty due to multi-edit & material animation
+            // // (MaterialProperty value might come from renderer material property block)
+            // SetKeyword(material, "_NORMALMAP", material.GetTexture("_BumpMap") || material.GetTexture("_DetailNormalMap"));
+            // if (workflowMode == WorkflowMode.Specular)
+            //     SetKeyword(material, "_SPECGLOSSMAP", material.GetTexture("_SpecGlossMap"));
+            // else if (workflowMode == WorkflowMode.Metallic)
+            //     SetKeyword(material, "_METALLICGLOSSMAP", material.GetTexture("_MetallicGlossMap"));
+            // SetKeyword(material, "_PARALLAXMAP", material.GetTexture("_ParallaxMap"));
+            // SetKeyword(material, "_DETAIL_MULX2", material.GetTexture("_DetailAlbedoMap") || material.GetTexture("_DetailNormalMap"));
+
+            // // A material's GI flag internally keeps track of whether emission is enabled at all, it's enabled but has no effect
+            // // or is enabled and may be modified at runtime. This state depends on the values of the current flag and emissive color.
+            // // The fixup routine makes sure that the material is in the correct state if/when changes are made to the mode or color.
+            //// MaterialEditor.FixupEmissiveFlag(material);
+            // bool shouldEmissionBeEnabled = (material.globalIlluminationFlags & MaterialGlobalIlluminationFlags.EmissiveIsBlack) == 0;
+            // SetKeyword(material, "_EMISSION", shouldEmissionBeEnabled);
+
+            // if (material.HasProperty("_SmoothnessTextureChannel"))
+            // {
+            //     SetKeyword(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", GetSmoothnessMapChannel(material) == SmoothnessMapChannel.AlbedoAlpha);
+            // }
+
+            // Note: keywords must be based on Material value not on MaterialProperty due to multi-edit & material animation
             // (MaterialProperty value might come from renderer material property block)
             SetKeyword(material, "_NORMALMAP", material.GetTexture("_BumpMap") || material.GetTexture("_DetailNormalMap"));
             if (workflowMode == WorkflowMode.Specular)
@@ -207,11 +229,7 @@ namespace Battlehub.RTEditor
             SetKeyword(material, "_PARALLAXMAP", material.GetTexture("_ParallaxMap"));
             SetKeyword(material, "_DETAIL_MULX2", material.GetTexture("_DetailAlbedoMap") || material.GetTexture("_DetailNormalMap"));
 
-            // A material's GI flag internally keeps track of whether emission is enabled at all, it's enabled but has no effect
-            // or is enabled and may be modified at runtime. This state depends on the values of the current flag and emissive color.
-            // The fixup routine makes sure that the material is in the correct state if/when changes are made to the mode or color.
-           // MaterialEditor.FixupEmissiveFlag(material);
-            bool shouldEmissionBeEnabled = (material.globalIlluminationFlags & MaterialGlobalIlluminationFlags.EmissiveIsBlack) == 0;
+            bool shouldEmissionBeEnabled = ShouldEmissionBeEnabled(material, material.GetColor("_EmissionColor"));
             SetKeyword(material, "_EMISSION", shouldEmissionBeEnabled);
 
             if (material.HasProperty("_SmoothnessTextureChannel"))
@@ -219,34 +237,16 @@ namespace Battlehub.RTEditor
                 SetKeyword(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", GetSmoothnessMapChannel(material) == SmoothnessMapChannel.AlbedoAlpha);
             }
 
-            //// Note: keywords must be based on Material value not on MaterialProperty due to multi-edit & material animation
-            //// (MaterialProperty value might come from renderer material property block)
-            //SetKeyword(material, "_NORMALMAP", material.GetTexture("_BumpMap") || material.GetTexture("_DetailNormalMap"));
-            //if (workflowMode == WorkflowMode.Specular)
-            //    SetKeyword(material, "_SPECGLOSSMAP", material.GetTexture("_SpecGlossMap"));
-            //else if (workflowMode == WorkflowMode.Metallic)
-            //    SetKeyword(material, "_METALLICGLOSSMAP", material.GetTexture("_MetallicGlossMap"));
-            //SetKeyword(material, "_PARALLAXMAP", material.GetTexture("_ParallaxMap"));
-            //SetKeyword(material, "_DETAIL_MULX2", material.GetTexture("_DetailAlbedoMap") || material.GetTexture("_DetailNormalMap"));
+            // Setup lightmap emissive flags
+            MaterialGlobalIlluminationFlags flags = material.globalIlluminationFlags;
+            if ((flags & (MaterialGlobalIlluminationFlags.BakedEmissive | MaterialGlobalIlluminationFlags.RealtimeEmissive)) != 0)
+            {
+                flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+                if (!shouldEmissionBeEnabled)
+                    flags |= MaterialGlobalIlluminationFlags.EmissiveIsBlack;
 
-            //bool shouldEmissionBeEnabled = ShouldEmissionBeEnabled(material, material.GetColor("_EmissionColor"));
-            //SetKeyword(material, "_EMISSION", shouldEmissionBeEnabled);
-
-            //if (material.HasProperty("_SmoothnessTextureChannel"))
-            //{
-            //    SetKeyword(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", GetSmoothnessMapChannel(material) == SmoothnessMapChannel.AlbedoAlpha);
-            //}
-
-            //// Setup lightmap emissive flags
-            //MaterialGlobalIlluminationFlags flags = material.globalIlluminationFlags;
-            //if ((flags & (MaterialGlobalIlluminationFlags.BakedEmissive | MaterialGlobalIlluminationFlags.RealtimeEmissive)) != 0)
-            //{
-            //    flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-            //    if (!shouldEmissionBeEnabled)
-            //        flags |= MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-
-            //    material.globalIlluminationFlags = flags;
-            //}
+                material.globalIlluminationFlags = flags;
+            }
         }
 
         static void SetKeyword(Material m, string keyword, bool state)
@@ -438,14 +438,14 @@ namespace Battlehub.RTEditor
             properties.Add(new MaterialPropertyDescriptor(new MaterialPropertyAccessor(editor.Material, _DetailNormalMapScale), "Detail Scale", RTShaderPropertyType.Float, floatInfo, new RuntimeShaderInfo.RangeLimits(0, 0, 0), TextureDimension.None, null));
             //properties.Add(new MaterialPropertyDescriptor(converter, "UV Set", RTShaderPropertyType.Float, detailNormalMap, new RuntimeShaderInfo.RangeLimits(0.0f, 0.0f, 0.0f), TextureDimension.Tex2D, null));
 
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
             ProceduralMaterial procMaterial = editor.Material as ProceduralMaterial;
             if(procMaterial != null)
             {
                 MaterialDescriptor.GetProceduralMaterialDescriptors(procMaterial, properties);
             }
 #endif
-            
+
             return properties.ToArray();
         }
     }

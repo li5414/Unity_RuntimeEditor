@@ -12,7 +12,7 @@ namespace Battlehub.RTSaveLoad.PersistentObjects
 {
 #if RT_USE_PROTOBUF && !RT_PE_MAINTANANCE
     [ProtoContract(AsReferenceDefault = true, ImplicitFields = ImplicitFields.AllFields)]
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
     [ProtoInclude(1073, typeof(Battlehub.RTSaveLoad.PersistentObjects.PersistentProceduralMaterial))]
 #endif
 #endif

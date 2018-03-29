@@ -81,7 +81,7 @@ namespace Battlehub.RTCommon
 
                 ExposeToEditor playModeObjExp = playmodeObj.GetComponent<ExposeToEditor>();
                 playModeObjExp.ObjectType = ExposeToEditorObjectType.PlayMode;
-                playModeObjExp.Name = editorObj.name;
+                playModeObjExp.SetName(editorObj.name);
                 playModeObjExp.Init();
 
                 ExposeToEditor[] editorObjAndChildren = editorObj.GetComponentsInChildren<ExposeToEditor>(true);

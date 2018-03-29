@@ -156,7 +156,12 @@ namespace Battlehub.UIControls
 
         public void RemoveChild(object parent, object item, bool isLastChild)
         {
-            if(parent == null)
+            if (IsDropInProgress)
+            {
+                return;
+            }
+
+            if (parent == null)
             {
                 base.Remove(item);
             }
@@ -196,6 +201,7 @@ namespace Battlehub.UIControls
             ItemContainer dragItem = GetItemContainer(item);
             if (dragItem == null)
             {
+                AddChild(parent, item);
                 return;
             }
 
@@ -539,7 +545,6 @@ namespace Battlehub.UIControls
             }
 
             tvItem.Parent = tvSibling.Parent;
-
         }
 
         protected override void SetPrevSibling(ItemContainer sibling, ItemContainer prevSibling)
@@ -556,6 +561,18 @@ namespace Battlehub.UIControls
             }
 
             tvItem.Parent = tvSibling.Parent;
+        }
+
+
+        public void UpdateIndent(object obj)
+        {
+            TreeViewItem item = GetTreeViewItem(obj);
+            if(item == null)
+            {
+                return;
+            }
+
+            item.UpdateIndent();
         }
 
         public void FixScrollRect()

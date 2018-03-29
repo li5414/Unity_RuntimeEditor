@@ -214,7 +214,7 @@ namespace Battlehub.RTSaveLoad
         {
             m_isProjectLoaded = false;
 
-            if (ProjectLoading != null)
+            if(ProjectLoading != null)
             {
                 ProjectLoading(this, EventArgs.Empty);
             }
@@ -222,23 +222,12 @@ namespace Battlehub.RTSaveLoad
             UnloadAssetBundles();
             DestroyDynamicResources();
 
-            IJob job = Dependencies.Job;
+            bool metaOnly = false;
+            int[] exceptTypes = { ProjectItemTypes.Scene };
 
-            job.Submit(doneCallback =>
+            m_project.LoadProject(projectName, loadProjectCompleted =>
             {
-                bool metaOnly = false;
-                int[] exceptTypes = { ProjectItemTypes.Scene };
-
-                m_project.LoadProject(projectName, loadProjectCompleted =>
-                {
-                    m_root = loadProjectCompleted.Data;
-                    //System.Threading.Thread.Sleep(5000);
-                    doneCallback();
-
-                }, metaOnly, exceptTypes);
-            },
-            () =>
-            {
+                m_root = loadProjectCompleted.Data;
                 if (m_root == null)
                 {
                     m_root = new ProjectRoot();
@@ -266,24 +255,13 @@ namespace Battlehub.RTSaveLoad
                     }
 
                     ProjectItem existingTemplateFolder = m_root.Item;//.Children.Where(item => item.Name == ProjectMangerConstants.PROJECT_TEMPLATE_FOLDER).FirstOrDefault();
-                    ContinueLoadingProject(() =>
-                    {
-                        if (callback != null)
-                        {
-                            callback(m_root.Item);
-                        }
-                        if (ProjectLoaded != null)
-                        {
-                            ProjectLoaded(this, new ProjectManagerEventArgs(m_root.Item));
-                        }
-                    },
-                    newTemplateFolder,
-                    existingTemplateFolder);
+                    ContinueLoadingProject(callback, newTemplateFolder, existingTemplateFolder);
+                  
                 }
-            });
+            }, metaOnly, exceptTypes);
         }
 
-        private void ContinueLoadingProject(Action callback, ProjectItem newTemplateFolder, ProjectItem existingTemplateFolder)
+        private void ContinueLoadingProject(ProjectManagerCallback<ProjectItem> callback, ProjectItem newTemplateFolder, ProjectItem existingTemplateFolder)
         {
             List<ProjectItem> itemsToDelete = new List<ProjectItem>();
             if (existingTemplateFolder != null)
@@ -310,10 +288,10 @@ namespace Battlehub.RTSaveLoad
             });
         }
 
-        private void CompleteProjectLoading(Action callback)
+        private void CompleteProjectLoading(ProjectManagerCallback<ProjectItem> callback)
         {
             bool includeDynamic = false;
-
+          
             Dictionary<long, UnityObject> resources = IdentifiersMap.FindResources(includeDynamic);
 
             bool allowNulls = false;
@@ -324,8 +302,14 @@ namespace Battlehub.RTSaveLoad
             m_project.UnloadData(m_root.Item);
 
             m_isProjectLoaded = true;
-
-            callback();
+            if (callback != null)
+            {
+                callback(m_root.Item);
+            }
+            if (ProjectLoaded != null)
+            {
+                ProjectLoaded(this, new ProjectManagerEventArgs(m_root.Item));
+            }
         }
 
         public void IgnoreTypes(params Type[] types)
@@ -563,7 +547,7 @@ namespace Battlehub.RTSaveLoad
                     }
                 }
 
-                #if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
                 if (includeAllAssets)
                 {
                     ProceduralMaterial[] proceduralMaterials = bundle.LoadAllAssets<ProceduralMaterial>();
@@ -581,7 +565,7 @@ namespace Battlehub.RTSaveLoad
                         }
                     }
                 }
-                #endif
+#endif
 
                 ProjectItem[] projectItems = ConvertObjectsToProjectItems(objects.ToArray(), false, bundleName, assetNames, assetTypes);
                 projectItems = projectItems.OrderBy(p => p.NameExt).ToArray();
@@ -886,7 +870,7 @@ namespace Battlehub.RTSaveLoad
                 return false;
             }
 
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
             if(obj is ProceduralMaterial)
             {
                 Debug.LogWarningFormat("ProceduralMaterials can't be added as dynamic resource. Procedural Material {0}. Please consider adding it to main ResourceMap or bundle ResourceMap", obj.name);

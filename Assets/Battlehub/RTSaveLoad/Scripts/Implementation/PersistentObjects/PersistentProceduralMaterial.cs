@@ -4,7 +4,7 @@ using ProtoBuf;
 #endif
 
 /*To autogenerate PersistentProceduralMaterial remove this file and run Tools->Runtime SaveLoad->Create Persistent Objects command*/
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
 namespace Battlehub.RTSaveLoad.PersistentObjects
 {
 

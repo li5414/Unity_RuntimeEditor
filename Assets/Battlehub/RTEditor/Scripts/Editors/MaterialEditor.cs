@@ -8,9 +8,12 @@ using Battlehub.Utils;
 using Battlehub.RTSaveLoad;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Battlehub.RTCommon;
+#if PROC_MATERIAL
+using ProcPropertyDescription = UnityEngine.ProceduralPropertyDescription;
+using ProcPropertyType = UnityEngine.ProceduralPropertyType;
+#endif
 namespace Battlehub.RTEditor
 {
  
@@ -20,8 +23,8 @@ namespace Battlehub.RTEditor
         public object Target;
         public string Label;
         public RTShaderPropertyType Type;
-#if !UNITY_WEBGL
-        public ProceduralPropertyDescription ProceduralDescription;
+#if !UNITY_WEBGL && PROC_MATERIAL
+        public ProcPropertyDescription ProceduralDescription;
 #endif
         public PropertyInfo PropertyInfo;
         public RuntimeShaderInfo.RangeLimits Limits;
@@ -39,8 +42,8 @@ namespace Battlehub.RTEditor
             TexDims = dims;
             ValueChangedCallback = callback;
         }
-#if !UNITY_WEBGL
-        public MaterialPropertyDescriptor(object target, string label, ProceduralPropertyDescription procDescription, PropertyInfo propertyInfo, PropertyEditorCallback callback)
+#if !UNITY_WEBGL && PROC_MATERIAL
+        public MaterialPropertyDescriptor(object target, string label, ProcPropertyDescription procDescription, PropertyInfo propertyInfo, PropertyEditorCallback callback)
         {
             Target = target;
             Label = label;
@@ -184,7 +187,7 @@ namespace Battlehub.RTEditor
                 PropertyEditor editor = null;
                 object target = descriptor.Target;
                 PropertyInfo propertyInfo = descriptor.PropertyInfo;
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
                 if(descriptor.ProceduralDescription == null)
 #endif
                 {
@@ -219,13 +222,13 @@ namespace Battlehub.RTEditor
                             break;
                     }
                 }
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
                 else
                 {
-                    ProceduralPropertyDescription input = descriptor.ProceduralDescription;
+                    ProcPropertyDescription input = descriptor.ProceduralDescription;
                     if(input.hasRange)
                     {
-                        if(input.type == ProceduralPropertyType.Float)
+                        if(input.type == ProcPropertyType.Float)
                         {
                             if(RangeEditor != null)
                             {

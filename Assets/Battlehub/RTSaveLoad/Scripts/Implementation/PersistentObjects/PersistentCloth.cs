@@ -37,12 +37,12 @@ namespace Battlehub.RTSaveLoad.PersistentObjects
 			o.enabled = enabled;
 			o.friction = friction;
 			o.collisionMassScale = collisionMassScale;
-			o.useContinuousCollision = useContinuousCollision;
+			//o.useContinuousCollision = useContinuousCollision;
 			o.useVirtualParticles = useVirtualParticles;
 			o.coefficients = coefficients;
 			o.worldVelocityScale = worldVelocityScale;
 			o.worldAccelerationScale = worldAccelerationScale;
-			o.solverFrequency = solverFrequency;
+			//o.solverFrequency = solverFrequency;
 			o.capsuleColliders = Resolve<UnityEngine.CapsuleCollider, UnityEngine.Object>(capsuleColliders, objects);
 			//o.sphereColliders = sphereColliders;
 			return o;
@@ -66,12 +66,12 @@ namespace Battlehub.RTSaveLoad.PersistentObjects
 			enabled = o.enabled;
 			friction = o.friction;
 			collisionMassScale = o.collisionMassScale;
-			useContinuousCollision = o.useContinuousCollision;
+			//useContinuousCollision = o.useContinuousCollision;
 			useVirtualParticles = o.useVirtualParticles;
 			coefficients = o.coefficients;
 			worldVelocityScale = o.worldVelocityScale;
 			worldAccelerationScale = o.worldAccelerationScale;
-			solverFrequency = o.solverFrequency;
+			//solverFrequency = o.solverFrequency;
 			capsuleColliders = o.capsuleColliders.GetMappedInstanceID();
 			//sphereColliders = o.sphereColliders;
 		}

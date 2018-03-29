@@ -10,8 +10,6 @@ using Battlehub.RTSaveLoad;
 
 namespace Battlehub.RTSaveLoad2
 {
-    public
-
     /*Serialization of object field*/
     [ProtoContract]
     public class TestData1

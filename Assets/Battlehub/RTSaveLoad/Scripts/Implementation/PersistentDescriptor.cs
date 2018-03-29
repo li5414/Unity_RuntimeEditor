@@ -230,7 +230,7 @@ namespace Battlehub.RTSaveLoad
                 Material material = new Material(m_standard);
                 return material;
             }
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && PROC_MATERIAL
             else if (type == typeof(ProceduralMaterial))
             {
                 throw new NotSupportedException();

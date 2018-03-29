@@ -105,7 +105,7 @@ namespace Battlehub.RTHandles
             m_rectTransform = GetComponent<RectTransform>();
             m_rectTransform.sizeDelta = new Vector2(0, 0);
             m_rectTransform.pivot = new Vector2(0, 0);
-            m_rectTransform.localPosition = new Vector3(0, 0);
+            m_rectTransform.anchoredPosition = new Vector3(0, 0);
 
             if (SceneCamera == null)
             {
@@ -202,7 +202,7 @@ namespace Battlehub.RTHandles
                         (!RuntimeEditorApplication.IsOpened || RuntimeEditorApplication.IsPointerOverWindow(RuntimeWindowType.SceneView) && !RuntimeTools.IsPointerOverGameObject());
                     if (m_isDragging)
                     {
-                        m_rectTransform.localPosition = m_startPt;
+                        m_rectTransform.anchoredPosition = m_startPt;
                         m_rectTransform.sizeDelta = new Vector2(0, 0);
                         CursorHelper.SetCursor(this, null, Vector3.zero, CursorMode.Auto);
                         

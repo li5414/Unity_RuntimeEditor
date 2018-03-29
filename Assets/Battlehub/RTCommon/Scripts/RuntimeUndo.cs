@@ -560,6 +560,7 @@ namespace Battlehub.RTCommon
         }
 
 
+
         private class SelectionRecord
         {
             public Object[] objects;

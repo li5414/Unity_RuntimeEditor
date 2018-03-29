@@ -9,7 +9,7 @@ using Battlehub.RTCommon;
 
 using System.Collections;
 using Battlehub.RTGizmos;
-using System.Collections.Generic;
+
 
 namespace Battlehub.RTEditor
 {
@@ -20,7 +20,7 @@ namespace Battlehub.RTEditor
         public UnityEvent Play;
         public UnityEvent Stop;
 
-        public Battlehub.RTHandles.Grid Grid;
+        public RTHandles.Grid Grid;
         public BoxSelection BoxSelect;
         public SceneGizmo SceneGizmo;
         public GameObject EditButton;
@@ -533,99 +533,44 @@ namespace Battlehub.RTEditor
             InitEditorComponents();
         }
 
-        public bool IsDescendantOf(GameObject ancestor, GameObject obj)
-        {
-            if(obj == null)
-            {
-                throw new System.ArgumentNullException("obj");
-            }
-
-            Transform ancestorTransform = null;
-            if(ancestor != null)
-            {
-                ancestorTransform = ancestor.transform;
-            }
-
-            Transform objTransform = obj.transform;
-
-            while(objTransform != null)
-            {
-                if(objTransform == ancestorTransform)
-                {
-                    return true;
-                }
-
-                objTransform = objTransform.parent;
-            }
-
-            return false;
-        }
-
         public void Duplicate()
         {
             Object[] selectedObjects = RuntimeSelection.objects;
             if (selectedObjects != null && selectedObjects.Length > 0)
             {
                 RuntimeUndo.BeginRecord();
-
-                List<GameObject> duplicatesList = new List<GameObject>();
-                for(int i = 0; i < selectedObjects.Length; ++i)
+                Object[] duplicates = new Object[selectedObjects.Length];
+                for (int i = 0; i < duplicates.Length; ++i)
                 {
                     GameObject go = selectedObjects[i] as GameObject;
-                    if(go != null)
-                    {
-                        duplicatesList.Add(go);
-                    }
-                }
-
-                for(int i = 0; i < selectedObjects.Length; ++i)
-                {
-                    GameObject obj = selectedObjects[i] as GameObject;
-                    if(obj == null)
-                    {
-                        continue;
-                    }
-                    for(int j = 0; j < duplicatesList.Count; j++)
-                    {
-                        GameObject ancestor = duplicatesList[j];
-                        if(obj != ancestor && IsDescendantOf(ancestor, obj))
-                        {
-                            duplicatesList.Remove(obj);
-                            break;
-                        }
-                    }
-                }
-
-                for (int i = 0; i < duplicatesList.Count; ++i)
-                {
-                    GameObject go = duplicatesList[i];
-                    GameObject duplicate = Instantiate(go, go.transform.position, go.transform.rotation);
+                    Object duplicate = Instantiate(go, go.transform.position, go.transform.rotation);
+                    GameObject duplicateGo = duplicate as GameObject;
                     
-                    if (go != null && duplicate != null)
+                    if (go != null && duplicateGo != null)
                     {
-                        duplicate.SetActive(true);
-                        duplicate.SetActive(go.activeSelf);
+                        duplicateGo.SetActive(true);
+                        duplicateGo.SetActive(go.activeSelf);
                         if (go.transform.parent != null)
                         {
-                            duplicate.transform.SetParent(go.transform.parent, true);
+                            duplicateGo.transform.SetParent(go.transform.parent, true);
                         }
                     }
 
-                    duplicatesList[i] = duplicate;
-                    RuntimeUndo.BeginRegisterCreateObject(duplicate);
+                    duplicates[i] = duplicate;
+                    RuntimeUndo.BeginRegisterCreateObject(duplicateGo);
                 }
                 RuntimeUndo.RecordSelection();
                 RuntimeUndo.EndRecord();
 
                 bool isEnabled = RuntimeUndo.Enabled;
                 RuntimeUndo.Enabled = false;
-                RuntimeSelection.objects = duplicatesList.ToArray();
+                RuntimeSelection.objects = duplicates;
                 RuntimeUndo.Enabled = isEnabled;
 
                 RuntimeUndo.BeginRecord();
-                for (int i = 0; i < duplicatesList.Count; ++i)
+                for (int i = 0; i < duplicates.Length; ++i)
                 {
-                    GameObject selectedObj = duplicatesList[i];
+                    GameObject selectedObj = (GameObject)duplicates[i];
                     if (selectedObj != null)
                     {
                         RuntimeUndo.RegisterCreatedObject(selectedObj);

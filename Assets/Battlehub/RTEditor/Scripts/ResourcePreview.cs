@@ -491,7 +491,7 @@ namespace Battlehub.RTEditor
                     }
                     if (exposeToEditor != null)
                     {
-                        exposeToEditor.Name = m_resource.name;
+                        exposeToEditor.SetName(m_resource.name);
                     }
 
                     bool isEnabled = RuntimeUndo.Enabled;
