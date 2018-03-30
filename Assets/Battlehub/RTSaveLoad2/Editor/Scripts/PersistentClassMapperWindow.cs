@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityObject = UnityEngine.Object;
+using System.IO;
 
 namespace Battlehub.RTSaveLoad2
 {
@@ -238,7 +239,7 @@ namespace Battlehub.RTSaveLoad2
             m_mappings[0].IsEnabled = true;
         }
 
-        public void SaveMappings()
+        public PersistentClassMapping[] SaveMappings()
         {
             GameObject storageGO = (GameObject)AssetDatabase.LoadAssetAtPath(m_mappingStoragePath, typeof(GameObject));
             if (storageGO == null)
@@ -324,6 +325,7 @@ namespace Battlehub.RTSaveLoad2
                 }
             }
 
+            PersistentClassMapping[] savedMappings = new PersistentClassMapping[m_mappings.Length];
             for (int typeIndex = 0; typeIndex < m_mappings.Length; ++typeIndex)
             {
                 if (m_mappings[typeIndex].PropertyMappings == null)
@@ -339,6 +341,8 @@ namespace Battlehub.RTSaveLoad2
                     typeStorageGO.name = m_types[typeIndex].FullName;
                     classMapping = typeStorageGO.AddComponent<PersistentClassMapping>();
                 }
+
+                savedMappings[typeIndex] = classMapping;
 
                 PersistentPropertyMapping[] propertyMappings = m_mappings[typeIndex].PropertyMappings;
                 int[] propertyMappingsSelection = m_mappings[typeIndex].PropertyMappingSelection;
@@ -364,7 +368,6 @@ namespace Battlehub.RTSaveLoad2
                     }
                 }
 
-
                 m_mappings[typeIndex].PropertyMappings = selectedPropertyMappings.ToArray();
                 ExpandType(typeIndex);
 
@@ -385,8 +388,8 @@ namespace Battlehub.RTSaveLoad2
                 Type baseType = GetEnabledBaseType(typeIndex);
                 if (baseType == null)
                 {
-                    classMapping.PersistentBaseNamespace = null;
-                    classMapping.PersistentBaseTypeName = null;
+                    classMapping.PersistentBaseNamespace = typeof(PersistentSurrogate).Namespace;
+                    classMapping.PersistentBaseTypeName = typeof(PersistentSurrogate).Name;
                 }
                 else
                 {
@@ -398,6 +401,8 @@ namespace Battlehub.RTSaveLoad2
 
             PrefabUtility.CreatePrefab(m_mappingStoragePath, storageGO);
             UnityObject.DestroyImmediate(storageGO);
+
+            return savedMappings;
         }
 
         private Type GetEnabledBaseType(int typeIndex)
@@ -868,12 +873,16 @@ namespace Battlehub.RTSaveLoad2
             typeof(Matrix4x4),
         };
 
-        public const string EditorPrefabsPath = @"/" + BHPath.Root + @"/RTSaveLoad2/Editor/Prefabs";
+        public const string SaveLoadRoot = @"/" + BHPath.Root + @"/RTSaveLoad2";
+        public const string EditorPrefabsPath = SaveLoadRoot + "/Editor/Prefabs";
 
         public const string ClassMappingsStoragePath = "Assets" + EditorPrefabsPath + @"/ClassMappingsStorage.prefab";
         public const string ClassMappingsTemplatePath = "Assets" + EditorPrefabsPath + @"/ClassMappingsTemplate.prefab";
         public const string SurrogatesMappingsStoragePath = "Assets" + EditorPrefabsPath + @"/SurrogatesMappingsStorage.prefab";
         public const string SurrogatesMappingsTemplatePath = "Assets" + EditorPrefabsPath + @"/SurrogatesMappingsTemplate.prefab";
+
+        public const string ScriptsAutoFolder = "Scripts_Auto";
+        public const string PersistentClassesFolder = "PersistentClasses";
 
 
         private Type[] m_uoTypes;
@@ -1027,8 +1036,32 @@ namespace Battlehub.RTSaveLoad2
             GUILayout.Button("Create Persistent Objects", GUILayout.Height(37));
             if (EditorGUI.EndChangeCheck())
             {
-                m_uoMapperGUI.SaveMappings();
-                m_surrogatesMapperGUI.SaveMappings();
+                PersistentClassMapping[] uoMappings = m_uoMapperGUI.SaveMappings();
+                PersistentClassMapping[] surrogateMappings = m_surrogatesMapperGUI.SaveMappings();
+
+                string scriptsAutoPath = Application.dataPath + SaveLoadRoot + "/" + ScriptsAutoFolder;
+                Directory.Delete(scriptsAutoPath, true);
+                Directory.CreateDirectory(scriptsAutoPath);
+                string persistentClassesPath = scriptsAutoPath + "/" + PersistentClassesFolder;
+                Directory.CreateDirectory(persistentClassesPath);
+                
+                CodeGen codeGen = new CodeGen();
+                for(int i = 0; i < uoMappings.Length; ++i)
+                {
+                    PersistentClassMapping mapping = uoMappings[i];
+                    string code = codeGen.CreatePersistentClass(mapping);
+                    CreateCSFile(persistentClassesPath, mapping, code);
+                }
+
+                for (int i = 0; i < surrogateMappings.Length; ++i)
+                {
+                    PersistentClassMapping mapping = surrogateMappings[i];
+                    string code = codeGen.CreatePersistentClass(mapping);
+                    CreateCSFile(persistentClassesPath, mapping, code);
+                }
+
+                string typeModelCreatorCode = codeGen.CreateTypeModelCreator(uoMappings.Union(surrogateMappings).ToArray());
+                File.WriteAllText(persistentClassesPath + "/TypeModelCreator.cs", typeModelCreatorCode);
             }
       
             EditorGUILayout.EndHorizontal();
@@ -1037,5 +1070,9 @@ namespace Battlehub.RTSaveLoad2
 
         }
 
+        private static void CreateCSFile(string persistentClassesPath, PersistentClassMapping mapping, string code)
+        {
+            File.WriteAllText(persistentClassesPath + "/" + mapping.PersistentFullTypeName.Replace(".", "_") + ".cs", code);
+        }
     }
 }

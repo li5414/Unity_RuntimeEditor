@@ -700,8 +700,8 @@
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentClassMapping.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentMonoBehavior.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentSurrogate.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\RTSL2Version.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\Surrogate.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\TypeModelCreator.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ExternalDragItem.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ListBoxDemo.cs" />

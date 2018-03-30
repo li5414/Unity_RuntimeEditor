@@ -30,16 +30,6 @@ namespace Battlehub.RTSaveLoad2
             get { return Type.GetType(MappedAssemblyQualifiedName); }
         }
 
-        public string PersistentSurrogateTypeName
-        {
-            get { return PersistentTypeName + "Surrogate"; }
-        }
-
-        public string MappedSurrogateTypeName
-        {
-            get { return MappedTypeName + "Surrogate"; }
-        }
-
         public string PersistentNamespace;
         public string PersistentTypeName;
         public string PersistentName;
@@ -81,21 +71,6 @@ namespace Battlehub.RTSaveLoad2
         public string MappedAssemblyQualifiedName
         {
             get { return MappedFullTypeName + "," + MappedAssemblyName; }
-        }
-
-        public string PersistentSurrogateTypeName
-        {
-            get { return PersistentTypeName + "Surrogate"; }
-        }
-
-        public string PersistentSurrogateBaseTypeName
-        {
-            get { return PersistentBaseTypeName + "Surrogate"; }
-        }
-
-        public string MappedSurrogateTypeName
-        {
-            get { return MappedTypeName + "Surrogate"; }
         }
 
         public bool IsEnabled;

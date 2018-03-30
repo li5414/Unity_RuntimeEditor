@@ -21,7 +21,8 @@ namespace Battlehub.RTSaveLoad2
     {
         static partial void RegisterAutoTypes(RuntimeTypeModel model)
         {
-            //model.Add(typeof(TestData1), true).AddSubType(500, typeof(TestData2));
+            
+          //  model.Add(typeof(TestData1), false). AddSubType(500, typeof(TestData2)).SetSurrogate()
         }
     }
 }
