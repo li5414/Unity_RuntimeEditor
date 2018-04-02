@@ -11,16 +11,16 @@ namespace UnityEngine.Battlehub.SL2
     public class PersistentGameObject : PersistentObject
     {
         [ProtoMember(256)]
-        public Int32 layer;
+        public int layer;
 
         [ProtoMember(257)]
-        public Boolean active;
+        public bool active;
 
         [ProtoMember(258)]
-        public Boolean isStatic;
+        public bool isStatic;
 
         [ProtoMember(259)]
-        public String tag;
+        public string tag;
 
         public override void ReadFrom(object obj)
         {

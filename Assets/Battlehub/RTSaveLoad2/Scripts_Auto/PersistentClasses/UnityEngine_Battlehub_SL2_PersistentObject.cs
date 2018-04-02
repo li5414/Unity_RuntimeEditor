@@ -12,7 +12,7 @@ namespace UnityEngine.Battlehub.SL2
     public class PersistentObject : PersistentSurrogate
     {
         [ProtoMember(256)]
-        public String name;
+        public string name;
 
         [ProtoMember(257)]
         public HideFlags hideFlags;

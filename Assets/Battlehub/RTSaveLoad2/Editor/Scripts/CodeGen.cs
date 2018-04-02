@@ -108,6 +108,35 @@ namespace Battlehub.RTSaveLoad2
         private static readonly string SetSerializationSurrogate = 
             ".SetSurrogate(typeof({0}));"                                               + BR ;
 
+        private static Dictionary<Type, string> m_primitiveNames = new Dictionary<Type, string>
+        {
+            { typeof(string), "string" },
+            { typeof(int), "int" },
+            { typeof(long), "long" },
+            { typeof(short), "short" },
+            { typeof(byte), "byte" },
+            { typeof(ulong), "ulong" },
+            { typeof(uint), "uint" },
+            { typeof(ushort), "ushort" },
+            { typeof(char), "char" },
+            { typeof(object), "object" },
+            { typeof(float), "float" },
+            { typeof(double), "double" },
+            { typeof(bool), "bool" },
+            { typeof(string[]), "string[]" },
+            { typeof(long[]), "long[]" },
+            { typeof(int[]), "int[]" },
+            { typeof(short[]), "short[]" },
+            { typeof(byte[]), "byte[]" },
+            { typeof(ulong[]), "ulong[]" },
+            { typeof(uint[]), "uint[]" },
+            { typeof(ushort[]), "ushort[]" },
+            { typeof(char[]), "char[]" },
+            { typeof(object[]), "object[]" },
+            { typeof(float[]), "float[]" },
+            { typeof(double[]), "double[]" },
+            { typeof(bool[]), "bool[]" },
+        };
 
         public PropertyInfo[] GetProperties(Type type)
         {
@@ -294,7 +323,15 @@ namespace Battlehub.RTSaveLoad2
                 }
                 else
                 {
-                    typeName = prop.PersistentTypeName;
+                    string primitiveTypeName;
+                    if(m_primitiveNames.TryGetValue(prop.MappedType, out primitiveTypeName))
+                    {
+                        typeName = primitiveTypeName;
+                    }
+                    else
+                    {
+                        typeName = prop.PersistentTypeName;
+                    }
                 }
 
                 sb.AppendFormat(
