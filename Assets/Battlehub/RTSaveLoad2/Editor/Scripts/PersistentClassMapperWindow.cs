@@ -382,6 +382,7 @@ namespace Battlehub.RTSaveLoad2
                 classMapping.MappedAssemblyName = m_types[typeIndex].Assembly.FullName.Split(',')[0];
                 classMapping.MappedNamespace = m_types[typeIndex].Namespace;
                 classMapping.MappedTypeName = m_types[typeIndex].Name;
+                    
                 classMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(classMapping.MappedNamespace);
                 classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(m_types[typeIndex].Name);
 

@@ -15,6 +15,9 @@ namespace Battlehub.RTSaveLoad2
 
         private static readonly string BR = Environment.NewLine;
         private static readonly string END = BR + BR;
+        private static readonly string TAB = "    ";
+        private static readonly string TAB2 = "        ";
+        private static readonly string TAB3 = "            ";
         private static readonly string SEMICOLON = ";";
 
         private static string[] DefaultNamespaces =
@@ -24,63 +27,63 @@ namespace Battlehub.RTSaveLoad2
         };
 
         private static readonly string PersistentClassTemplate =
-            "{0}"                                               + BR +
+            "{0}"                                               + BR + 
             "using UnityObject = UnityEngine.Object;"           + BR +
             "namespace {1}"                                     + BR +
             "{{"                                                + BR +
-            "   [ProtoContract(AsReferenceDefault = true)"      + BR +
-            "   public class {2} : {3}"                         + BR +
-            "   {{"                                             + BR +
-            "       {4}"                                        + BR +
-            "   }}"                                             + BR +
+            "    [ProtoContract(AsReferenceDefault = true)]"    + BR +
+            "    public class {2} : {3}"                        + BR +
+            "    {{"                                            + BR +
+            "        {4}"                                       +
+            "    }}"                                            + BR +
             "}}"                                                + END;
 
         private static readonly string FieldTemplate =
-            "[ProtoMember({0})]"                                + BR +
-            "public {1} {2};"                                   + END;
+            "[ProtoMember({0})]"                                + BR  + TAB2 +
+            "public {1} {2};"                                   + END + TAB2;
 
         private static readonly string ReadFromMethodTemplate =
-            "public override void ReadFrom(object obj)"         + BR +
-            "{{"                                                + BR +
-            "   base.ReadFrom(obj);"                            + BR +
-            "   UnityObject uo = (UnityObject)obj;"             + BR +
-            "   {0}"                                            + BR +
-            "}}"                                                + END;
+            "public override void ReadFrom(object obj)"         + BR + TAB2 +
+            "{{"                                                + BR + TAB2 +
+            "    base.ReadFrom(obj);"                           + BR + TAB2 +
+            "    {1} uo = ({1})obj;"                            + BR + TAB2 +
+            "    {0}"                                           + BR + TAB2 +
+            "}}"                                                + END + TAB2;
 
         private static readonly string WriteToMethodTemplate =
-            "public override object WriteTo(object obj)"        + BR +
-            "{{"                                                + BR +
-            "   obj = base.WriteTo(obj);"                       + BR +
-            "   UnityObject uo = (UnityObject)obj;"             + BR +
-            "   {0}"                                            + BR +
-            "   return obj;"                                    + BR +
-            "}}"                                                + END;
+            "public override object WriteTo(object obj)"        + BR + TAB2 +
+            "{{"                                                + BR + TAB2 +
+            "    obj = base.WriteTo(obj);"                      + BR + TAB2 +
+            "    {1} uo = ({1})obj;"                            + BR + TAB2 +
+            "    {0}"                                           +
+            "return obj;"                                       + BR + TAB2 +
+            "}}"                                                + END + TAB2;
 
         private static readonly string GetDepsMethodTemplate =
-            "protected override void GetDepsImp(GetDepsContext context)"                + BR +
+            "protected override void GetDepsImpl(GetDepsContext context)"               + BR + TAB2 +
             "{{"                                                                        + BR +
-            "   {0}"                                                                    + BR +
-            "}}"                                                                        + END;
+            "    {0}"                                                                   + BR + TAB2 +
+            "}}"                                                                        + END + TAB2;
 
         private static readonly string GetDepsFromMethodTemplate =
-            "protected override void GetDepsFromImpl(object obj, GetDepsFromContext context)"   + BR +
-            "{{"                                                                                + BR +
-            "   UnityObject uo = (UnityObject)obj;"                                             + BR +
-            "   {0}"                                                                            + BR +
-            "}}"                                                                                + END;
+            "protected override void GetDepsFromImpl(object obj, GetDepsFromContext context)"   + BR + TAB2 +
+            "{{"                                                                                + BR + TAB2 +
+            "     {1} uo = ({1})obj;"                                                           + BR +
+            "     {0}"                                                                          + BR + TAB2 +
+            "}}"                                                                                + END + TAB2;
 
         private static readonly string ImplicitOperatorsTemplate =
-            "public static implicit operator {0}({1} surrogate)"                                + BR +
-            "{{"                                                                                + BR +
-            "   return ({0})surrogate.WriteTo(new {0}());"                                      + BR +
-            "}}"                                                                                + BR +
-                                                                                                  BR +
-            "public static implicit operator {1}({0} obj)"                                      + BR +
-            "{{"                                                                                + BR +
-            "   {1} surrogate = new {1}();"                                                     + BR +
-            "   surrogate.ReadFrom(obj);"                                                       + BR +
-            "   return surrogate;"                                                              + BR +
-            "}}"                                                                                + END;
+            "public static implicit operator {0}({1} surrogate)"                                + BR + TAB2 +
+            "{{"                                                                                + BR + TAB2 +
+            "    return ({0})surrogate.WriteTo(new {0}());"                                     + BR + TAB2 +
+            "}}"                                                                                + BR + TAB2 +
+                                                                                                  BR + TAB2 +
+            "public static implicit operator {1}({0} obj)"                                      + BR + TAB2 +
+            "{{"                                                                                + BR + TAB2 +
+            "    {1} surrogate = new {1}();"                                                    + BR + TAB2 +
+            "    surrogate.ReadFrom(obj);"                                                      + BR + TAB2 +
+            "    return surrogate;"                                                             + BR + TAB2 +
+            "}}"                                                                                + BR;
 
         private static readonly string TypeModelCreatorTemplate =
             "{0}"                                                                       + BR +
@@ -97,13 +100,13 @@ namespace Battlehub.RTSaveLoad2
             "}}"                                                                        + END;
 
         private static readonly string AddTypeTemplate =
-            "model.Add(typeof({0}), false){1}"                                          + END;
+            "model.Add(typeof({0}), false){1}"                                          + BR + TAB3;
 
         private static readonly string AddSubtypeTemplate =
             "   .AddSubType({1}, typeof({0}))"                                          ;
 
         private static readonly string SetSerializationSurrogate = 
-            ".SetSurrogate(typeof({0}));"                                               + END;
+            ".SetSurrogate(typeof({0}));"                                               + BR ;
 
 
         public PropertyInfo[] GetProperties(Type type)
@@ -238,7 +241,7 @@ namespace Battlehub.RTSaveLoad2
                     endOfLine += string.Format(SetSerializationSurrogate, mapping.PersistentTypeName);
                 }
                 
-                endOfLine += SEMICOLON + END;
+                endOfLine += SEMICOLON + BR + TAB3 + TAB;
                 sb.AppendFormat(AddTypeTemplate, mapping.PersistentTypeName, endOfLine);
             }
  
@@ -253,7 +256,7 @@ namespace Battlehub.RTSaveLoad2
             {
                 PersistentSubclass subclass = mapping.Subclasses[i];
                 sb.AppendFormat(AddSubtypeTemplate, subclass.TypeName, subclass.PersistentTag + SubclassOffset);
-                sb.Append(END);
+                sb.Append(BR + TAB3 + TAB);
             }
 
             if(subclasses.Length > 0)
@@ -298,19 +301,37 @@ namespace Battlehub.RTSaveLoad2
                     FieldTemplate, i + AutoFieldTagOffset,
                     typeName,
                     prop.PersistentName);
-
-                sb.Append(END).Append(END);
             }
 
-            sb.AppendFormat(ReadFromMethodTemplate, CreateReadMethodBody(mapping));
-            sb.Append(END);
-            sb.AppendFormat(WriteToMethodTemplate, CreateWriteMethodBody(mapping));
-            sb.Append(END);
-            sb.AppendFormat(GetDepsMethodTemplate, CreateDepsMethodBody(mapping));
-            sb.Append(END);
-            sb.AppendFormat(GetDepsFromMethodTemplate, CreateDepsFromMethodBody(mapping));
-            sb.Append(END);
-            sb.AppendFormat(ImplicitOperatorsTemplate, mapping.MappedTypeName, mapping.PersistentTypeName);
+            string readMethodBody = CreateReadMethodBody(mapping);
+            string writeMethodBody = CreateWriteMethodBody(mapping);
+            string getDepsMethodBody = CreateDepsMethodBody(mapping);
+            string getDepsFromMethodBody = CreateDepsFromMethodBody(mapping);
+
+            string mappedTypeName = mapping.MappedTypeName;
+            if(mappedTypeName == "Object")
+            {
+                mappedTypeName = "UnityObject";
+            }
+
+            if(!string.IsNullOrEmpty(readMethodBody))
+            {
+                sb.AppendFormat(ReadFromMethodTemplate, readMethodBody, mappedTypeName);
+            }
+            if(!string.IsNullOrEmpty(writeMethodBody))
+            {
+                sb.AppendFormat(WriteToMethodTemplate, writeMethodBody, mappedTypeName);
+            }
+            if(!string.IsNullOrEmpty(getDepsMethodBody))
+            {
+                sb.AppendFormat(GetDepsMethodTemplate, getDepsFromMethodBody);
+            }
+            if(!string.IsNullOrEmpty(getDepsFromMethodBody))
+            {
+                sb.AppendFormat(GetDepsFromMethodTemplate, getDepsMethodBody, mappedTypeName);
+            }
+            
+            sb.AppendFormat(ImplicitOperatorsTemplate, mappedTypeName, mapping.PersistentTypeName);
 
             return sb.ToString();
         }
@@ -322,8 +343,8 @@ namespace Battlehub.RTSaveLoad2
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
-                sb.AppendFormat("{0} = uo.{1};", prop.PersistentName, prop.MappedName);
-                sb.Append(END);
+                sb.AppendFormat("{0} = uo.{1};" , prop.PersistentName, prop.MappedName);
+                sb.Append(BR + TAB3);
             }
 
             return sb.ToString();
@@ -337,7 +358,7 @@ namespace Battlehub.RTSaveLoad2
             {
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
                 sb.AppendFormat("uo.{0} = {1};", prop.PersistentName, prop.MappedName);
-                sb.Append(END);
+                sb.Append(BR + TAB3);
             }
 
             return sb.ToString();
@@ -354,12 +375,12 @@ namespace Battlehub.RTSaveLoad2
                     if (prop.UseSurrogate)
                     {
                         sb.AppendFormat("AddSurrogateDeps({0}, context);", prop.PersistentName);
-                        sb.Append(END);
+                        sb.Append(BR + TAB3);
                     }
                     else if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
                     {
                         sb.AppendFormat("AddDep({0}, context);", prop.PersistentName);
-                        sb.Append(END);
+                        sb.Append(BR + TAB3);
                     }
                 }    
             }
@@ -377,12 +398,12 @@ namespace Battlehub.RTSaveLoad2
                     if (prop.UseSurrogate)
                     {
                         sb.AppendFormat("AddSurrogateDeps(uo.{0}, context);", prop.MappedName);
-                        sb.Append(END);
+                        sb.Append(BR + TAB3);
                     }
                     if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
                     {
                         sb.AppendFormat("AddDep(uo.{0}, context);", prop.MappedName);
-                        sb.Append(END);
+                        sb.Append(END + TAB3);
                     }
                 }
             }
@@ -439,9 +460,12 @@ namespace Battlehub.RTSaveLoad2
                         }
                         else
                         {
-                            if (!namespaces.Contains(propertyMapping.PersistentNamespace))
+                            if(!type.FullName.Contains("System"))
                             {
-                                namespaces.Add(propertyMapping.PersistentNamespace);
+                                if (!namespaces.Contains(propertyMapping.PersistentNamespace))
+                                {
+                                    namespaces.Add(propertyMapping.PersistentNamespace);
+                                }
                             }
                         }
                     }
@@ -449,7 +473,7 @@ namespace Battlehub.RTSaveLoad2
             }
             foreach (string ns in namespaces)
             {
-                sb.Append("using " + ns + ";");
+                sb.Append("using " + ns + ";" + BR);
             }
 
             return sb.ToString();
