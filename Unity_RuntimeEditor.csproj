@@ -703,8 +703,10 @@
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\PersistentSurrogate.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\RTSL2Version.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts\TypeModelCreator.cs" />
-    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts_Auto\PersistentClasses\UnityEngine_Battlehub_SL2_PersistentGameObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts_Auto\PersistentClasses\System_Battlehub_SL2_PersistentObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts_Auto\PersistentClasses\UnityEngine_Battlehub_SL2_PersistentMeshFilter.cs" />
     <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts_Auto\PersistentClasses\UnityEngine_Battlehub_SL2_PersistentObject.cs" />
+    <Compile Include="Assets\Battlehub\RTSaveLoad2\Scripts_Auto\TypeModelCreator.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ExternalDragItem.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\ListBoxDemo.cs" />
     <Compile Include="Assets\Battlehub\UIControls\Demo\Scripts\Rotation.cs" />

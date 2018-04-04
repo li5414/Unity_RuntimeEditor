@@ -6,7 +6,8 @@ namespace Battlehub.RTSaveLoad2
     [Serializable]
     public class PersistentPropertyMapping
     {
-        public bool IsEnabled;
+        //CodeGen will ignore this PersistentPropertyMapping if IsEnabled is false
+        public bool IsEnabled;        
         public bool IsProperty;
         public int PersistentTag;
 
@@ -30,17 +31,22 @@ namespace Battlehub.RTSaveLoad2
             get { return Type.GetType(MappedAssemblyQualifiedName); }
         }
 
+        //Namespace, typename and persistent field name
         public string PersistentNamespace;
-        public string PersistentTypeName;
+        public string PersistentTypeName; 
         public string PersistentName;
 
+        //Namespace, typename and name of the property (name of the field) which is member of mapped type
         public string MappedAssemblyName;
         public string MappedNamespace;
         public string MappedTypeName;
         public string MappedName;
 
-        public bool UseSurrogate;
-        public bool HasDependenciesOrIsDependencyItself;
+        //True if property (or field) is non-unityobject persistent class
+        public bool UseSurrogate; 
+
+        //True if property (or field) is unity object or non-unity object with dependencies
+        public bool HasDependenciesOrIsDependencyItself; 
     }
 
     [Serializable]
@@ -84,6 +90,9 @@ namespace Battlehub.RTSaveLoad2
         public string PersistentBaseNamespace;
         public string PersistentBaseTypeName;
 
+        /// <summary>
+        /// Array of subclasses which is used by CodeGen to generate code of TypeModelCreator
+        /// </summary>
         public PersistentSubclass[] Subclasses;
         public PersistentPropertyMapping[] PropertyMappings;
 

@@ -88,7 +88,7 @@ namespace Battlehub.RTSaveLoad2
 
         protected void RegisterTypes(RuntimeTypeModel model)
         {
-            model.Add(typeof(Vector3), false).SetSurrogate(typeof(Vector3Surrogate));
+           // model.Add(typeof(Vector3), false).SetSurrogate(typeof(Vector3Surrogate));
             //model.Add(typeof(TestData1), true).AddSubType(500, typeof(TestData2))
         }
     }

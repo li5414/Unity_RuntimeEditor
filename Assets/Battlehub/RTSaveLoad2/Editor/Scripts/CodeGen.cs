@@ -8,11 +8,26 @@ using UnityObject = UnityEngine.Object;
 
 namespace Battlehub.RTSaveLoad2
 {
+    /// <summary>
+    /// This class is responsible for code generation of persistent objects (surrogates) 
+    /// </summary>
     public class CodeGen
     {
+        /// <summary>
+        /// Automatically generated fields have ProtoMember tag offset = 256. 1 - 256 is reserved for user defined fields.
+        /// User defined fields should be located in auto-generated partial class.
+        /// </summary>
         private const int AutoFieldTagOffset = 256;
+
+        /// <summary>
+        /// Subclass offset which is used in TypeModel creator code. 
+        /// (1024 value means, that there is 1024 - 256 - 1 = 767 slots available for auto-generated fields
+        /// </summary>
         private const int SubclassOffset = 1024;
 
+        /// <summary>
+        /// For text formatting
+        /// </summary>
         private static readonly string BR = Environment.NewLine;
         private static readonly string END = BR + BR;
         private static readonly string TAB = "    ";
@@ -20,12 +35,17 @@ namespace Battlehub.RTSaveLoad2
         private static readonly string TAB3 = "            ";
         private static readonly string SEMICOLON = ";";
 
+        /// <summary>
+        /// Default namespaces which will be included in all auto-generated classes
+        /// </summary>
         private static string[] DefaultNamespaces =
         {
             "System.Collections.Generic",
             "ProtoBuf",
+            "Battlehub.RTSaveLoad2"
         };
 
+        //Templates
         private static readonly string PersistentClassTemplate =
             "{0}"                                               + BR + 
             "using UnityObject = UnityEngine.Object;"           + BR +
@@ -47,30 +67,30 @@ namespace Battlehub.RTSaveLoad2
             "{{"                                                + BR + TAB2 +
             "    base.ReadFrom(obj);"                           + BR + TAB2 +
             "    {1} uo = ({1})obj;"                            + BR + TAB2 +
-            "    {0}"                                           + BR + TAB2 +
-            "}}"                                                + END + TAB2;
+            "{0}"                                               + 
+            "}}"                                                + END + TAB2; 
 
         private static readonly string WriteToMethodTemplate =
             "public override object WriteTo(object obj)"        + BR + TAB2 +
             "{{"                                                + BR + TAB2 +
             "    obj = base.WriteTo(obj);"                      + BR + TAB2 +
             "    {1} uo = ({1})obj;"                            + BR + TAB2 +
-            "    {0}"                                           +
-            "return obj;"                                       + BR + TAB2 +
+            "{0}"                                               +
+            "    return obj;"                                   + BR + TAB2 +
             "}}"                                                + END + TAB2;
 
         private static readonly string GetDepsMethodTemplate =
             "protected override void GetDepsImpl(GetDepsContext context)"               + BR + TAB2 +
-            "{{"                                                                        + BR +
-            "    {0}"                                                                   + BR + TAB2 +
+            "{{"                                                                        + BR + TAB2 +
+            "{0}"                                                                       + 
             "}}"                                                                        + END + TAB2;
 
         private static readonly string GetDepsFromMethodTemplate =
-            "protected override void GetDepsFromImpl(object obj, GetDepsFromContext context)"   + BR + TAB2 +
-            "{{"                                                                                + BR + TAB2 +
-            "     {1} uo = ({1})obj;"                                                           + BR +
-            "     {0}"                                                                          + BR + TAB2 +
-            "}}"                                                                                + END + TAB2;
+            "protected override void GetDepsFromImpl(object obj, GetDepsFromContext context)"  + BR + TAB2 +
+            "{{"                                                                               + BR + TAB2 +
+            "    {1} uo = ({1})obj;"                                                           + BR + TAB2 +
+            "{0}"                                                                              + 
+            "}}"                                                                               + END + TAB2;
 
         private static readonly string ImplicitOperatorsTemplate =
             "public static implicit operator {0}({1} surrogate)"                                + BR + TAB2 +
@@ -86,6 +106,7 @@ namespace Battlehub.RTSaveLoad2
             "}}"                                                                                + BR;
 
         private static readonly string TypeModelCreatorTemplate =
+            "using ProtoBuf.Meta;"                                                      + BR +
             "{0}"                                                                       + BR +
             "using UnityObject = UnityEngine.Object;"                                   + BR +
             "namespace Battlehub.RTSaveLoad2"                                           + BR +
@@ -108,6 +129,9 @@ namespace Battlehub.RTSaveLoad2
         private static readonly string SetSerializationSurrogate = 
             ".SetSurrogate(typeof({0}));"                                               + BR ;
 
+        /// <summary>
+        /// Short names for primitive types
+        /// </summary>
         private static Dictionary<Type, string> m_primitiveNames = new Dictionary<Type, string>
         {
             { typeof(string), "string" },
@@ -138,22 +162,43 @@ namespace Battlehub.RTSaveLoad2
             { typeof(bool[]), "bool[]" },
         };
 
+        /// <summary>
+        /// Get all public properties with getter and setter
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public PropertyInfo[] GetProperties(Type type)
         {
             return GetAllProperties(type).Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null).ToArray();
         }
 
+        /// <summary>
+        /// Get all public instance declared only properties (excluding indexers)
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public PropertyInfo[] GetAllProperties(Type type)
         {
             return type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(p => p.GetIndexParameters().Length == 0).ToArray();
         }
 
+        /// <summary>
+        /// Get all public instance declared only fields
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public FieldInfo[] GetFields(Type type)
         {
             return type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         }
 
 #warning Generate empty Surrogates for all surrogate types, even if they was not selected
+
+        /// <summary>
+        /// Get type which is not subclass of UnityObject and "suitable" to be persistent object
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public Type GetSurrogateType(Type type)
         {
             if (type.IsArray)
@@ -174,6 +219,11 @@ namespace Battlehub.RTSaveLoad2
             return null;
         }
 
+        /// <summary>
+        /// Returns true if type has fields or properties referencing UnityObjects. Search is done recursively.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public bool HasDependencies(Type type)
         {
             return HasDependenciesRecursive(type, new HashSet<Type>());
@@ -236,6 +286,11 @@ namespace Battlehub.RTSaveLoad2
             return false;
         }
 
+        /// <summary>
+        /// Returns type name (including names of nested types)
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public string TypeName(Type type)
         {
             if (type.DeclaringType == null)
@@ -244,6 +299,7 @@ namespace Battlehub.RTSaveLoad2
             return TypeName(type.DeclaringType) + "+" + type.Name;
         }
 
+        //Generate C# code of TypeModelCreator for selected mappings
         public string CreateTypeModelCreator(PersistentClassMapping[] mappings)
         {
             string usings = CreateUsings(mappings);
@@ -258,7 +314,10 @@ namespace Battlehub.RTSaveLoad2
             for(int m = 0; m < mappings.Length; ++m)
             {
                 PersistentClassMapping mapping = mappings[m];
-
+                if(mapping == null)
+                {
+                    continue;
+                }
                 string endOfLine = string.Empty;
                 if(mapping.Subclasses != null && mapping.Subclasses.Length > 0)
                 {
@@ -297,8 +356,17 @@ namespace Battlehub.RTSaveLoad2
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generate C# code of persistent class using persistent class mapping
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <returns></returns>
         public string CreatePersistentClass(PersistentClassMapping mapping)
         {
+            if(mapping == null)
+            {
+                throw new ArgumentNullException("mapping");
+            }
             string usings = CreateUsings(mapping);
             string ns = mapping.PersistentNamespace;
             string className = mapping.PersistentTypeName;
@@ -319,7 +387,15 @@ namespace Battlehub.RTSaveLoad2
                 Type repacementType = GetReplacementType(prop.MappedType);
                 if(repacementType != null)
                 {
-                    typeName = repacementType.Name;
+                    string primitiveTypeName;
+                    if (m_primitiveNames.TryGetValue(repacementType, out primitiveTypeName))
+                    {
+                        typeName = primitiveTypeName;
+                    }
+                    else
+                    {
+                        typeName = repacementType.Name;
+                    }
                 }
                 else
                 {
@@ -361,11 +437,11 @@ namespace Battlehub.RTSaveLoad2
             }
             if(!string.IsNullOrEmpty(getDepsMethodBody))
             {
-                sb.AppendFormat(GetDepsMethodTemplate, getDepsFromMethodBody);
+                sb.AppendFormat(GetDepsMethodTemplate, getDepsMethodBody);
             }
             if(!string.IsNullOrEmpty(getDepsFromMethodBody))
             {
-                sb.AppendFormat(GetDepsFromMethodTemplate, getDepsMethodBody, mappedTypeName);
+                sb.AppendFormat(GetDepsFromMethodTemplate, getDepsFromMethodBody, mappedTypeName);
             }
             
             sb.AppendFormat(ImplicitOperatorsTemplate, mappedTypeName, mapping.PersistentTypeName);
@@ -379,9 +455,20 @@ namespace Battlehub.RTSaveLoad2
 
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
+                sb.Append(TAB);
+
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
-                sb.AppendFormat("{0} = uo.{1};" , prop.PersistentName, prop.MappedName);
-                sb.Append(BR + TAB3);
+                if(prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                {
+                    //generate code which will convert unity object to identifier
+                    sb.AppendFormat("{0} = ToId(uo.{1});", prop.PersistentName, prop.MappedName);
+                }
+                else
+                {
+                    sb.AppendFormat("{0} = uo.{1};", prop.PersistentName, prop.MappedName);
+                }
+
+                sb.Append(BR + TAB2);
             }
 
             return sb.ToString();
@@ -393,14 +480,31 @@ namespace Battlehub.RTSaveLoad2
 
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
+                sb.Append(TAB);
+
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
-                sb.AppendFormat("uo.{0} = {1};", prop.PersistentName, prop.MappedName);
-                sb.Append(BR + TAB3);
+                
+                if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                {
+                    //generate code which will convert identifier to unity object
+                    sb.AppendFormat("uo.{0} = FromId<{2}>({1});", prop.MappedName, prop.PersistentName, prop.MappedTypeName);
+                }
+                else
+                {
+                    sb.AppendFormat("uo.{0} = {1};", prop.MappedName, prop.PersistentName);
+                }
+
+                sb.Append(BR + TAB2);
             }
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generate method which will populate context with dependencies (referenced unity object identifiers)
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <returns></returns>
         private string CreateDepsMethodBody(PersistentClassMapping mapping)
         {
             StringBuilder sb = new StringBuilder();
@@ -411,19 +515,26 @@ namespace Battlehub.RTSaveLoad2
                 {
                     if (prop.UseSurrogate)
                     {
+                        sb.Append(TAB);
                         sb.AppendFormat("AddSurrogateDeps({0}, context);", prop.PersistentName);
-                        sb.Append(BR + TAB3);
+                        sb.Append(BR + TAB2);
                     }
                     else if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
                     {
+                        sb.Append(TAB);
                         sb.AppendFormat("AddDep({0}, context);", prop.PersistentName);
-                        sb.Append(BR + TAB3);
+                        sb.Append(BR + TAB2);
                     }
                 }    
             }
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generate method which will extract and populate context with dependencies (referenced unity objects)
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <returns></returns>
         private string CreateDepsFromMethodBody(PersistentClassMapping mapping)
         {
             StringBuilder sb = new StringBuilder();
@@ -434,13 +545,15 @@ namespace Battlehub.RTSaveLoad2
                 {
                     if (prop.UseSurrogate)
                     {
+                        sb.Append(TAB);
                         sb.AppendFormat("AddSurrogateDeps(uo.{0}, context);", prop.MappedName);
-                        sb.Append(BR + TAB3);
+                        sb.Append(BR + TAB2);
                     }
                     if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
                     {
+                        sb.Append(TAB);
                         sb.AppendFormat("AddDep(uo.{0}, context);", prop.MappedName);
-                        sb.Append(END + TAB3);
+                        sb.Append(BR + TAB2);
                     }
                 }
             }
@@ -455,6 +568,10 @@ namespace Battlehub.RTSaveLoad2
             for (int m = 0; m < mappings.Length; ++m)
             {
                 PersistentClassMapping mapping = mappings[m];
+                if (mapping == null)
+                {
+                    continue;
+                }
 
                 for (int i = 0; i < DefaultNamespaces.Length; ++i)
                 {
