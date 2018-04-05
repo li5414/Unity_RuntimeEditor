@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentRectOffset : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator RectOffset(PersistentRectOffset surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (RectOffset)surrogate.WriteTo(new RectOffset());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentRectOffset(RectOffset obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentRectOffset surrogate = new PersistentRectOffset();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

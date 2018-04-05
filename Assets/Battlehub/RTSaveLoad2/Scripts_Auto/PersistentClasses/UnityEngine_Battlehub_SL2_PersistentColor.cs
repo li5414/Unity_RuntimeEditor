@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentColor : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator Color(PersistentColor surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (Color)surrogate.WriteTo(new Color());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentColor(Color obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentColor surrogate = new PersistentColor();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

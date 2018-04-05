@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentJointDrive : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator JointDrive(PersistentJointDrive surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (JointDrive)surrogate.WriteTo(new JointDrive());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentJointDrive(JointDrive obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentJointDrive surrogate = new PersistentJointDrive();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

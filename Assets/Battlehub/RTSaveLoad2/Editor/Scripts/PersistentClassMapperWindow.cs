@@ -59,14 +59,24 @@ namespace Battlehub.RTSaveLoad2
         private string m_mappingStoragePath;
         private string m_mappingTemplateStoragePath;
         private CodeGen m_codeGen;
+        private bool m_enableAll;
 
-        public PersistentClassMapperGUI(CodeGen codeGen, string mappingStorage, string mappingTemplateStorage, Type baseType, Type[] types, string[] groupNames, string groupLabel, Func<Type, string, bool> groupFilter)
+        public PersistentClassMapperGUI(CodeGen codeGen, 
+            string mappingStorage, 
+            string mappingTemplateStorage, 
+            Type baseType, 
+            Type[] types, 
+            bool enableAll,
+            string[] groupNames,
+            string groupLabel, 
+            Func<Type, string, bool> groupFilter)
         {
             m_mappingStoragePath = mappingStorage;
             m_mappingTemplateStoragePath = mappingTemplateStorage;
             m_codeGen = codeGen;
             m_baseType = baseType;
             m_types = types;
+            m_enableAll = enableAll;
             m_groupNames = groupNames;
             m_groupLabel = groupLabel;
             m_groupFilter = groupFilter;
@@ -78,6 +88,10 @@ namespace Battlehub.RTSaveLoad2
             {
                 Initialize();
                 LoadMappings();
+                if(m_enableAll)
+                {
+                    SelectAll();
+                }
             }
 
             EditorGUILayout.Separator();
@@ -103,6 +117,7 @@ namespace Battlehub.RTSaveLoad2
 
             EditorGUI.BeginChangeCheck();
 
+            EditorGUI.BeginDisabledGroup(m_enableAll);
             if (IsAllSelected)
             {
                 GUILayout.Toggle(true, "Select All");
@@ -127,15 +142,18 @@ namespace Battlehub.RTSaveLoad2
                     SelectAll();
                 }
             }
-
+            EditorGUI.EndDisabledGroup();
             EditorGUILayout.Separator();
-
             EditorGUI.BeginChangeCheck();
             GUILayout.Button("Reset");
             if (EditorGUI.EndChangeCheck())
             {
                 UnselectAll();
                 LoadMappings();
+                if (m_enableAll)
+                {
+                    SelectAll();
+                }
             }
 
             EditorGUILayout.Separator();
@@ -178,10 +196,10 @@ namespace Battlehub.RTSaveLoad2
             {
                 m_mappings[i].IsEnabled = true;
                 TryExpandType(i);
-                for (int j = 0; j < m_mappings[i].IsPropertyMappingEnabled.Length; ++j)
-                {
-                    m_mappings[i].IsPropertyMappingEnabled[j] = true;
-                }
+                //for (int j = 0; j < m_mappings[i].IsPropertyMappingEnabled.Length; ++j)
+                //{
+                //    m_mappings[i].IsPropertyMappingEnabled[j] = true;
+                //}
             }
             m_selectedCount = m_mappings.Length;
         }
@@ -193,13 +211,13 @@ namespace Battlehub.RTSaveLoad2
                 m_mappings[i].IsEnabled = false;
                 TryExpandType(i);
 
-                if (m_mappings[i].IsPropertyMappingEnabled != null)
-                {
-                    for (int j = 0; j < m_mappings[i].IsPropertyMappingEnabled.Length; ++j)
-                    {
-                        m_mappings[i].IsPropertyMappingEnabled[j] = false;
-                    }
-                }
+                //if (m_mappings[i].IsPropertyMappingEnabled != null)
+                //{
+                //    for (int j = 0; j < m_mappings[i].IsPropertyMappingEnabled.Length; ++j)
+                //    {
+                //        m_mappings[i].IsPropertyMappingEnabled[j] = false;
+                //    }
+                //}
             }
             m_selectedCount = 0;
         }
@@ -340,6 +358,11 @@ namespace Battlehub.RTSaveLoad2
                     continue;
                 }
 
+                if(m_types[typeIndex].BaseType == null)
+                {
+                    continue;
+                }
+
                 PersistentClassMapping classMapping;
                 if (!existingMappings.TryGetValue(m_types[typeIndex].FullName, out classMapping))
                 {
@@ -388,13 +411,13 @@ namespace Battlehub.RTSaveLoad2
                 }
                 classMapping.MappedAssemblyName = m_types[typeIndex].Assembly.FullName.Split(',')[0];
                 classMapping.MappedNamespace = m_types[typeIndex].Namespace;
-                classMapping.MappedTypeName = m_types[typeIndex].Name;
+                classMapping.MappedTypeName = m_codeGen.TypeName(m_types[typeIndex]);
                     
                 classMapping.PersistentNamespace = PersistentClassMapping.ToPersistentNamespace(classMapping.MappedNamespace);
-                classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(m_types[typeIndex].Name);
+                classMapping.PersistentTypeName = PersistentClassMapping.ToPersistentName(m_codeGen.TypeName(m_types[typeIndex]));
 
                 Type baseType = GetEnabledBaseType(typeIndex);
-                if (baseType == null)
+                if (baseType == null || baseType == typeof(object))
                 {
                     classMapping.PersistentBaseNamespace = typeof(PersistentSurrogate).Namespace;
                     classMapping.PersistentBaseTypeName = typeof(PersistentSurrogate).Name;
@@ -473,7 +496,9 @@ namespace Battlehub.RTSaveLoad2
                 GUILayout.Space(5 + 18 * (indent - 1));
                 EditorGUI.BeginChangeCheck();
 
+                EditorGUI.BeginDisabledGroup(m_enableAll);
                 m_mappings[typeIndex].IsEnabled = EditorGUILayout.Toggle(m_mappings[typeIndex].IsEnabled, GUILayout.MaxWidth(15));
+                EditorGUI.EndDisabledGroup();
 
                 isSelectionChanged = EditorGUI.EndChangeCheck();
 
@@ -491,6 +516,7 @@ namespace Battlehub.RTSaveLoad2
                 isExpandedChanged = EditorGUI.EndChangeCheck();
             }
             EditorGUILayout.EndHorizontal();
+       
 
             if (isExpandedChanged || isSelectionChanged)
             {
@@ -586,14 +612,10 @@ namespace Battlehub.RTSaveLoad2
                         EditorGUILayout.EndHorizontal();
                     }
 
-
-
-
                     EditorGUILayout.BeginHorizontal();
                     {
                         GUILayout.Space(5 + 18 * indent);
                         GUILayout.Button("Edit", GUILayout.Width(100));
-
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
@@ -999,6 +1021,7 @@ namespace Battlehub.RTSaveLoad2
                     ClassMappingsStoragePath, 
                     typeof(UnityObject), 
                     m_uoTypes, 
+                    false,
                     assemblies.Select(a => a == null ? "All" : a.GetName().Name).ToArray(),
                     "Assembly",
                     (type, groupName) => type.Assembly.GetName().Name == groupName);
@@ -1015,6 +1038,7 @@ namespace Battlehub.RTSaveLoad2
                     SurrogatesMappingsTemplatePath, 
                     typeof(object),
                     types, 
+                    true,
                     new[] { "All" }.Union(declaredIn.Where(t => t.Value.Count > 0).Select(t => t.Key)).ToArray(), 
                     "Declaring Type",
                     (type, groupName) => declaredIn[groupName].Contains(type));

@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentGradient : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator Gradient(PersistentGradient surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (Gradient)surrogate.WriteTo(new Gradient());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentGradient(Gradient obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentGradient surrogate = new PersistentGradient();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

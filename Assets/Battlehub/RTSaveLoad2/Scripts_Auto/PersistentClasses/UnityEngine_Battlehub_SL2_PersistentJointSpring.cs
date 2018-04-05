@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentJointSpring : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator JointSpring(PersistentJointSpring surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (JointSpring)surrogate.WriteTo(new JointSpring());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentJointSpring(JointSpring obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentJointSpring surrogate = new PersistentJointSpring();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

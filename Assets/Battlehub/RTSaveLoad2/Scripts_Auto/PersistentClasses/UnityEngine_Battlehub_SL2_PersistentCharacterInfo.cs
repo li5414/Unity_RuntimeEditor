@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentCharacterInfo : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator CharacterInfo(PersistentCharacterInfo surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (CharacterInfo)surrogate.WriteTo(new CharacterInfo());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentCharacterInfo(CharacterInfo obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentCharacterInfo surrogate = new PersistentCharacterInfo();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

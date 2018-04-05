@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentKeyframe : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator Keyframe(PersistentKeyframe surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (Keyframe)surrogate.WriteTo(new Keyframe());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentKeyframe(Keyframe obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentKeyframe surrogate = new PersistentKeyframe();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

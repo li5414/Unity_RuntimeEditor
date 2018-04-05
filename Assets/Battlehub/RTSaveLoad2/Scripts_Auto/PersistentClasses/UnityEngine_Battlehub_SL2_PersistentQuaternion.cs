@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentQuaternion : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator Quaternion(PersistentQuaternion surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (Quaternion)surrogate.WriteTo(new Quaternion());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentQuaternion(Quaternion obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentQuaternion surrogate = new PersistentQuaternion();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

@@ -192,8 +192,6 @@ namespace Battlehub.RTSaveLoad2
             return type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         }
 
-#warning Generate empty Surrogates for all surrogate types, even if they was not selected
-
         /// <summary>
         /// Get type which is not subclass of UnityObject and "suitable" to be persistent object
         /// </summary>
@@ -207,12 +205,14 @@ namespace Battlehub.RTSaveLoad2
             }
 
             if (!type.IsSubclassOf(typeof(UnityObject)) &&
-                    type != typeof(UnityObject) &&
-                   !type.IsEnum &&
-                   !type.IsGenericType &&
-                   !type.IsArray &&
-                   !type.IsPrimitive &&
-                    type != typeof(string))
+                 type != typeof(UnityObject) &&
+                !type.IsEnum &&
+                !type.IsGenericType &&
+                !type.IsArray &&
+                !type.IsPrimitive &&
+                (type.IsPublic || type.IsNestedPublic) && 
+                (type.IsValueType || type.GetConstructor(Type.EmptyTypes) != null) &&
+                type != typeof(string))
             {
                 return type;
             }
@@ -299,6 +299,16 @@ namespace Battlehub.RTSaveLoad2
             return TypeName(type.DeclaringType) + "+" + type.Name;
         }
 
+        public string PreparePersistentTypeName(string typeName)
+        {
+            return typeName.Replace("+", "Nested");
+        }
+
+        public string PrepareMappedTypeName(string typeName)
+        {
+            return typeName.Replace("+", ".");
+        }
+
         //Generate C# code of TypeModelCreator for selected mappings
         public string CreateTypeModelCreator(PersistentClassMapping[] mappings)
         {
@@ -324,13 +334,22 @@ namespace Battlehub.RTSaveLoad2
                     endOfLine = CreateAddSubtypesBody(mapping);
                 }
 
-                if (GetSurrogateType(Type.GetType(mapping.MappedAssemblyQualifiedName)) != null)
+                Type mappingType = Type.GetType(mapping.MappedAssemblyQualifiedName);
+                if(mappingType == null)
                 {
-                    endOfLine += string.Format(SetSerializationSurrogate, mapping.PersistentTypeName);
+                    Debug.LogWarning("Type " + mapping.MappedAssemblyQualifiedName + " was not found");
+                }
+                else
+                {
+                    if (GetSurrogateType(mappingType) != null)
+                    {
+                        endOfLine += string.Format(SetSerializationSurrogate, PreparePersistentTypeName(mapping.PersistentTypeName));
+                    }
                 }
                 
+                
                 endOfLine += SEMICOLON + BR + TAB3 + TAB;
-                sb.AppendFormat(AddTypeTemplate, mapping.PersistentTypeName, endOfLine);
+                sb.AppendFormat(AddTypeTemplate, PreparePersistentTypeName(mapping.PersistentTypeName), endOfLine);
             }
  
             return sb.ToString();
@@ -356,6 +375,7 @@ namespace Battlehub.RTSaveLoad2
             return sb.ToString();
         }
 
+
         /// <summary>
         /// Generate C# code of persistent class using persistent class mapping
         /// </summary>
@@ -369,8 +389,9 @@ namespace Battlehub.RTSaveLoad2
             }
             string usings = CreateUsings(mapping);
             string ns = mapping.PersistentNamespace;
-            string className = mapping.PersistentTypeName;
-            string baseClassName = mapping.PersistentBaseTypeName;
+            string className = PreparePersistentTypeName(mapping.PersistentTypeName);
+            string baseClassName = mapping.PersistentBaseTypeName != null ?
+                 PreparePersistentTypeName(mapping.PersistentBaseTypeName) : null;
             string body = mapping.IsEnabled ? CreatePersistentClassBody(mapping) : string.Empty;
             return string.Format(PersistentClassTemplate, usings, ns, className, baseClassName, body);
         }
@@ -382,6 +403,10 @@ namespace Battlehub.RTSaveLoad2
             for(int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                if(!prop.IsEnabled)
+                {
+                    continue;
+                }
 
                 string typeName;
                 Type repacementType = GetReplacementType(prop.MappedType);
@@ -394,7 +419,7 @@ namespace Battlehub.RTSaveLoad2
                     }
                     else
                     {
-                        typeName = repacementType.Name;
+                        typeName = PrepareMappedTypeName(repacementType.Name);
                     }
                 }
                 else
@@ -406,7 +431,7 @@ namespace Battlehub.RTSaveLoad2
                     }
                     else
                     {
-                        typeName = prop.PersistentTypeName;
+                        typeName = PreparePersistentTypeName(prop.PersistentTypeName);
                     }
                 }
 
@@ -421,7 +446,7 @@ namespace Battlehub.RTSaveLoad2
             string getDepsMethodBody = CreateDepsMethodBody(mapping);
             string getDepsFromMethodBody = CreateDepsFromMethodBody(mapping);
 
-            string mappedTypeName = mapping.MappedTypeName;
+            string mappedTypeName = PrepareMappedTypeName(mapping.MappedTypeName);
             if(mappedTypeName == "Object")
             {
                 mappedTypeName = "UnityObject";
@@ -444,7 +469,7 @@ namespace Battlehub.RTSaveLoad2
                 sb.AppendFormat(GetDepsFromMethodTemplate, getDepsFromMethodBody, mappedTypeName);
             }
             
-            sb.AppendFormat(ImplicitOperatorsTemplate, mappedTypeName, mapping.PersistentTypeName);
+            sb.AppendFormat(ImplicitOperatorsTemplate, mappedTypeName, PreparePersistentTypeName(mapping.PersistentTypeName));
 
             return sb.ToString();
         }
@@ -455,9 +480,14 @@ namespace Battlehub.RTSaveLoad2
 
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
+                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                if (!prop.IsEnabled)
+                {
+                    continue;
+                }
+
                 sb.Append(TAB);
 
-                PersistentPropertyMapping prop = mapping.PropertyMappings[i];
                 if(prop.MappedType.IsSubclassOf(typeof(UnityObject)))
                 {
                     //generate code which will convert unity object to identifier
@@ -480,14 +510,18 @@ namespace Battlehub.RTSaveLoad2
 
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
-                sb.Append(TAB);
-
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
-                
+                if (!prop.IsEnabled)
+                {
+                    continue;
+                }
+
+                sb.Append(TAB);
+ 
                 if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
                 {
                     //generate code which will convert identifier to unity object
-                    sb.AppendFormat("uo.{0} = FromId<{2}>({1});", prop.MappedName, prop.PersistentName, prop.MappedTypeName);
+                    sb.AppendFormat("uo.{0} = FromId<{2}>({1});", prop.MappedName, prop.PersistentName, PrepareMappedTypeName(prop.MappedTypeName));
                 }
                 else
                 {
@@ -511,7 +545,12 @@ namespace Battlehub.RTSaveLoad2
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
-                if(prop.HasDependenciesOrIsDependencyItself)
+                if (!prop.IsEnabled)
+                {
+                    continue;
+                }
+
+                if (prop.HasDependenciesOrIsDependencyItself)
                 {
                     if (prop.UseSurrogate)
                     {
@@ -541,6 +580,10 @@ namespace Battlehub.RTSaveLoad2
             for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
             {
                 PersistentPropertyMapping prop = mapping.PropertyMappings[i];
+                if (!prop.IsEnabled)
+                {
+                    continue;
+                }
                 if (prop.HasDependenciesOrIsDependencyItself)
                 {
                     if (prop.UseSurrogate)
@@ -598,6 +641,10 @@ namespace Battlehub.RTSaveLoad2
                     for (int i = 0; i < mapping.PropertyMappings.Length; ++i)
                     {
                         PersistentPropertyMapping propertyMapping = mapping.PropertyMappings[i];
+                        if (!propertyMapping.IsEnabled)
+                        {
+                            continue;
+                        }
                         if (!namespaces.Contains(propertyMapping.MappedNamespace))
                         {
                             namespaces.Add(propertyMapping.MappedNamespace);

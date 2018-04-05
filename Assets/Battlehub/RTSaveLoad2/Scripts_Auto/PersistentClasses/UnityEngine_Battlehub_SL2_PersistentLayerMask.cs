@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentLayerMask : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator LayerMask(PersistentLayerMask surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (LayerMask)surrogate.WriteTo(new LayerMask());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentLayerMask(LayerMask obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentLayerMask surrogate = new PersistentLayerMask();
             surrogate.ReadFrom(obj);
             return surrogate;
         }

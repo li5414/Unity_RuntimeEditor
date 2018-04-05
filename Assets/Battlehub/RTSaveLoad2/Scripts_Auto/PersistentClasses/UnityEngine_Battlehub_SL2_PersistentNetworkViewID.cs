@@ -8,16 +8,16 @@ using UnityObject = UnityEngine.Object;
 namespace UnityEngine.Battlehub.SL2
 {
     [ProtoContract(AsReferenceDefault = true)]
-    public class PersistentObject : PersistentSurrogate
+    public class PersistentNetworkViewID : PersistentSurrogate
     {
-        public static implicit operator UnityObject(PersistentObject surrogate)
+        public static implicit operator NetworkViewID(PersistentNetworkViewID surrogate)
         {
-            return (UnityObject)surrogate.WriteTo(new UnityObject());
+            return (NetworkViewID)surrogate.WriteTo(new NetworkViewID());
         }
         
-        public static implicit operator PersistentObject(UnityObject obj)
+        public static implicit operator PersistentNetworkViewID(NetworkViewID obj)
         {
-            PersistentObject surrogate = new PersistentObject();
+            PersistentNetworkViewID surrogate = new PersistentNetworkViewID();
             surrogate.ReadFrom(obj);
             return surrogate;
         }
