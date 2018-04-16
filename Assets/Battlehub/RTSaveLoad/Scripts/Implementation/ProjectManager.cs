@@ -222,12 +222,21 @@ namespace Battlehub.RTSaveLoad
             UnloadAssetBundles();
             DestroyDynamicResources();
 
-            bool metaOnly = false;
-            int[] exceptTypes = { ProjectItemTypes.Scene };
-
-            m_project.LoadProject(projectName, loadProjectCompleted =>
+            IJob job = Dependencies.Job;
+            job.Submit(doneCallback =>
             {
-                m_root = loadProjectCompleted.Data;
+                bool metaOnly = false;
+                int[] exceptTypes = { ProjectItemTypes.Scene };
+                m_project.LoadProject(projectName, loadProjectCompleted =>
+                {
+                    m_root = loadProjectCompleted.Data;
+                    //System.Threading.Thread.Sleep(5000);
+                    doneCallback();
+
+                }, metaOnly, exceptTypes);
+            },
+            () =>
+            {
                 if (m_root == null)
                 {
                     m_root = new ProjectRoot();
@@ -253,15 +262,26 @@ namespace Battlehub.RTSaveLoad
                     {
                         m_root.Item.Children = new List<ProjectItem>();
                     }
-
                     ProjectItem existingTemplateFolder = m_root.Item;//.Children.Where(item => item.Name == ProjectMangerConstants.PROJECT_TEMPLATE_FOLDER).FirstOrDefault();
-                    ContinueLoadingProject(callback, newTemplateFolder, existingTemplateFolder);
-                  
+                    ContinueLoadingProject(() =>
+                    {
+                        if (callback != null)
+                        {
+                            callback(m_root.Item);
+                        }
+                        if (ProjectLoaded != null)
+                        {
+                            ProjectLoaded(this, new ProjectManagerEventArgs(m_root.Item));
+                        }
+                    },
+                    newTemplateFolder,
+                    existingTemplateFolder);
                 }
-            }, metaOnly, exceptTypes);
+            });
         }
 
-        private void ContinueLoadingProject(ProjectManagerCallback<ProjectItem> callback, ProjectItem newTemplateFolder, ProjectItem existingTemplateFolder)
+
+        private void ContinueLoadingProject(ProjectManagerCallback callback, ProjectItem newTemplateFolder, ProjectItem existingTemplateFolder)
         {
             List<ProjectItem> itemsToDelete = new List<ProjectItem>();
             if (existingTemplateFolder != null)
@@ -288,7 +308,7 @@ namespace Battlehub.RTSaveLoad
             });
         }
 
-        private void CompleteProjectLoading(ProjectManagerCallback<ProjectItem> callback)
+        private void CompleteProjectLoading(ProjectManagerCallback callback)
         {
             bool includeDynamic = false;
           
@@ -302,14 +322,8 @@ namespace Battlehub.RTSaveLoad
             m_project.UnloadData(m_root.Item);
 
             m_isProjectLoaded = true;
-            if (callback != null)
-            {
-                callback(m_root.Item);
-            }
-            if (ProjectLoaded != null)
-            {
-                ProjectLoaded(this, new ProjectManagerEventArgs(m_root.Item));
-            }
+
+            callback();
         }
 
         public void IgnoreTypes(params Type[] types)

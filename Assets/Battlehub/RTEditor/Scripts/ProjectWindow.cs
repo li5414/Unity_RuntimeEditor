@@ -14,6 +14,9 @@ namespace Battlehub.RTEditor
         private IProjectManager m_projectManager;
 
         [SerializeField]
+        private Text m_loadingProgressText;
+
+        [SerializeField]
         private ProjectTreeWindow m_projectTree;
         [SerializeField]
         private ProjectResourcesWindow m_projectResources;
@@ -40,10 +43,24 @@ namespace Battlehub.RTEditor
             }
         }
 
+        private bool m_showProgress;
         private bool ShowProgress
         {
-            get; 
-            set; //Show progress bar if ui here needed
+            get { return m_showProgress; }
+            //Show progress bar if ui here needed
+            set
+            {
+                if (m_showProgress != value)
+                {
+                    m_showProgress = value;
+                    if (m_loadingProgressText != null)
+                    {
+                        m_loadingProgressText.text = "Loading...";
+                        m_loadingProgressText.gameObject.SetActive(m_showProgress);
+                    }
+
+                }
+            }
         }
 
         private void Start()

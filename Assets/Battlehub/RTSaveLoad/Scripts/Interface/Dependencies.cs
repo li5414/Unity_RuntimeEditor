@@ -36,6 +36,22 @@ namespace Battlehub.RTSaveLoad
             get { return new RuntimeShaderUtil(); }
         }
 
+        public static IJob Job
+        {
+            get
+            {
+                Job job = Object.FindObjectOfType<Job>();
+                if (job == null)
+                {
+                    GameObject go = new GameObject();
+                    go.name = "Job";
+                    job = go.AddComponent<Job>();
+                    go.AddComponent<PersistentIgnore>();
+                }
+                return job;
+            }
+        }
+
     }
 }
 
