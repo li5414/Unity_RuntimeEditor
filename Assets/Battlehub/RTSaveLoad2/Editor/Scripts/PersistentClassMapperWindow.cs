@@ -234,7 +234,11 @@ namespace Battlehub.RTSaveLoad2
             {
                 return;
             }
-
+            if (m_mappings == null)
+            {
+                Initialize();
+                LoadMappings();
+            }
             if (!m_dependencyTypes.ContainsKey(mappedType))
             {
                 m_dependencyTypes.Add(mappedType, 0);
@@ -256,6 +260,11 @@ namespace Battlehub.RTSaveLoad2
             if(m_tryingToUnlockType)
             {
                 return;
+            }
+            if (m_mappings == null)
+            {
+                Initialize();
+                LoadMappings();
             }
             if (m_dependencyTypes.ContainsKey(mappedType))
             {
@@ -384,10 +393,6 @@ namespace Battlehub.RTSaveLoad2
             for (int typeIndex = 0; typeIndex < m_mappings.Length; ++typeIndex)
             {
                 ClassMappingInfo mapping = m_mappings[typeIndex];
-                if (!mapping.IsEnabled)
-                {
-                    continue;
-                }
                 Dictionary<string, PersistentSubclass> subclassDictionary;
                 if (mapping.Subclasses == null)
                 {
@@ -1323,6 +1328,11 @@ namespace Battlehub.RTSaveLoad2
                     PersistentClassMapping mapping = uoMappings[i];
                     if(mapping != null)
                     {
+                        if(!mapping.IsEnabled)
+                        {
+                            continue;
+                        }
+
                         string code = codeGen.CreatePersistentClass(mapping);
                         CreateCSFile(persistentClassesPath, mapping, code);
                     }
@@ -1333,6 +1343,11 @@ namespace Battlehub.RTSaveLoad2
                     PersistentClassMapping mapping = surrogateMappings[i];
                     if(mapping != null)
                     {
+                        if (!mapping.IsEnabled)
+                        {
+                            continue;
+                        }
+
                         string code = codeGen.CreatePersistentClass(mapping);
                         CreateCSFile(persistentClassesPath, mapping, code);
                     }
