@@ -253,6 +253,8 @@ namespace Battlehub.RTHandles
             center.z = 0.0f;
             Bounds selectionBounds = new Bounds(center, m_rectTransform.sizeDelta);
 
+            //Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(SceneCamera);
+            
             HashSet<GameObject> selection = new HashSet<GameObject>();
             Renderer[] renderers = FindObjectsOfType<Renderer>();
             Collider[] colliders = FindObjectsOfType<Collider>();
@@ -262,21 +264,24 @@ namespace Battlehub.RTHandles
                 Renderer r = renderers[i];
                 Bounds bounds = r.bounds;
                 GameObject go = r.gameObject;
-                TrySelect(ref selectionBounds, selection, args, ref bounds, go);
+                TrySelect(ref selectionBounds, selection, args, ref bounds, go /*, frustumPlanes*/);
+
+           
             }
             for (int i = 0; i < colliders.Length; ++i)
             {
                 Collider c = colliders[i];
                 Bounds bounds = c.bounds;
                 GameObject go = c.gameObject;
-                TrySelect(ref selectionBounds, selection, args, ref bounds, go);
+                TrySelect(ref selectionBounds, selection, args, ref bounds, go /*, frustumPlanes*/);
             }
 
             RuntimeSelection.objects = selection.ToArray();
         }
 
-        private void TrySelect(ref Bounds selectionBounds, HashSet<GameObject> selection, FilteringArgs args, ref Bounds bounds, GameObject go)
+        private void TrySelect(ref Bounds selectionBounds, HashSet<GameObject> selection, FilteringArgs args, ref Bounds bounds, GameObject go /*, Plane[] frustumPlanes*/)
         {
+
             bool select;
             if (Method == BoxSelectionMethod.LooseFitting)
             {
@@ -290,6 +295,11 @@ namespace Battlehub.RTHandles
             {
                 select = TransformCenter(ref selectionBounds, go.transform);
             }
+
+            //if (!GeometryUtility.TestPlanesAABB(frustumPlanes, bounds))
+            //{
+            //    select = false;
+            //}
 
             if (select)
             {

@@ -361,7 +361,8 @@ namespace Battlehub.RTEditor
                 unselected = unselected.Where(
                     p => p.IsResource &&
                     // do not save mesh each time it unselected
-                    p.ProjectItem.TypeCode != ProjectItemTypes.Mesh
+                    p.ProjectItem.TypeCode != ProjectItemTypes.Mesh &&
+                    p.ProjectItem.TypeCode != ProjectItemTypes.Texture
                     ).ToArray();
                 if (unselected.Length != 0)
                 {
@@ -402,6 +403,7 @@ namespace Battlehub.RTEditor
             m_projectManager.SaveObjects(GetSelection(false).Where(
                 iop => iop.IsResource &&
                 // do not save mesh each time it unselected
+                //iop.ProjectItem.TypeCode != ProjectItemTypes.Texture &&
                 iop.ProjectItem.TypeCode != ProjectItemTypes.Mesh
                 ).ToArray(), () =>
             {

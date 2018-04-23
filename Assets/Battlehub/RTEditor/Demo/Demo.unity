@@ -70187,7 +70187,7 @@ MonoBehaviour:
   AddAssetBundleKey: 261
   AddAssetBundleKey2: 262
   Prefab: {fileID: 105912, guid: 04ea8aeeb78fcfe40a4454a53de4f993, type: 2}
-  ImagePath: test.png
+  ImagePath: test2.jpg
 --- !u!114 &1105
 MonoBehaviour:
   m_ObjectHideFlags: 0

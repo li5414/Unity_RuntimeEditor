@@ -1530,10 +1530,21 @@ namespace Battlehub.RTSaveLoad
             }
             else
             {
-                m_project.LoadData(loadProjectItems.ToArray(), loadProjectItemsCompleted =>
+                IJob job = Dependencies.Job;
+                ProjectItem[] loadedProjectItems = new ProjectItem[0];
+                job.Submit(doneCallback =>
+                {
+                    m_project.LoadData(loadProjectItems.ToArray(), loadProjectItemsCompleted =>
+                    {
+                        loadedProjectItems = loadProjectItemsCompleted.Data;
+                        doneCallback();
+
+                    }, exceptTypes);
+                },
+                () =>
                 {
                     Dictionary<long, ProjectItem> dependencies = new Dictionary<long, ProjectItem>();
-                    ProjectItem[] loadedProjectItems = loadProjectItemsCompleted.Data;
+
                     for (int i = 0; i < loadedProjectItems.Length; ++i)
                     {
                         ProjectItem projectItem = loadedProjectItems[i];
@@ -1555,7 +1566,8 @@ namespace Battlehub.RTSaveLoad
                             callback();
                         }
                     }
-                }, exceptTypes);
+
+                });
             } 
         }
 
@@ -2169,6 +2181,8 @@ namespace Battlehub.RTSaveLoad
                 {
                     return;
                 }
+
+     
                 Texture2D tex2D = (Texture2D)obj;
                 projectItem.Internal_Data.RawData = tex2D.EncodeToPNG();
             }
