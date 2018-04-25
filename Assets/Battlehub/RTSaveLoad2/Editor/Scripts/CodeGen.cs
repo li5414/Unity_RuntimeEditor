@@ -328,12 +328,13 @@ namespace Battlehub.RTSaveLoad2
                 {
                     continue;
                 }
+
                 if (!mapping.IsEnabled)
                 {
                     continue;
                 }
                 string endOfLine = string.Empty;
-                if (mapping.Subclasses != null && mapping.Subclasses.Length > 0)
+                if (mapping.Subclasses != null && mapping.Subclasses.Where(s => s.IsEnabled).Count() > 0)
                 {
                     endOfLine = CreateAddSubtypesBody(mapping);
                 }
@@ -359,7 +360,7 @@ namespace Battlehub.RTSaveLoad2
                 {
                     sb.AppendFormat(AddTypeTemplate, PrepareMappedTypeName(mapping.MappedTypeName), "false", endOfLine);
                 }
-                else if (mappingType.IsSubclassOf(typeof(UnityObject)))
+                else if (mappingType.IsSubclassOf(typeof(UnityObject)) || mappingType == typeof(UnityObject))
                 {
                     sb.AppendFormat(AddTypeTemplate, PreparePersistentTypeName(mapping.PersistentTypeName), "true", endOfLine);
                 }
@@ -376,15 +377,22 @@ namespace Battlehub.RTSaveLoad2
             for (int i = 0; i < subclasses.Length - 1; ++i)
             {
                 PersistentSubclass subclass = mapping.Subclasses[i];
-                sb.Append(BR + TAB3 + TAB);
-                sb.AppendFormat(AddSubtypeTemplate, subclass.TypeName, subclass.PersistentTag + SubclassOffset);
+                if(subclass.IsEnabled)
+                {
+                    sb.Append(BR + TAB3 + TAB);
+                    sb.AppendFormat(AddSubtypeTemplate, subclass.TypeName, subclass.PersistentTag + SubclassOffset);
+                }
+              
             }
 
             if (subclasses.Length > 0)
             {
-                PersistentSubclass subclass = mapping.Subclasses[subclasses.Length - 1];
-                sb.Append(BR + TAB3 + TAB);
-                sb.AppendFormat(AddSubtypeTemplate, subclass.TypeName, subclass.PersistentTag + SubclassOffset);
+                if(mapping.Subclasses[subclasses.Length - 1].IsEnabled)
+                {
+                    PersistentSubclass subclass = mapping.Subclasses[subclasses.Length - 1];
+                    sb.Append(BR + TAB3 + TAB);
+                    sb.AppendFormat(AddSubtypeTemplate, subclass.TypeName, subclass.PersistentTag + SubclassOffset);
+                }
             }
 
             return sb.ToString();
@@ -511,7 +519,8 @@ namespace Battlehub.RTSaveLoad2
 
                 sb.Append(TAB);
 
-                if(prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                
+                if(prop.MappedType.IsSubclassOf(typeof(UnityObject)) || prop.MappedType.IsArray && prop.MappedType.GetElementType().IsSubclassOf(typeof(UnityObject)))
                 {
                     //generate code which will convert unity object to identifier
                     sb.AppendFormat("{0} = ToId(uo.{1});", prop.PersistentName, prop.MappedName);
@@ -541,10 +550,12 @@ namespace Battlehub.RTSaveLoad2
 
                 sb.Append(TAB);
  
-                if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                if (prop.MappedType.IsSubclassOf(typeof(UnityObject)) || prop.MappedType.IsArray && prop.MappedType.GetElementType().IsSubclassOf(typeof(UnityObject)))
                 {
                     //generate code which will convert identifier to unity object
-                    sb.AppendFormat("uo.{0} = FromId<{2}>({1});", prop.MappedName, prop.PersistentName, PrepareMappedTypeName(prop.MappedTypeName));
+
+                    Type mappedType = prop.MappedType.IsArray ? prop.MappedType.GetElementType() : prop.MappedType;
+                    sb.AppendFormat("uo.{0} = FromId<{2}>({1});", prop.MappedName, prop.PersistentName, PrepareMappedTypeName(mappedType.Name));
                 }
                 else
                 {
@@ -581,7 +592,7 @@ namespace Battlehub.RTSaveLoad2
                         sb.AppendFormat("AddSurrogateDeps({0}, context);", prop.PersistentName);
                         sb.Append(BR + TAB2);
                     }
-                    else if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                    else if (prop.MappedType.IsSubclassOf(typeof(UnityObject)) || prop.MappedType.IsArray && prop.MappedType.GetElementType().IsSubclassOf(typeof(UnityObject)))
                     {
                         sb.Append(TAB);
                         sb.AppendFormat("AddDep({0}, context);", prop.PersistentName);
@@ -615,7 +626,7 @@ namespace Battlehub.RTSaveLoad2
                         sb.AppendFormat("AddSurrogateDeps(uo.{0}, context);", prop.MappedName);
                         sb.Append(BR + TAB2);
                     }
-                    if (prop.MappedType.IsSubclassOf(typeof(UnityObject)))
+                    if (prop.MappedType.IsSubclassOf(typeof(UnityObject)) || prop.MappedType.IsArray && prop.MappedType.GetElementType().IsSubclassOf(typeof(UnityObject)))
                     {
                         sb.Append(TAB);
                         sb.AppendFormat("AddDep(uo.{0}, context);", prop.MappedName);

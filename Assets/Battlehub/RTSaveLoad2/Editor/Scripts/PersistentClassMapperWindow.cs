@@ -239,10 +239,21 @@ namespace Battlehub.RTSaveLoad2
                 Initialize();
                 LoadMappings();
             }
+
+            if(mappedType.IsArray)
+            {
+                mappedType = mappedType.GetElementType();
+            }
+
             if (!m_dependencyTypes.ContainsKey(mappedType))
             {
                 m_dependencyTypes.Add(mappedType, 0);
                 LockType(mappedType);
+
+                if(m_typeToIndex.ContainsKey(mappedType))
+                {
+                    ExpandType(m_typeToIndex[mappedType]);
+                }
 
                 m_tryingToLockType = true;
                 if (TypeLocked != null)
@@ -266,6 +277,13 @@ namespace Battlehub.RTSaveLoad2
                 Initialize();
                 LoadMappings();
             }
+
+            if (mappedType.IsArray)
+            {
+                mappedType = mappedType.GetElementType();
+            }
+
+
             if (m_dependencyTypes.ContainsKey(mappedType))
             {
                 m_dependencyTypes[mappedType]--;
@@ -447,6 +465,11 @@ namespace Battlehub.RTSaveLoad2
                         subclass.PersistentTag = baseClassMapping.PersistentSubclassTag;
 
                         subclassDictionary.Add(fullTypeName, subclass);
+                    }
+                    else
+                    {
+                        PersistentSubclass subclass = subclassDictionary[fullTypeName];
+                        subclass.IsEnabled = true;
                     }
                 }
             }
@@ -1251,7 +1274,7 @@ namespace Battlehub.RTSaveLoad2
                     m_codeGen, 
                     ClassMappingsStoragePath, 
                     ClassMappingsStoragePath, 
-                    typeof(UnityObject), 
+                    typeof(object), 
                     m_uoTypes, 
                     assemblies.Select(a => a == null ? "All" : a.GetName().Name).ToArray(),
                     "Assembly",

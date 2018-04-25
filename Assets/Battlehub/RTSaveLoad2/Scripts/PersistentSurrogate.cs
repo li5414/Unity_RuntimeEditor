@@ -139,7 +139,18 @@ namespace Battlehub.RTSaveLoad2
             throw new System.NotImplementedException();
         }
 
+        protected int[] ToId(UnityObject[] uo)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public T FromId<T>(int id) where T : UnityObject
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+        public T[] FromId<T>(int[] id) where T : UnityObject
         {
             throw new System.NotImplementedException();
         }
