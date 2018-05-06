@@ -426,6 +426,7 @@
     <Compile Include="Assets\Battlehub\RTHandles\Scripts\BoxSelection.cs" />
     <Compile Include="Assets\Battlehub\RTHandles\Scripts\Grid.cs" />
     <Compile Include="Assets\Battlehub\RTHandles\Scripts\PositionHandle.cs" />
+    <Compile Include="Assets\Battlehub\RTHandles\Scripts\PositionHandleModel.cs" />
     <Compile Include="Assets\Battlehub\RTHandles\Scripts\RotationHandle.cs" />
     <Compile Include="Assets\Battlehub\RTHandles\Scripts\RuntimeHandles.cs" />
     <Compile Include="Assets\Battlehub\RTHandles\Scripts\RuntimeSceneView.cs" />
@@ -755,6 +756,7 @@
     <Compile Include="Assets\Battlehub\Utils\Run.cs" />
     <Compile Include="Assets\Battlehub\Utils\Strong.cs" />
     <Compile Include="Assets\Battlehub\Utils\TextureExtensions.cs" />
+    <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Battlehub\RTCommon\Shaders\Resources\Billboard.shader" />
